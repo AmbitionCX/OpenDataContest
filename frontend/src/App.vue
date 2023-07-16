@@ -1,0 +1,21 @@
+<template>
+  <RouterView></RouterView>
+  </template>
+  
+  <script setup lang="ts">
+  
+  </script>
+  
+  <style scope>
+  * {
+    margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  }
+  #app {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+}
+  </style>
