@@ -1,5 +1,6 @@
 const express = require('express');
 const axios = require('axios');
+const csvReader = require('./csvReader')
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
@@ -19,6 +20,18 @@ app.get("/", (req, res) => {
     .catch(function (error) {
         console.log(error);
     });
+})
+
+app.get("/get_shanggu_shijing", (req, res) => {
+    csvReader.get_shanggu_shijing().then( data => res.send(data))
+})
+
+app.get("/get_zhonggu_guangyun", (req, res) => {
+    csvReader.get_zhonggu_guangyun().then( data => res.send(data))
+})
+
+app.get("/get_jindai_zhongyuan", (req, res) => {
+    csvReader.get_jindai_zhongyuan().then( data => res.send(data))
 })
 
 app.listen(port, () => {
