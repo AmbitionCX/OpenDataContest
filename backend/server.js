@@ -1,12 +1,12 @@
 const express = require('express');
 const axios = require('axios');
-const cors = require('cors');
+var cors = require('cors');
 const csvReader = require('./csvReader');
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
 const app = express();
-app.use(cors);
+app.use(cors());
 
 app.get("/", (req, res) => {
     let key = "&key=" + process.env.API_KEY
@@ -29,7 +29,6 @@ app.get("/get_shanggu_shijing", (req, res) => {
 })
 
 app.get("/get_zhonggu_guangyun", (req, res) => {
-    console.log("guangyun request get");
     csvReader.get_zhonggu_guangyun().then( data => res.send(data))
 })
 
@@ -37,7 +36,7 @@ app.get("/get_jindai_zhongyuan", (req, res) => {
     csvReader.get_jindai_zhongyuan().then( data => res.send(data))
 })
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`App listening on port ${port}...`);
 });
 
