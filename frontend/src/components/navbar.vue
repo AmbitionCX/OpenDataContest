@@ -2,44 +2,60 @@
   <div class="navbar">
     <el-dropdown>
       <span class="el-dropdown-link">
-        <a href="/introduction">项目介绍</a>
+        <a href="/introduction">首页</a>
       </span>
     </el-dropdown>
 
     <el-dropdown>
       <span class="el-dropdown-link">
-        <a href="/show">总体展示</a>
-      </span>
-    </el-dropdown>
-
-    <el-dropdown>
-      <span class="el-dropdown-link">
-        <a href="/transition">汉语传承与变迁</a>
+        <a>语音概览</a>
         <el-icon class="el-icon--right">
           <arrow-down />
         </el-icon>
       </span>
       <template #dropdown>
         <ul class="navlist">
-          <li><a href="#">书与书对比</a></li>
-          <li><a href="#">音部节点展示</a></li>
+          <li><a href="/quanmao">全貌</a></li>
+          <li><a href="/fenduan">分段</a></li>
         </ul>
       </template>
     </el-dropdown>
 
     <el-dropdown>
       <span class="el-dropdown-link">
-        <a href="/research">宏观分析</a>
+        <a>韵部系联</a>
         <el-icon class="el-icon--right">
           <arrow-down />
         </el-icon>
       </span>
       <template #dropdown>
         <ul class="navlist">
-          <li><a href="#">整体分析</a></li>
-          <li><a href="#">趣味查询</a></li>
+          <li><a href="/shijing">《诗经》</a></li>
+          <li><a href="/guangyun">《广韵》</a></li>
+          <li><a href="/zhongyuan">《中原音韵》</a></li>
         </ul>
       </template>
+    </el-dropdown>
+
+    <el-dropdown>
+      <span class="el-dropdown-link">
+        <a>综合分析</a>
+        <el-icon class="el-icon--right">
+          <arrow-down />
+        </el-icon>
+      </span>
+      <template #dropdown>
+        <ul class="navlist">
+          <li><a href="/zhengti">整体分析</a></li>
+          <li><a href="/danzi">单字查询</a></li>
+        </ul>
+      </template>
+    </el-dropdown>
+
+    <el-dropdown>
+      <span class="el-dropdown-link">
+        <a href="/datasource">数据来源与参考资料</a>
+      </span>
     </el-dropdown>
   </div>
 </template>

@@ -6,14 +6,29 @@ const routes:RouteRecordRaw[]=[{
     path:'/introduction',
     component:()=>import('@/components/introduction.vue')
 },{
-    path:'/research',
-    component:()=>import('@/components/research.vue')
+    path:'/quanmao',
+    component:()=>import('@/components/gailan/quanmao.vue')
 },{
-    path:'/show',
-    component:()=>import('@/components/show.vue')
+    path:'/fenduan',
+    component:()=>import('@/components/gailan/fenduan.vue')
 },{
-    path:'/transition',
-    component:()=>import('@/components/transition.vue')
+    path:'/guangyun',
+    component:()=>import('@/components/yunbu/guangyun.vue')
+},{
+    path:'/shijing',
+    component:()=>import('@/components/yunbu/shijing.vue')
+},{
+    path:'/zhongyuan',
+    component:()=>import('@/components/yunbu/zhongyuan.vue')
+},{
+    path:'/danzi',
+    component:()=>import('@/components/fenxi/danzi.vue')
+},{
+    path:'/zhengti',
+    component:()=>import('@/components/fenxi/zhengti.vue')
+},{
+    path:'/datasource',
+    component:()=>import('@/components/datasource.vue')
 }]
 const router:Router = createRouter({
     history: createWebHistory(),

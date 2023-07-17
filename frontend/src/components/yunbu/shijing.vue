@@ -1,9 +1,6 @@
 <template>
     <navbar></navbar>
-    <h1>introduction</h1>
-    <div>
-      <img src="@/assets/juanzhou.jpg" class="image" />
-    </div>
+    <h1>诗经</h1>
   </template>
       
   <script>

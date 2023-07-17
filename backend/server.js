@@ -1,10 +1,12 @@
 const express = require('express');
 const axios = require('axios');
-const csvReader = require('./csvReader')
+const cors = require('cors');
+const csvReader = require('./csvReader');
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
 const app = express();
+app.use(cors);
 
 app.get("/", (req, res) => {
     let key = "&key=" + process.env.API_KEY
@@ -27,6 +29,7 @@ app.get("/get_shanggu_shijing", (req, res) => {
 })
 
 app.get("/get_zhonggu_guangyun", (req, res) => {
+    console.log("guangyun request get");
     csvReader.get_zhonggu_guangyun().then( data => res.send(data))
 })
 

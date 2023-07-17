@@ -1,6 +1,6 @@
 <template>
   <navbar></navbar>
-  <h1>transition</h1>
+  <h1>数据来源与参考资料</h1>
 </template>
     
 <script>
