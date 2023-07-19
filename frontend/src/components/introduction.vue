@@ -1,9 +1,8 @@
 <template>
+  <div class="bg" style="background-color: #f9f5f2;">
     <navbar></navbar>
-    <h1>introduction</h1>
-    <div>
-      <img src="@/assets/juanzhou.jpg" class="image" />
-    </div>
+    <div class="header">首 页</div>
+  </div>
   </template>
       
   <script>
@@ -15,7 +14,7 @@
     return {};
   },
   components:{
-    navbar
+    navbar,
   },
   methods: {},
 };
@@ -31,5 +30,21 @@
   /* 各种列表样式为空 */
   text-decoration: none;
   list-style: none;
+  /* background-color: #f9f5f2;
+  z-index: -1; */
+}
+.bg{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.header{
+  position: fixed;
+  top: 10px;
+  left: 50vw;
+  color: #f6f5f5;
+  text-align: center;
 }
   </style>

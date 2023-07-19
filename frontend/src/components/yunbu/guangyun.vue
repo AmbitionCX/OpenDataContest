@@ -22,6 +22,7 @@
     axios.get(url).then((res) => {
       console.log("get");
       console.log(res);
+      console.log(res.data[0]);
     })
     .catch(function (err) {
       console.log(err);
