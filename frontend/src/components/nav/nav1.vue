@@ -5,9 +5,9 @@
     </div>
 
     <ul class="sublist">
-        <li><a href="/shijing">《诗经》</a></li>
-        <li><a href="/guangyun">《广韵》</a></li>
-        <li><a href="/zhongyuan">《中原音韵》</a></li>
+        <li><a href="/quanlan/shijing">《诗经》</a></li>
+        <li><a href="/quanlan/guangyun">《广韵》</a></li>
+        <li><a href="/quanlan/zhongyuan">《中原音韵》</a></li>
       </ul>
 
       <div class="sui">

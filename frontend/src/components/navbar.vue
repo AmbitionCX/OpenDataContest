@@ -31,7 +31,7 @@
 
     <el-dropdown>
       <span class="el-dropdown-link">
-        <a href="#" @mouseenter="showSub2=true">韵部系联</a>
+        <a href="/yunbu" @mouseenter="showSub2=true">韵部系联</a>
       </span>
     </el-dropdown>
 

@@ -1,74 +1,81 @@
 <template>
-    <div ref="wordCloud" class="word-cloud"></div>
-  </template>
-  
-  <style scoped>
-  .word-cloud {
-    background-color: #f2f2f2;
+  <div>
+    <svg ref="svg"></svg>
+  </div>
+</template>
+
+<script>
+import * as d3 from "d3";
+import cloud from "d3-cloud";
+
+export default {
+  mounted() {
+    this.drawWordCloud();
+  },
+  methods: {
+    drawWordCloud() {
+      const words = [
+        { text: "蒹葭", txtwidth: 20 },
+        { text: "白月光", txtwidth: 30 },
+        { text: "中原音韵", txtwidth: 40 },
+        // 添加更多单词和对应的大小
+      ];
+
+      const svg = d3.select(this.$refs.svg)
+        .attr("width", 500)
+        .attr("height", 500);
+
+      const layout = cloud()
+        .size([500, 500])
+        .words(words)
+        .padding(5)
+        .rotate(() => 0) // 设置旋转角度为0，即不旋转
+        .font("Impact")
+        .fontSize(20)
+        .on("end", this.draw);
+
+      layout.start();
+    },
+    draw(words) {
+      const svg = d3.select(this.$refs.svg);
+
+      svg.selectAll("g").remove();
+
+      const g = svg.append("g")
+        .attr("transform", "translate(250,250)");
+
+      g.selectAll("rect")
+        .data(words)
+        .enter()
+        .append("rect")
+          .attr("x", d => d.x - d.txtwidth - 5)
+          .attr("y", d => d.y - 15)
+          .attr("width", d => d.txtwidth*2 + 10)
+          .attr("height", d => 30)
+          .style("fill", "red")
+          .attr('rx',8)
+          .attr('ry',8)
+          .style("opacity", 0.3);
+
+      g.selectAll("text")
+        .data(words)
+        .enter()
+        .append("text")
+          .attr("x", d => d.x)
+          .attr("y", d => d.y)
+          .style("font-size", d => 20 + "px")
+          .style("font-family", "Impact")
+          .style("fill", "white")
+          .attr("text-anchor", "middle")
+          .attr("alignment-baseline", "middle")
+          .text(d => d.text);
+    }
   }
-  </style>
-  
-  <script>
-  import * as d3 from 'd3';
-  import * as cloud from 'd3-cloud';
-  
-  export default {
-    mounted() {
-      this.createWordCloud();
-    },
-    methods: {
-      createWordCloud() {
-        const width = 500;
-        const height = 500;
-  
-        // 假设你有一个包含词频的数据，类似于 [{ text: 'word1', size: 10 }, { text: 'word2', size: 20 }, ...]
-        const words = [
-          { text: 'word1', size: 10 },
-          { text: 'word2', size: 20 },
-          { text: 'word3', size: 10 },
-          { text: 'word4', size: 20 },
-          // 其他词频数据
-        ];
-  
-        const layout = cloud()
-          .size([width, height])
-          .words(words)
-          .padding(5)
-          .rotate(0) // 禁止旋转角度
-          .font('impact')
-          .fontSize((d) => d.size)
-          .on('end', this.drawWordCloud);
-  
-        layout.start();
-      },
-      drawWordCloud(words) {
-        const svg = d3.select(this.$refs.wordCloud)
-          .append('svg')
-          .attr('width', 500)
-          .attr('height', 500);
-  
-        // 添加背景矩形
-        svg.append('rect')
-          .attr('x', 0)
-          .attr('y', 0)
-          .attr('width', 500)
-          .attr('height', 500)
-          .style('fill', '#f2f2f2');
-  
-        svg.append('g')
-          .attr('transform', 'translate(250, 250)') // 将词云图居中显示
-          .selectAll('text')
-          .data(words)
-          .enter()
-          .append('text')
-          .style('font-size', (d) => `${d.size}px`)
-          .style('font-family', 'impact')
-          .style('fill', '#000')
-          .attr('text-anchor', 'middle')
-          .attr('transform', (d) => `translate(${d.x}, ${d.y})`)
-          .text((d) => d.text);
-      },
-    },
-  };
-  </script>
-  
+};
+</script>
+
+<style scoped>
+svg {
+  background-color: lightgray;
+}
+</style>

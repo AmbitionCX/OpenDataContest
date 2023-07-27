@@ -40,10 +40,12 @@
   top: 0;
   left: 0;
 }
-.header{
+.header {
   position: fixed;
-  top: 10px;
-  left: 50vw;
+  z-index: 999;
+  top: 5px;
+  left: 47vw;
+  font-size: 30px;
   color: #f6f5f5;
   text-align: center;
 }

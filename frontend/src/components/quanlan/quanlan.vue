@@ -153,9 +153,9 @@ export default {
 .header {
   position: fixed;
   z-index: 999;
-  top: 10px;
-  left: 49vw;
-  font-size: 20px;
+  top: 5px;
+  left: 47vw;
+  font-size: 30px;
   color: #f6f5f5;
   text-align: center;
 }

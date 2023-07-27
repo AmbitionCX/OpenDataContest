@@ -1,4 +1,5 @@
 import { createRouter,Router,createWebHistory,RouteRecordRaw } from "vue-router"
+
 const routes:RouteRecordRaw[]=[{
     path:'/',
     redirect:'/shouye'
@@ -21,14 +22,25 @@ const routes:RouteRecordRaw[]=[{
     path:'/quanlan/zhongyuan',
     component:()=>import('@/components/quanlan/zhongyuan.vue')
 },{
-    path:'/guangyun',
+    path:'/yunbu',
+    component:()=>import('@/components/yunbu/yunbu.vue')
+},{
+    path:'/yunbu2',
+    component:()=>import('@/components/yunbu/yunbu2.vue')
+},{
+    path:'/yunbu3',
+    component:()=>import('@/components/yunbu/yunbu3.vue')
+},{
+    path:'/yunbu/guangyun',
     component:()=>import('@/components/yunbu/guangyun.vue')
 },{
-    path:'/shijing',
-    component:()=>import('@/components/yunbu/shijing.vue')
-},{
-    path:'/zhongyuan',
+    path:'/yunbu/zhongyuan',
     component:()=>import('@/components/yunbu/zhongyuan.vue')
+},{
+    path:'/yunbu/shijing/:index',
+    name: 'YunbuShijing',
+    component:()=>import('@/components/yunbu/shijing.vue'),
+    props: true
 },{
     path:'/danzi',
     component:()=>import('@/components/fenxi/danzi.vue')
@@ -41,6 +53,9 @@ const routes:RouteRecordRaw[]=[{
 },{
     path:'/test',
     component:()=>import('@/components/test.vue')
+},{
+    path:'/cloud',
+    component:()=>import('@/components/cloud.vue')
 }]
 const router:Router = createRouter({
     history: createWebHistory(),
