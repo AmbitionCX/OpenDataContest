@@ -99,25 +99,22 @@ export default {
     },
 
     getTextStyle(Index, item, index) {
-      const totalChars = item.length;
-      const revolutions = 1 + Math.floor(Index / totalChars); // Number of complete revolutions the character has made
-      // const angle =
-      //   (2 * Math.PI * revolutions * this.gap) /
-      //   (this.radius + revolutions * this.gap); // Angle of rotation for the character
-      
-        const angle = (this.gap * index * this.anglePerCharacter * Math.PI / 180) % (2 * Math.PI);
-        const x = (this.radius + revolutions * this.gap) * Math.cos(angle);
-      const y = (this.radius + revolutions * this.gap) * Math.sin(angle);
+      const totalCharacters = item.length;
+      const angle = this.degreesToRadians(Index * this.anglePerCharacter);
+      const distanceFromCenter = Index/2 + 60; //圆圈间隔+圆圈内径
+      const x = distanceFromCenter * Math.cos(angle);
+      const y = distanceFromCenter * Math.sin(angle);
+      const alpha = 1 - (Index / totalCharacters);
+      //   const angle = (this.gap * index * this.anglePerCharacter * Math.PI / 180) % (2 * Math.PI);
+      //   const x = (this.radius + revolutions * this.gap) * Math.cos(angle);
+      // const y = (this.radius + revolutions * this.gap) * Math.sin(angle);
 
       
-      // const angle = ((2 * Math.PI) / item.length) * Index;
-      // const x = this.radius * Math.cos(angle);
-      // const y = this.radius * Math.sin(angle);
       const row = index % 2;
       const col = Math.round(index / 2);
       const spaceWidth = 100;
       const sapceHeight = 100;
-      const rx = col * (this.imageWidth - spaceWidth) - row * 1 + 600;
+      const rx = col * (this.imageWidth - spaceWidth) - row * 1 + 610;
       const ry = row * (this.imageHeight - sapceHeight) + 300;
 
       return {
@@ -125,7 +122,12 @@ export default {
         position: "absolute",
         left: `${rx + x - 610}px`,
         top: `${ry + y - 300}px`,
+        color: `rgba(193, 165, 48, ${alpha})`,
       };
+    },
+
+    degreesToRadians(degrees) {
+      return (degrees * Math.PI) / 180;
     },
 
     // 点击图片时导航到新页面，并传递index作为参数

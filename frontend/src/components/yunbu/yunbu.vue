@@ -91,9 +91,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  overflow-x: auto; /* 启用水平滚动条 */
-  white-space: nowrap; /* 防止内容换行，保持在一行内 */
-  width: 100%; /* 可根据需要设置宽度，可以是固定宽度或百分比 */
+
 }
 .header {
   position: fixed;
@@ -337,6 +335,10 @@ export default {
 }
 .yunbu1{
   display: flex;
+  overflow-x: auto; /* 启用水平滚动条 */
+  white-space: nowrap; /* 防止内容换行，保持在一行内 */
+  width: 50vw;
+  height: 100vh;
   /* position: fixed;
   z-index: 999;
   top: 170px;

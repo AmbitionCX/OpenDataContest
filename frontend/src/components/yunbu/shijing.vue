@@ -1,6 +1,5 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2">
-    <div v-if="yunjiaoRandom.length > 0">
       <div class="nav1">
         <navbar2></navbar2>
       </div>
@@ -18,7 +17,6 @@
         <span class="txt" @click="getYunjiaoRfresh(index)"> {{ yun }}</span>
       </div>
 
-    </div>
   </div>
 </template>
         

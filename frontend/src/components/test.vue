@@ -1,13 +1,11 @@
 <template>
-  <div id="app">
-    <div class="circle-container">
-      <div
-        class="circle-text"
-        v-for="(char, index) in text"
-        :key="index"
-        :style="getTextStyle(index)"
-      >
-        {{ char }}
+  <div class="app">
+    <div class="left-pane">
+      <!-- 左边内容 -->
+    </div>
+    <div class="right-pane">
+      <div class="scrollable-content" ref="scrollable">
+        <!-- 右边内容 -->
       </div>
     </div>
   </div>
@@ -15,49 +13,45 @@
 
 <script>
 export default {
-  data() {
-    return {
-      text: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789aaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccccccc", // Add more characters as needed
-      radius: 100, // Radius of the central circle
-      gap: 8, // Gap between characters
-      anglePerCharacter: 8, // Adjust the angle per character to control the spiral density
-    };
+  mounted() {
+    this.addScrollListener();
+    this.scrollToBottom(); // 在页面加载后滚动到底部
   },
   methods: {
-    getTextStyle(index) {
-      const angle = this.degreesToRadians(index * this.anglePerCharacter);
-          const revolutions = Math.floor(index / (360 / this.anglePerCharacter));
-          const x = (this.radius + revolutions * this.anglePerCharacter) * Math.cos(angle);
-          const y = (this.radius + revolutions * this.anglePerCharacter) * Math.sin(angle);
-          return {
-            transform: `translate(${x}px, ${y}px) rotate(${angle}rad)`,
-          };
+    addScrollListener() {
+      const scrollableDiv = this.$refs.scrollable;
+      scrollableDiv.addEventListener("scroll", this.handleScroll);
     },
-    degreesToRadians(degrees) {
-      return (degrees * Math.PI) / 180;
+    handleScroll(event) {
+      // 处理滚动事件
+      // 在这里你可以获取滚动位置，并执行需要的操作
+    },
+    scrollToBottom() {
+      const scrollableDiv = this.$refs.scrollable;
+      scrollableDiv.scrollTop = scrollableDiv.scrollHeight; // 将滚动条滚动到底部
     },
   },
 };
 </script>
 
-<style scoped>
-/* Style for the circle container */
-.circle-container {
-  width: 400px;
-  height: 400px;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  position: relative;
-  overflow: hidden;
+<style>
+.app {
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-/* Style for the text inside the circle */
-.circle-text {
-  position: absolute;
-  font-size: 12px;
-  white-space: nowrap;
+.left-pane {
+  flex: 1;
+  /* 左边部分样式 */
+}
+
+.right-pane {
+  flex: 1;
+  overflow: hidden;
+}
+
+.scrollable-content {
+  overflow: auto;
+  /* 右边滚动内容样式 */
+  /* 设置合适的高度或最大高度，以便内容超出后可以出现滚动条 */
 }
 </style>
