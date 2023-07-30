@@ -92,11 +92,16 @@ const zhongyuan_word_cloud = (data) => {
     return cloud;
 }
 
+const yunbu_selection = (data) => {
+    return data;
+}
+
 module.exports = {
     get_shanggu_shijing,
     get_zhonggu_guangyun,
     get_jindai_zhongyuan,
     shijing_word_cloud,
     guangyun_word_cloud,
-    zhongyuan_word_cloud
+    zhongyuan_word_cloud,
+    yunbu_selection
 }
