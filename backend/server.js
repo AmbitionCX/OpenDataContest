@@ -54,6 +54,13 @@ app.get("/get_zhongyuan_cloud", (req, res) => {
     })
 })
 
+app.post("/yunbu_selection", (req, res) => {
+    let data = req.body;
+    let selected_yunbu = csvReader.yunbu_selection(data);
+    console.log(data);
+    res.send(JSON.stringify(selected_yunbu));
+})
+
 app.listen(port, '0.0.0.0', () => {
     console.log(`App listening on port ${port}...`);
 });

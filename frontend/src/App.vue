@@ -8,6 +8,7 @@
   
   <style scope>
   @import "@/css/font-face.css";
+  @import "@/css/normalize.css";
   * {
     margin: 0;
   padding: 0;
