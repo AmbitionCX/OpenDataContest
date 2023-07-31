@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="txt">词云</div>
+    <div class="txt" @click="getWords()">词云</div>
   </div>
 </template>
         
@@ -124,7 +124,7 @@ export default {
     // Send the clicked word to the backend using an API call
     try {
       console.log(word);
-      const response = await axios.post(
+      const response = await axios.get(
         "http://localhost:5000/get_guangyun_url",
         { params: {
           Word: word

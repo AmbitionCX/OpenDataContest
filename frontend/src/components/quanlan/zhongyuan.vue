@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="txt">词云</div>
+    <div class="txt" @click="getWords()">词云</div>
   </div>
 </template>
         
@@ -121,22 +121,21 @@ export default {
     },
 
     async wordClicked(word) {
-      // Send the clicked word to the backend using an API call
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/get_zhongyuan_url",
-          {
-            params: {
-              Word: word
-            }
-          }
-        );
-        console.log("Word clicked:", word);
-        console.log("Backend response:", response.data);
-      } catch (error) {
-        console.error("Error sending clicked word to the backend:", error);
-      }
-    },
+    // Send the clicked word to the backend using an API call
+    try {
+      console.log(word);
+      const response = await axios.get(
+        "http://localhost:5000/get_zhongyuan_url",
+        { params: {
+          Word: word
+        } }
+      );
+      console.log("Word clicked:", word); 
+      console.log("Backend response:", response.data);
+    } catch (error) {
+      console.error("Error sending clicked word to the backend:", error);
+    }
+  },
   },
 };
 </script>
