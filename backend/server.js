@@ -57,18 +57,20 @@ app.get("/get_zhongyuan_cloud", (req, res) => {
     })
 })
 
-app.get("/get_zhongyuan_url", (req, res) => {
-    let target = String(req.body.params.Word);
+app.post("/get_zhongyuan_url", (req, res) => {
+    let target = req.body.params.Word;
     csvReader.get_jindai_zhongyuan().then((data) => {
         let url = csvReader.zhongyuan_url(data, target);
-        res.send(url);
+
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({"url": url}));
     })
 })
 
-app.get("/yunbu_selection", (req, res) => {
-    let data = req.body;
-    let selected_yunbu = csvReader.yunbu_selection(data);
-    
+app.post("/yunbu_selection", (req, res) => {
+    let target = req.body.params.yunbu;
+    let selected_yunbu = csvReader.yunbu_selection(target);
+
     res.send(JSON.stringify(selected_yunbu));
 })
 
