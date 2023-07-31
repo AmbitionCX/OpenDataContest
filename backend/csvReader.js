@@ -4,11 +4,25 @@ const fs = require("fs");
 
 const shanggu_shijing_path = path.join(__dirname, '/rawData/shanggu-shijing.csv').toString();
 const zhonggu_guangyun_path = path.join(__dirname, '/rawData/zhonggu-guangyun.csv').toString();
-const jindai_zhongyuan_path = path.join(__dirname, '/rawData/jindai-zhongyuan.csv').toString();
+const jindai_zhongyuan_path = path.join(__dirname, '/rawData/jindai-zhongyuan-url.csv').toString();
 const shijing_json_path = path.join(__dirname, '/rawData/shijing.json').toString();
+const word_cloud_number = 20;
 
 const getColumns = (arr, indices) => arr.map(row => indices.map(i => row[i]));
 
+const get_random_elements = (arr, num) => {
+    let shuffled = [...arr].sort( () => 0.5 - Math.random() );
+    return shuffled.slice(0, num);
+}
+
+const match_array_item = (arr, target) => {
+    arr.forEach( (obj) => {
+        if ( obj[0] == target ) { return obj[2] }
+    } )
+    return 0
+}
+
+// ------------ shijing ------------
 const get_shanggu_shijing = () => {
     return new Promise((resolve, reject) => {
         fs.readFile(shanggu_shijing_path, function (err, fileData) {
@@ -23,11 +37,6 @@ const get_shanggu_shijing = () => {
     })
 }
 
-const get_random_elements = (arr, num) => {
-    let shuffled = [...arr].sort( () => 0.5 - Math.random() );
-    return shuffled.slice(0, num);
-}
-
 const shijing_word_cloud = () => {
     return new Promise((resolve, reject) => {
         fs.readFile(shijing_json_path, 'utf8', function (err, data) {
@@ -35,7 +44,7 @@ const shijing_word_cloud = () => {
                 reject(err);
             } else {
                 let jsonData = JSON.parse(data);
-                let randomJson = get_random_elements(jsonData, 10);
+                let randomJson = get_random_elements(jsonData, word_cloud_number);
                 let titles = [];
                 randomJson.forEach( (jsonObj) => {
                     titles.push(jsonObj.title);
@@ -46,6 +55,12 @@ const shijing_word_cloud = () => {
     })
 }
 
+const shijing_url = (data) => {
+    let url = "http://test.com";
+    return url;
+}
+
+// ------------ guangyun ------------
 const get_zhonggu_guangyun = () => {
     return new Promise((resolve, reject) => {
         fs.readFile(zhonggu_guangyun_path, function (err, fileData) {
@@ -61,7 +76,7 @@ const get_zhonggu_guangyun = () => {
 }
 
 const guangyun_word_cloud = (data) => {
-    let random_data = get_random_elements(data, 10);
+    let random_data = get_random_elements(data, word_cloud_number);
     let cloud = [];
     random_data.forEach( (obj) => {
         cloud.push(obj[0]);
@@ -69,6 +84,13 @@ const guangyun_word_cloud = (data) => {
     return cloud;
 }
 
+const guangyun_url = (data) => {
+    let url = "http://test.com";
+    return url;
+}
+
+
+// ------------ zhongyuan ------------
 const get_jindai_zhongyuan = () => {
     return new Promise((resolve, reject) => {
         fs.readFile(jindai_zhongyuan_path, function (err, fileData) {
@@ -76,7 +98,7 @@ const get_jindai_zhongyuan = () => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(getColumns(rows, [1, 2]));
+                    resolve(getColumns(rows, [1, 2, 7]));
                 }
             })
         })
@@ -84,12 +106,17 @@ const get_jindai_zhongyuan = () => {
 }
 
 const zhongyuan_word_cloud = (data) => {
-    let random_data = get_random_elements(data, 10);
+    let random_data = get_random_elements(data, word_cloud_number);
     let cloud = [];
     random_data.forEach( (obj) => {
         cloud.push(obj[0]);
     } )
     return cloud;
+}
+
+const zhongyuan_url = (data) => {
+    let url = match_array_item(data, target);
+    return url;
 }
 
 const yunbu_selection = (data) => {
@@ -103,5 +130,8 @@ module.exports = {
     shijing_word_cloud,
     guangyun_word_cloud,
     zhongyuan_word_cloud,
+    shijing_url,
+    guangyun_url,
+    zhongyuan_url,
     yunbu_selection
 }
