@@ -1,12 +1,15 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const axios = require('axios');
-var cors = require('cors');
+const cors = require('cors');
+
 const csvReader = require('./csvReader');
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
 const app = express();
 app.use(cors());
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
     let key = "&key=" + process.env.API_KEY
@@ -54,16 +57,15 @@ app.get("/get_zhongyuan_cloud", (req, res) => {
     })
 })
 
-app.post("/get_zhongyuan_url", (req, res) => {
-    let target = req.params;
-    console.log(req.params);
+app.get("/get_zhongyuan_url", (req, res) => {
+    let target = String(req.body.params.Word);
     csvReader.get_jindai_zhongyuan().then((data) => {
         let url = csvReader.zhongyuan_url(data, target);
         res.send(url);
     })
 })
 
-app.post("/yunbu_selection", (req, res) => {
+app.get("/yunbu_selection", (req, res) => {
     let data = req.body;
     let selected_yunbu = csvReader.yunbu_selection(data);
     
