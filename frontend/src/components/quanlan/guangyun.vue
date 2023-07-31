@@ -124,7 +124,7 @@ export default {
     // Send the clicked word to the backend using an API call
     try {
       console.log(word);
-      const response = await axios.get(
+      const response = await axios.post(
         "http://localhost:5000/get_guangyun_url",
         { params: {
           Word: word

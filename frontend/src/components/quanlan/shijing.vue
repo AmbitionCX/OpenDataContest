@@ -123,7 +123,7 @@ export default {
     async wordClicked(word) {
     // Send the clicked word to the backend using an API call
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         "http://localhost:5000/get_shijing_url",
         { params: {
           Word: word
