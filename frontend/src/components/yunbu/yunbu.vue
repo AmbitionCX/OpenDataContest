@@ -334,11 +334,13 @@ export default {
   border-radius: 20px;
 }
 .yunbu1{
-  display: flex;
-  overflow-x: auto; /* 启用水平滚动条 */
-  white-space: nowrap; /* 防止内容换行，保持在一行内 */
-  width: 50vw;
-  height: 100vh;
+  /* display: flex; */
+  /* 启用水平滚动条 */
+  /* overflow-x: auto;  */
+  /* 防止内容换行，保持在一行内 */
+  /* white-space: nowrap;  */
+  /* width: 50vw;
+  height: 100vh; */
   /* position: fixed;
   z-index: 999;
   top: 170px;
