@@ -95,6 +95,7 @@ export default {
         .data(words)
         .enter()
         .append("rect")
+        .on("click", (event, d) => this.wordClicked(d.text))
         .attr("x", (d) => d.x - d.txtwidth*15 -10)
         .attr("y", (d) => d.y - 20)
         .attr("width", (d) => d.txtwidth * 30 + 20)
@@ -108,6 +109,7 @@ export default {
         .data(words)
         .enter()
         .append("text")
+        .on("click", (event, d) => this.wordClicked(d.text))
         .attr("x", (d) => d.x)
         .attr("y", (d) => d.y)
         .style("font-size", (d) => 30 + "px")
@@ -117,6 +119,22 @@ export default {
         .attr("alignment-baseline", "middle")
         .text((d) => d.text);
     },
+
+    async wordClicked(word) {
+    // Send the clicked word to the backend using an API call
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/get_shijing_url",
+        { params: {
+          Word: word
+        } }
+      );
+      console.log("Word clicked:", word); 
+      console.log("Backend response:", response.data);
+    } catch (error) {
+      console.error("Error sending clicked word to the backend:", error);
+    }
+  },
   },
 };
 </script>
