@@ -27,7 +27,7 @@
   </div>
 </template>
         
-    <script>
+<script>
 import navbar from "@/components/navbar.vue";
 import navbar1 from "@/components/nav/navbar1.vue";
 import * as d3 from "d3";
@@ -96,7 +96,7 @@ export default {
         .enter()
         .append("rect")
         .on("click", (event, d) => this.wordClicked(d.text))
-        .attr("x", (d) => d.x - d.txtwidth*15 -10)
+        .attr("x", (d) => d.x - d.txtwidth * 15 - 10)
         .attr("y", (d) => d.y - 20)
         .attr("width", (d) => d.txtwidth * 30 + 20)
         .attr("height", (d) => 40)
@@ -109,7 +109,7 @@ export default {
         .data(words)
         .enter()
         .append("text")
-        .on("click", (event, d) => {console.log(d.text); this.wordClicked(d.text);} )
+        .on("click", (event, d) => this.wordClicked(d.text))
         .attr("x", (d) => d.x)
         .attr("y", (d) => d.y)
         .style("font-size", (d) => 30 + "px")
@@ -140,7 +140,7 @@ export default {
 };
 </script>
         
-    <style>
+<style>
 * {
   /* 内外边距为0 */
   margin: 0;
@@ -151,10 +151,12 @@ export default {
   text-decoration: none;
   list-style: none;
 }
+
 .nav1 {
   position: fixed;
   z-index: 99;
 }
+
 .bg {
   width: 100vw;
   height: 100vh;
@@ -162,6 +164,7 @@ export default {
   top: 0;
   left: 0;
 }
+
 .header {
   position: fixed;
   z-index: 999;
@@ -171,19 +174,19 @@ export default {
   color: #f6f5f5;
   text-align: center;
 }
+
 .btn1 {
   position: fixed;
   top: 125px;
   left: 60px;
-  background-image: linear-gradient(
-    to right,
-    rgba(232, 129, 73, 1),
-    rgba(252, 237, 227, 0.1)
-  );
+  background-image: linear-gradient(to right,
+      rgba(232, 129, 73, 1),
+      rgba(252, 237, 227, 0.1));
   height: 40px;
   width: 50px;
   border: 3px solid #e88149;
 }
+
 .left1 {
   background-color: #f9f5f2;
   height: 8px;
@@ -192,6 +195,7 @@ export default {
   top: 140px;
   left: 67px;
 }
+
 .left2 {
   background-color: #f9f5f2;
   height: 2px;
@@ -200,6 +204,7 @@ export default {
   top: 143px;
   left: 80px;
 }
+
 .shijing a {
   position: fixed;
   z-index: 899;
@@ -210,26 +215,27 @@ export default {
   font-size: 23px;
   color: black;
 }
+
 .btn2 {
   position: fixed;
   z-index: 99;
   top: 175px;
   left: 60px;
-  background-image: linear-gradient(
-    rgba(232, 129, 73, 1),
-    rgba(252, 237, 227, 0.1)
-  );
+  background-image: linear-gradient(rgba(232, 129, 73, 1),
+      rgba(252, 237, 227, 0.1));
   height: 140px;
   width: 50px;
   border-radius: 5px;
   border: 3px solid #e88149;
 }
+
 .mainBox {
   position: fixed;
   top: 100px;
   display: flex;
   flex-direction: row;
 }
+
 .leftBox {
   height: 80vh;
   width: 40vw;
@@ -238,16 +244,17 @@ export default {
   margin-right: 50px;
   margin-left: 150px;
 }
+
 .rightBox {
   height: 600px;
   width: 40vw;
   display: flex;
   background-color: lightgray;
 }
+
 .txt {
   position: fixed;
   top: 730px;
   left: 72vw;
   font-size: 30px;
-}
-</style>
+}</style>
