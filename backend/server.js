@@ -55,7 +55,8 @@ app.get("/get_zhongyuan_cloud", (req, res) => {
 })
 
 app.post("/get_zhongyuan_url", (req, res) => {
-    let target = req.body;
+    let target = req.params;
+    console.log(req.params);
     csvReader.get_jindai_zhongyuan().then((data) => {
         let url = csvReader.zhongyuan_url(data, target);
         res.send(url);
