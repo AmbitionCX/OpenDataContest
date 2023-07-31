@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="txt">词云</div>
+    <div class="txt" @click="getWords()">词云</div>
   </div>
 </template>
         
