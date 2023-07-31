@@ -23,8 +23,7 @@
       </div>
     </div>
 
-    <div class="txt">词云</div>
-
+    <div class="txt" @click="getWords()">词云</div>
   </div>
 </template>
         
@@ -37,7 +36,6 @@ import cloud from "d3-cloud";
 
 export default {
   mounted() {
-    this.drawWordCloud();
     this.getWords();
   },
   data() {
@@ -52,50 +50,38 @@ export default {
   methods: {
     async getWords() {
       return new Promise((resolve, reject) => {
-        const url = "http://localhost:5000/get_shanggu_shijing";
+        const url = "http://localhost:5000/get_shijing_cloud";
         axios
           .get(url)
           .then((res) => {
-            
+            //console.log(res.data);
+            const words = [];
+            for (var i = 0; i < res.data.length; i++) {
+              words.push({ text: res.data[i], txtwidth: res.data[i].length });
+            }
+            console.log(words);
+            this.words = words;
+
+            const svg = d3
+              .select(this.$refs.svg)
+              .attr("width", 500)
+              .attr("height", 500);
+
+            const layout = cloud()
+              .size([500, 500])
+              .words(words)
+              .padding(5)
+              .rotate(() => 0) // 设置旋转角度为0，即不旋转
+              .font("Impact")
+              .fontSize(20)
+              .on("end", this.draw);
+
+            layout.start();
           })
-    })},
-
-    getWords(){
-      // E:\library contest\OpenDataContest\backend\rawData\shijing.json
-      // d3.json('E:/library contest/OpenDataContest/backend/rawData/shijing.json', function (erro, data) {
-      //   console.log(data);
-         const words = [];
-      //   for(var i = 0; i < data.length; i++){
-      //     words.push({ text: data[i].title, txtwidth: data[i].title.length })
-      //   }
-        this.words = words;
-
-
-    //   })
-     },
-
-    drawWordCloud() {
-      const words = [
-        { text: "蒹葭", txtwidth: 20 },
-        { text: "白月光", txtwidth: 30 },
-        { text: "中原音韵", txtwidth: 40 },
-        // 添加更多单词和对应的大小
-      ];
-
-      const svg = d3.select(this.$refs.svg)
-        .attr("width", 500)
-        .attr("height", 500);
-
-      const layout = cloud()
-        .size([500, 500])
-        .words(words)
-        .padding(5)
-        .rotate(() => 0) // 设置旋转角度为0，即不旋转
-        .font("Impact")
-        .fontSize(20)
-        .on("end", this.draw);
-
-      layout.start();
+          .catch(function (err) {
+            reject(err);
+          });
+      });
     },
 
     draw(words) {
@@ -103,34 +89,33 @@ export default {
 
       svg.selectAll("g").remove();
 
-      const g = svg.append("g")
-        .attr("transform", "translate(250,250)");
+      const g = svg.append("g").attr("transform", "translate(250,250)");
 
       g.selectAll("rect")
         .data(words)
         .enter()
         .append("rect")
-          .attr("x", d => d.x - d.txtwidth - 5)
-          .attr("y", d => d.y - 15)
-          .attr("width", d => d.txtwidth*2 + 10)
-          .attr("height", d => 30)
-          .style("fill", "red")
-          .attr('rx',8)
-          .attr('ry',8)
-          .style("opacity", 0.3);
+        .attr("x", (d) => d.x - d.txtwidth*15 -10)
+        .attr("y", (d) => d.y - 20)
+        .attr("width", (d) => d.txtwidth * 30 + 20)
+        .attr("height", (d) => 40)
+        .style("fill", "red")
+        .attr("rx", 8)
+        .attr("ry", 8)
+        .style("opacity", 0.3);
 
       g.selectAll("text")
         .data(words)
         .enter()
         .append("text")
-          .attr("x", d => d.x)
-          .attr("y", d => d.y)
-          .style("font-size", d => 20 + "px")
-          .style("font-family", "Impact")
-          .style("fill", "white")
-          .attr("text-anchor", "middle")
-          .attr("alignment-baseline", "middle")
-          .text(d => d.text);
+        .attr("x", (d) => d.x)
+        .attr("y", (d) => d.y)
+        .style("font-size", (d) => 30 + "px")
+        .style("font-family", "Impact")
+        .style("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle")
+        .text((d) => d.text);
     },
   },
 };
