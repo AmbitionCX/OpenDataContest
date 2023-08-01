@@ -63,7 +63,10 @@ app.post("/get_zhongyuan_url", (req, res) => {
         let url = csvReader.zhongyuan_url(data, target);
 
         res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify({"url": url}));
+        res.json({
+            code: 200,
+            data: url
+        })
     })
 })
 
@@ -71,7 +74,11 @@ app.post("/yunbu_selection", (req, res) => {
     let target = req.body.params.yunbu;
     let selected_yunbu = csvReader.yunbu_selection(target);
 
-    res.send(JSON.stringify(selected_yunbu));
+    res.setHeader('Content-Type', 'application/json');
+    res.json({
+        code: 200,
+        data: selected_yunbu
+    })
 })
 
 app.listen(port, '0.0.0.0', () => {
