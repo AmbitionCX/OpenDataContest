@@ -6,7 +6,6 @@ const shanggu_shijing_path = path.join(__dirname, '/rawData/shanggu-shijing.csv'
 const zhonggu_guangyun_path = path.join(__dirname, '/rawData/zhonggu-guangyun.csv').toString();
 const jindai_zhongyuan_path = path.join(__dirname, '/rawData/jindai-zhongyuan-url.csv').toString();
 const shijing_json_path = path.join(__dirname, '/rawData/shijing.json').toString();
-const word_cloud_number = 20;
 
 const getColumns = (arr, indices) => arr.map(row => indices.map(i => row[i]));
 
@@ -26,6 +25,29 @@ const match_array_item = (arr, target) => {
     return url;
 }
 
+const remove_unrecognized_yunbu = (arr, position) => {
+    arr.forEach((item) => {
+        let index = arr.indexOf(item);
+        if (item[position].length > 1) { arr.splice( index, 1 ); }
+    })
+    return arr;
+}
+
+const yunbu_deduplication = (arr, position) => {
+    let uniques = [];
+    let itemsFound = {};
+
+    for (let i = 0; i < arr.length; i++) {
+        let item = arr[i];
+        let yunbu = item[position];
+        if( itemsFound[yunbu] ) { continue; }
+        uniques.push(item);
+        itemsFound[yunbu] = true;
+    }
+    return uniques;
+}
+
+
 // ------------ shijing ------------
 const get_shanggu_shijing = () => {
     return new Promise((resolve, reject) => {
@@ -34,7 +56,10 @@ const get_shanggu_shijing = () => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(getColumns(rows, [0, 1, 3]));
+                    let data = getColumns(rows, [0, 1, 3]);
+                    let data_removed = remove_unrecognized_yunbu(data, 0);
+                    let data_deduplicated = yunbu_deduplication(data_removed, 0)
+                    resolve(data_deduplicated);
                 }
             });
         })
@@ -48,7 +73,7 @@ const shijing_word_cloud = () => {
                 reject(err);
             } else {
                 let jsonData = JSON.parse(data);
-                let randomJson = get_random_elements(jsonData, word_cloud_number);
+                let randomJson = get_random_elements(jsonData, 30);
                 let titles = [];
                 randomJson.forEach((jsonObj) => {
                     titles.push(jsonObj.title);
@@ -72,7 +97,10 @@ const get_zhonggu_guangyun = () => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(getColumns(rows, [1, 2, 7]));
+                    let data = getColumns(rows, [1, 2, 7]);
+                    let data_removed = remove_unrecognized_yunbu(data, 0);
+                    let data_deduplicated = yunbu_deduplication(data_removed, 0)
+                    resolve(data_deduplicated);
                 }
             })
         })
@@ -80,7 +108,7 @@ const get_zhonggu_guangyun = () => {
 }
 
 const guangyun_word_cloud = (data) => {
-    let random_data = get_random_elements(data, word_cloud_number);
+    let random_data = get_random_elements(data, 40);
     let cloud = [];
     random_data.forEach((obj) => {
         cloud.push(obj[0]);
@@ -102,7 +130,10 @@ const get_jindai_zhongyuan = () => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(getColumns(rows, [1, 2, 7]));
+                    let data = getColumns(rows, [1, 2, 7]);
+                    let data_removed = remove_unrecognized_yunbu(data, 0);
+                    let data_deduplicated = yunbu_deduplication(data_removed, 0)
+                    resolve(data_deduplicated);
                 }
             })
         })
@@ -110,7 +141,7 @@ const get_jindai_zhongyuan = () => {
 }
 
 const zhongyuan_word_cloud = (data) => {
-    let random_data = get_random_elements(data, word_cloud_number);
+    let random_data = get_random_elements(data, 40);
     let cloud = [];
     random_data.forEach((obj) => {
         cloud.push(obj[0]);
