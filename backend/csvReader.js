@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require("fs");
 
 const shanggu_shijing_path = path.join(__dirname, '/rawData/shanggu-shijing.csv').toString();
-const zhonggu_guangyun_path = path.join(__dirname, '/rawData/zhonggu-guangyun.csv').toString();
+const zhonggu_guangyun_path = path.join(__dirname, '/rawData/zhonggu-guangyun-url.csv').toString();
 const jindai_zhongyuan_path = path.join(__dirname, '/rawData/jindai-zhongyuan-url.csv').toString();
 const shijing_json_path = path.join(__dirname, '/rawData/shijing.json').toString();
 
@@ -57,8 +57,8 @@ const get_shanggu_shijing = () => {
                     reject(err);
                 } else {
                     let data = getColumns(rows, [0, 1, 3]);
-                    let data_removed = remove_unrecognized_yunbu(data, 0);
-                    let data_deduplicated = yunbu_deduplication(data_removed, 0)
+                    let data_removed = remove_unrecognized_yunbu(data, 1);
+                    let data_deduplicated = yunbu_deduplication(data_removed, 1)
                     resolve(data_deduplicated);
                 }
             });
@@ -97,7 +97,7 @@ const get_zhonggu_guangyun = () => {
                 if (err) {
                     reject(err);
                 } else {
-                    let data = getColumns(rows, [1, 2, 7]);
+                    let data = getColumns(rows, [1, 2, 7, 11]);
                     let data_removed = remove_unrecognized_yunbu(data, 0);
                     let data_deduplicated = yunbu_deduplication(data_removed, 0)
                     resolve(data_deduplicated);
@@ -116,8 +116,8 @@ const guangyun_word_cloud = (data) => {
     return cloud;
 }
 
-const guangyun_url = (data) => {
-    let url = "http://test.com";
+const guangyun_url = (data, target) => {
+    let url = match_array_item(data, target);
     return url;
 }
 
