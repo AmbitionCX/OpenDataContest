@@ -27,6 +27,8 @@ app.get("/", (req, res) => {
         });
 })
 
+
+// ------------------- shijing -------------------
 app.get("/get_shanggu_shijing", (req, res) => {
     csvReader.get_shanggu_shijing().then(data => res.send(data))
 })
@@ -35,6 +37,8 @@ app.get("/get_shijing_cloud", (req, res) => {
     csvReader.shijing_word_cloud().then(data => res.send(data))
 })
 
+
+// ------------------- guangyun -------------------
 app.get("/get_zhonggu_guangyun", (req, res) => {
     csvReader.get_zhonggu_guangyun().then(data => res.send(data))
 })
@@ -46,6 +50,21 @@ app.get("/get_guangyun_cloud", (req, res) => {
     })
 })
 
+app.post("/get_guangyun_url", (req, res) => {
+    let target = req.body.params.Word;
+    csvReader.get_zhonggu_guangyun().then((data) => {
+        let url = csvReader.guangyun_url(data, target);
+
+        res.setHeader('Content-Type', 'application/json');
+        res.json({
+            code: 200,
+            data: url
+        })
+    })
+})
+
+
+// ------------------- zhongyuan -------------------
 app.get("/get_jindai_zhongyuan", (req, res) => {
     csvReader.get_jindai_zhongyuan().then(data => res.send(data))
 })
