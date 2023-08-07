@@ -37,6 +37,22 @@ app.get("/get_shijing_cloud", (req, res) => {
     csvReader.shijing_word_cloud().then(data => res.send(data))
 })
 
+app.post("/shijing_full_text", (req, res) => {
+    let require_title = request.body.params.title;
+    csvReader.shijing_full_text(require_title).then( (data) => {
+        if (data.length == 0){
+            res.json({
+                code: 400,
+                message: `No content matched with title ${require_title}`
+            })
+        } else {
+            res.json({
+                code: 200,
+                data: data
+            })
+        }
+    })
+})
 
 // ------------------- guangyun -------------------
 app.get("/get_zhonggu_guangyun", (req, res) => {

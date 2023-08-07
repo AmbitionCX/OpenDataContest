@@ -3,9 +3,8 @@ const path = require('path');
 const fs = require("fs");
 
 const shanggu_shijing_path = path.join(__dirname, '/rawData/shanggu-shijing.csv').toString();
-const zhonggu_guangyun_path = path.join(__dirname, '/rawData/zhonggu-guangyun-url.csv').toString();
-const jindai_zhongyuan_path = path.join(__dirname, '/rawData/jindai-zhongyuan-url.csv').toString();
-const shijing_json_path = path.join(__dirname, '/rawData/shijing.json').toString();
+const zhonggu_guangyun_path = path.join(__dirname, '/rawData/zhonggu-guangyun.csv').toString();
+const jindai_zhongyuan_path = path.join(__dirname, '/rawData/jindai-zhongyuan.csv').toString();
 
 const getColumns = (arr, indices) => arr.map(row => indices.map(i => row[i]));
 
@@ -56,9 +55,9 @@ const get_shanggu_shijing = () => {
                 if (err) {
                     reject(err);
                 } else {
-                    let data = getColumns(rows, [0, 1, 3]);
-                    let data_removed = remove_unrecognized_yunbu(data, 1);
-                    let data_deduplicated = yunbu_deduplication(data_removed, 1)
+                    let data = getColumns(rows, [3, 4]);
+                    let data_removed = remove_unrecognized_yunbu(data, 0);
+                    let data_deduplicated = yunbu_deduplication(data_removed, 0)
                     resolve(data_deduplicated);
                 }
             });
@@ -68,25 +67,50 @@ const get_shanggu_shijing = () => {
 
 const shijing_word_cloud = () => {
     return new Promise((resolve, reject) => {
-        fs.readFile(shijing_json_path, 'utf8', function (err, data) {
-            if (err) {
-                reject(err);
-            } else {
-                let jsonData = JSON.parse(data);
-                let randomJson = get_random_elements(jsonData, 30);
-                let titles = [];
-                randomJson.forEach((jsonObj) => {
-                    titles.push(jsonObj.title);
-                })
-                resolve(titles);
-            }
+        fs.readFile(shanggu_shijing_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let title_data = getColumns(rows, [1]);
+                    let title_deduplicated = yunbu_deduplication(title_data, 0)
+                    let randomTitle = get_random_elements(title_deduplicated, 30);
+                    let titles = [];
+                    randomTitle.forEach((item) => {
+                        titles.push(item[0]);
+                    })
+                    resolve(titles);
+                }
+            });
         })
     })
 }
 
-const shijing_url = (data) => {
-    let url = "http://test.com";
-    return url;
+const shijing_full_text = ( title ) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(shanggu_shijing_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let text_data = getColumns(rows, [1, 2]);
+                    let picked_text = text_data.filter( (element) => element[0] == title )
+                    let full_text = [];
+                    let one_line = '';
+                    for (let text of picked_text) {
+                        if ( text[1].slice(-1) == "○" ){
+                            one_line += text[1].slice(0, -1);
+                            full_text.push(one_line);
+                            one_line = '';
+                        } else {
+                            one_line += text[1];
+                        }
+                    }
+                    resolve(full_text);
+                }
+            });
+        })
+    })
 }
 
 // ------------ guangyun ------------
@@ -154,7 +178,7 @@ const zhongyuan_url = (data, target) => {
     return url;
 }
 
-const yunbu_selection = (data) => {
+const yunbu_sankey_data = (yunbu) => {
     return data;
 }
 
@@ -165,8 +189,8 @@ module.exports = {
     shijing_word_cloud,
     guangyun_word_cloud,
     zhongyuan_word_cloud,
-    shijing_url,
     guangyun_url,
     zhongyuan_url,
-    yunbu_selection
+    yunbu_sankey_data,
+    shijing_full_text
 }

@@ -504,7 +504,7 @@ export default {
 }
 
 #bg-wave {
-  height: 100vh;
+  height: 40vh;
   width: 100%;
   background-image: url("@/assets/wave.png");
   background-size: cover;
@@ -540,4 +540,5 @@ export default {
     background-position: 100vw 0vw;
   }
 
-}</style>
+}
+</style>
