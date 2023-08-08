@@ -15,7 +15,7 @@
 
     <div class="mainBox">
       <div class="leftBox">
-        <a>picture</a>
+        <img :src="picUrl" />
       </div>
 
       <div class="rightBox">
@@ -23,7 +23,22 @@
       </div>
     </div>
 
-    <div class="txt" @click="getWords()">词云</div>
+    <div class="ciyun">
+      <img src="@/assets/quanlan/title.svg" class="image" 
+      style="width: 300px; height: 150px; transform: translate(20px, -25px)" />
+      <div class="txt">词云</div>
+    </div>
+
+    <div class="image2">
+      <img src="@/assets/quanlan/arrow.svg" class="image" 
+      style="width: 400px; height: 40px" @click="getWords()"/>
+    </div>
+
+    <div class="image3">
+      <img src="@/assets/quanlan/bottom.svg" class="image" style="width: 800px; height: 600px" />
+    </div>
+
+
   </div>
 </template>
         
@@ -41,6 +56,7 @@ export default {
   data() {
     return {
       words: [],
+      picUrl: "",
     };
   },
   components: {
@@ -57,23 +73,25 @@ export default {
             //console.log(res.data);
             const words = [];
             for (var i = 0; i < res.data.length; i++) {
-              words.push({ text: res.data[i], txtwidth: res.data[i].length });
+              if(res.data[i].length<2){
+                words.push({ text: res.data[i], txtwidth: 1 });
+              };
             }
             console.log(words);
             this.words = words;
 
             const svg = d3
               .select(this.$refs.svg)
-              .attr("width", 500)
-              .attr("height", 500);
+              .attr("width", 700)
+              .attr("height", 800);
 
             const layout = cloud()
-              .size([500, 500])
+              .size([500, 300])
               .words(words)
               .padding(5)
               .rotate(() => 0) // 设置旋转角度为0，即不旋转
               .font("Impact")
-              .fontSize(20)
+              .fontSize(30)
               .on("end", this.draw);
 
             layout.start();
@@ -89,7 +107,7 @@ export default {
 
       svg.selectAll("g").remove();
 
-      const g = svg.append("g").attr("transform", "translate(250,250)");
+      const g = svg.append("g").attr("transform", "translate(350,350)");
 
       g.selectAll("rect")
         .data(words)
@@ -121,21 +139,25 @@ export default {
     },
 
     async wordClicked(word) {
-    // Send the clicked word to the backend using an API call
-    try {
-      console.log(word);
-      const response = await axios.post(
-        "http://localhost:5000/get_zhongyuan_url",
-        { params: {
-          Word: word
-        } }
-      );
-      console.log("Word clicked:", word); 
-      console.log("Backend response:", response.data);
-    } catch (error) {
-      console.error("Error sending clicked word to the backend:", error);
-    }
-  },
+      // Send the clicked word to the backend using an API call
+      try {
+        console.log(word);
+        const response = await axios.post(
+          "http://localhost:5000/get_zhongyuan_url",
+          {
+            params: {
+              Word: word,
+            },
+          }
+        );
+        console.log("Word clicked:", word);
+        console.log("Backend response:", response.data);
+        console.log("Backend response url:", response.data['data']);
+        this.picUrl = response.data['data'];
+      } catch (error) {
+        console.error("Error sending clicked word to the backend:", error);
+      }
+    },
   },
 };
 </script>
@@ -154,7 +176,7 @@ export default {
 
 .nav1 {
   position: fixed;
-  z-index: 99;
+  z-index: 990;
 }
 
 .bg {
@@ -179,9 +201,11 @@ export default {
   position: fixed;
   top: 125px;
   left: 60px;
-  background-image: linear-gradient(to right,
-      rgba(232, 129, 73, 1),
-      rgba(252, 237, 227, 0.1));
+  background-image: linear-gradient(
+    to right,
+    rgba(232, 129, 73, 1),
+    rgba(252, 237, 227, 0.1)
+  );
   height: 40px;
   width: 50px;
   border: 3px solid #e88149;
@@ -221,8 +245,10 @@ export default {
   z-index: 99;
   top: 175px;
   left: 60px;
-  background-image: linear-gradient(rgba(232, 129, 73, 1),
-      rgba(252, 237, 227, 0.1));
+  background-image: linear-gradient(
+    rgba(232, 129, 73, 1),
+    rgba(252, 237, 227, 0.1)
+  );
   height: 140px;
   width: 50px;
   border-radius: 5px;
@@ -238,23 +264,38 @@ export default {
 
 .leftBox {
   height: 80vh;
-  width: 40vw;
+  width: 38vw;
   display: flex;
-  background-color: rosybrown;
-  margin-right: 50px;
+  margin-right: 10px;
   margin-left: 150px;
 }
 
 .rightBox {
   height: 600px;
-  width: 40vw;
+  width: 45vw;
   display: flex;
-  background-color: lightgray;
+  margin-right: 30px;
 }
-
 .txt {
   position: fixed;
-  top: 730px;
-  left: 72vw;
+  top: 125px;
+  left: 74vw;
   font-size: 30px;
-}</style>
+}
+.ciyun {
+  position: relative;
+  top: 100px;
+  left: 350px;
+}
+.image2 {
+  position: relative;
+  top: 250px;
+  left: 630px;
+}
+.image3 {
+  position: relative;
+  z-index: -1;
+  top: 70px;
+  left: 340px;
+}
+</style>

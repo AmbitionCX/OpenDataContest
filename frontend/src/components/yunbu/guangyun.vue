@@ -1,44 +1,123 @@
 <template>
-  <navbar></navbar>
-  <h1>广韵</h1>
+  <div class="bg" style="background-color: #f9f5f2">
+    <div class="nav1">
+      <navbar2></navbar2>
+    </div>
+
+    <div class="header">韵部系联</div>
+
+    <div class="btn1">
+      <div class="left1"></div>
+      <div class="left2"></div>
+    </div>
+
+    <div class="shijing"><a>广韵</a></div>
+    <div class="btn2"></div>
+
+    <div class="circle-container">
+      <span class="yunbu">{{ yb[Index] }}</span>
+      <div
+        class="circle-text"
+        v-for="(char, index) in text"
+        :key="index"
+        :style="getTextStyle(index)"
+      >
+        {{ char }}
+      </div>
+    </div>
+  </div>
 </template>
-      
-  <script>
-  import navbar from '@/components/navbar.vue';
-  import axios from 'axios';
 
-  export default {
+<script>
+import navbar from "@/components/navbar.vue";
+import navbar2 from "@/components/nav/navbar2.vue";
+import * as d3 from "d3";
+import axios from "axios";
+
+export default {
   data() {
-    return {};
+    return {
+      Index: this.$route.params.index,
+      yun: "韵部",
+      yb: [],
+      yunjiao: [],
+      text: [],
+      //text: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', // Add more characters as needed
+      innerRadius: 60, // Radius of the central circle
+      gap: 10, // Gap between each circle
+      anglePerCharacter: 8, // Adjust the angle per character to control the spiral density
+    };
   },
-
-  components:{
-    navbar
+  components: {
+    navbar,
+    navbar2,
   },
-
+  computed: {},
   methods: {
-   getGuangyun() {
-    const url='http://localhost:5000/get_zhonggu_guangyun';
-    axios.get(url).then((res) => {
-      console.log("get");
-      console.log(res);
-      console.log(res.data[0]);
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
-   }
+    async getShijing() {
+      return new Promise((resolve, reject) => {
+        const url = "http://localhost:5000/get_zhonggu_guangyun";
+        axios
+          .get(url)
+          .then((res) => {
+            const yunbu = [];
+            const yunjiao = [];
+            for (let i = 0; i < res.data.length; i++) {
+              if (res.data[i][2] != "" && res.data[i][2] != 0) {
+                yunbu.push(res.data[i][2]);
+              }
+            }
+            const yunbu2 = Array.from(new Set(yunbu));
+
+            for (let i = 0; i < yunbu2.length; i++) {
+              yunjiao[i] = [];
+            }
+
+            for (let i = 0; i < res.data.length; i++) {
+              if (yunbu2.indexOf(res.data[i][2]) != -1) {
+                yunjiao[yunbu2.indexOf(res.data[i][2])].push(res.data[i][0]);
+              }
+            }
+
+            this.yb = yunbu2;
+            this.yunjiao = yunjiao;
+            this.text = yunjiao[this.Index];
+            console.log(this.yunjiao);
+            resolve(yunjiao); // 请求成功后resolve数据
+          })
+          .catch(function (err) {
+            reject(err); // 请求失败后reject错误
+          });
+      });
+    },
+
+    getTextStyle(index) {
+      const totalCharacters = this.text.length;
+      const angle = this.degreesToRadians(index * this.anglePerCharacter);
+      const distanceFromCenter = index / 2 + this.innerRadius;
+      const x = distanceFromCenter * Math.cos(angle);
+      const y = distanceFromCenter * Math.sin(angle);
+      const alpha = 1 - index / totalCharacters; // Calculate the alpha (opacity) value based on the index
+      return {
+        // transform: `translate(${x}px, ${y}px) rotate(${angle}rad)`,
+        position: "absolute",
+        left: `${x + 420}px`,
+        top: `${y + 420}px`,
+        color: `rgba(193, 165, 48, 1)`,
+        //color: `rgba(200, 150, 0, ${alpha})`,
+      };
+    },
+    degreesToRadians(degrees) {
+      return (degrees * Math.PI) / 180;
+    },
   },
-  
   created() {
-    this.getGuangyun();
-  }
+    this.getShijing();
+  },
 };
+</script>
 
-
-  </script>
-      
-  <style>
+<style>
 * {
   /* 内外边距为0 */
   margin: 0;
@@ -48,5 +127,96 @@
   /* 各种列表样式为空 */
   text-decoration: none;
   list-style: none;
+}
+.nav1 {
+  position: fixed;
+  z-index: 99;
+}
+.bg {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.yunbu {
+  position: fixed;
+  top: 360px;
+  left: 380px;
+  font-size: 80px;
+  background-image: linear-gradient(
+    to right,
+    rgba(252, 237, 227, 1),
+    rgba(193, 165, 48, 1)
+  );
+  color: transparent;
+  -webkit-background-clip: text;
+}
+.circle-text {
+  position: absolute;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.header {
+  position: fixed;
+  z-index: 999;
+  top: 5px;
+  left: 47vw;
+  font-size: 30px;
+  color: #f6f5f5;
+  text-align: center;
+}
+.btn1 {
+  position: fixed;
+  top: 125px;
+  left: 60px;
+  background-image: linear-gradient(
+    to right,
+    rgba(193, 165, 48, 1),
+    rgba(252, 237, 227, 0.1)
+  );
+  height: 40px;
+  width: 50px;
+  border: 3px solid #c1a530;
+}
+.left1 {
+  background-color: #f9f5f2;
+  height: 8px;
+  width: 8px;
+  position: fixed;
+  top: 140px;
+  left: 67px;
+}
+.left2 {
+  background-color: #f9f5f2;
+  height: 2px;
+  width: 20px;
+  position: fixed;
+  top: 143px;
+  left: 80px;
+}
+.shijing a {
+  position: fixed;
+  z-index: 899;
+  top: 210px;
+  left: 68px;
+  writing-mode: vertical-lr;
+  letter-spacing: 0.3em;
+  font-size: 23px;
+  color: black;
+}
+.btn2 {
+  position: fixed;
+  z-index: 99;
+  top: 175px;
+  left: 60px;
+  background-image: linear-gradient(
+    rgba(193, 165, 48, 1),
+    rgba(252, 237, 227, 0.1)
+  );
+  height: 140px;
+  width: 50px;
+  border-radius: 5px;
+  border: 3px solid #c1a530;
 }
 </style>

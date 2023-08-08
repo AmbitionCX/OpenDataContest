@@ -41,7 +41,7 @@
       </div>
   
   <div class="yunbu1">
-    <sjyunbu></sjyunbu>
+    <gyyunbu></gyyunbu>
   </div>
         
   
@@ -52,7 +52,7 @@
       <script>
   import navbar from "@/components/navbar.vue";
   import navbar2 from "@/components/nav/navbar2.vue";
-  import sjyunbu from "@/components/yunbu/sjyunbu.vue";
+  import gyyunbu from "@/components/yunbu/gyyunbu.vue";
   import * as d3 from "d3";
   import axios from "axios";
   
@@ -67,7 +67,7 @@
     components: {
       navbar,
       navbar2,
-      sjyunbu,
+      gyyunbu,
     },
     methods: {},
   };

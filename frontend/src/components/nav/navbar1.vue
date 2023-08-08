@@ -1,14 +1,16 @@
 <template>
   <div class="navbar">
-    <div class="navbar-left">
-      <div class="left1"></div>
-      <div class="left2"></div>
-    </div>
+    <a class="navbar-left" href="/quanlan" @click="handleLinkClick">
+      <div :class="{ 'left1': true, 'light-color': isClicked }"></div>
+      <div :class="{ 'left2': true, 'light-color': isClicked }"></div>
+    </a>
+
     <div class="navbar-center"></div>
-    <div class="navbar-right">
-      <div class="right1"></div>
-      <div class="right2"></div>
-    </div>
+
+    <a class="navbar-right" href="/quanlan" @click="handleLinkClick">
+      <div :class="{ 'right1': true, 'light-color': isClicked }"></div>
+      <div :class="{ 'right2': true, 'light-color': isClicked }"></div>
+    </a>
   </div>
 
   <div class="menu1">
@@ -33,12 +35,17 @@ export default {
   data() {
     return {
         showNav: false,
+        isClicked: false,
     };
   },
   components: {
     navbar,
   },
-  methods: {},
+  methods: {
+    handleLinkClick() {
+      this.isClicked = true;
+    },
+  },
 };
 </script>
       
@@ -72,6 +79,12 @@ export default {
   top: 20px;
   left: 10px;
 }
+.left1.light-color {
+  background-color: rgb(173, 173, 173);
+}
+.left2.light-color {
+  background-color: rgb(173, 173, 173);
+}
 .left2 {
   background-color: #f9f5f2;
   height: 2px;
@@ -95,6 +108,12 @@ export default {
   position: fixed;
   top: 23px;
   left: 1350px;
+}
+.right1.light-color {
+  background-color: rgb(173, 173, 173);
+}
+.right2.light-color {
+  background-color: rgb(173, 173, 173);
 }
 .navbar-left {
   background-color: #c6910e;

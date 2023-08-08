@@ -23,7 +23,21 @@
       </div>
     </div>
 
-    <div class="txt" @click="getWords()">词云</div>
+    <div class="ciyun">
+      <img src="@/assets/quanlan/title.svg" class="image" 
+      style="width: 300px; height: 150px; transform: translate(20px, -25px)" />
+      <div class="txt">词云</div>
+    </div>
+
+    <div class="image2">
+      <img src="@/assets/quanlan/arrow.svg" class="image" 
+      style="width: 400px; height: 40px" @click="getWords()"/>
+    </div>
+
+    <div class="image3">
+      <img src="@/assets/quanlan/bottom.svg" class="image" style="width: 800px; height: 600px" />
+    </div>
+
   </div>
 </template>
         
@@ -64,16 +78,16 @@ export default {
 
             const svg = d3
               .select(this.$refs.svg)
-              .attr("width", 500)
-              .attr("height", 500);
+              .attr("width", 700)
+              .attr("height", 800);
 
             const layout = cloud()
-              .size([500, 500])
+              .size([500, 300])
               .words(words)
               .padding(5)
               .rotate(() => 0) // 设置旋转角度为0，即不旋转
               .font("Impact")
-              .fontSize(20)
+              .fontSize(30)  //词云间距
               .on("end", this.draw);
 
             layout.start();
@@ -89,7 +103,7 @@ export default {
 
       svg.selectAll("g").remove();
 
-      const g = svg.append("g").attr("transform", "translate(250,250)");
+      const g = svg.append("g").attr("transform", "translate(300,350)");
 
       g.selectAll("rect")
         .data(words)
@@ -239,14 +253,29 @@ export default {
 }
 .rightBox {
   height: 600px;
-  width: 40vw;
+  width: 45vw;
   display: flex;
-  background-color: lightgray;
 }
 .txt {
   position: fixed;
-  top: 730px;
-  left: 72vw;
+  top: 125px;
+  left: 74vw;
   font-size: 30px;
+}
+.ciyun {
+  position: relative;
+  top: 100px;
+  left: 350px;
+}
+.image2 {
+  position: relative;
+  top: 250px;
+  left: 630px;
+}
+.image3 {
+  position: relative;
+  z-index: -1;
+  top: 70px;
+  left: 340px;
 }
 </style>

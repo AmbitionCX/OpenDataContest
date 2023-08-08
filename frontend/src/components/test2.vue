@@ -1,21 +1,32 @@
 <template>
-  <div class="scrollable-container">
-    <div v-for="(item, index) in yunjiao" :style="getImageStyle(index)">
-      <span class="yb" @click="goToNewPage(index)">{{ yb[index] }}</span>
-      <div
-        v-for="(char, Index) in item"
-        :key="Index"
-        :style="getTextStyle(Index, item, index)"
-      >
-        <span class="yj">{{ char }}</span>
+  <div class="bg">
+    <div class="left-pane">
+      <!-- 左边内容 -->
+      aaaa
+    </div>
+
+    <div class="right-pane">
+      <div class="scrollable-content" ref="scrollable">
+        <!-- 右边内容 -->
+        <div v-for="(item, index) in yunjiao" :style="getImageStyle(index)">
+          <span class="yb" @click="goToNewPage(index)">{{ yb[index] }}</span>
+          <div
+            v-for="(char, Index) in item"
+            :key="Index"
+            :style="getTextStyle(Index, item, index)"
+          >
+            <span class="yj">{{ char }}</span>
+          </div>
+        </div>
+        bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import { mapState, mapMutations } from "vuex";
 
 export default {
   data() {
@@ -40,14 +51,32 @@ export default {
         const row = i % 2;
         const col = Math.round(i / 2);
         const x =
-          col * (this.imageWidth + this.imageSpacingW) - row * 350 + 600;
+          col * (this.imageWidth + this.imageSpacingW - 200) - row * 200 + 600;
         const y = row * (this.imageHeight + this.imageSpacingH) + 300;
         images.push({ x, y });
       }
       return images;
     },
   },
+  mounted() {
+    this.addScrollListener();
+    this.scrollToBottom(); // 在页面加载后滚动到底部
+  },
   methods: {
+    addScrollListener() {
+      const scrollableDiv = this.$refs.scrollable;
+      scrollableDiv.addEventListener("scroll", this.handleScroll);
+    },
+    handleScroll(event) {
+      // 处理滚动事件
+      // 在这里你可以获取滚动位置，并执行需要的操作
+    },
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const scrollableDiv = this.$refs.scrollable;
+        scrollableDiv.scrollTop = scrollableDiv.scrollHeight; // 将滚动条滚动到底部
+      });
+    },
     getImageStyle(index) {
       const image = this.images[index];
       return {
@@ -112,10 +141,10 @@ export default {
       const ry = row * (this.imageHeight - sapceHeight) + 300;
 
       return {
-        transform: `translate(${x}px, ${y}px)`,
-        // position: "absolute",
-        // left: `${rx + x - 610}px`,
-        // top: `${ry + y - 300}px`,
+        // transform: `translate(${x}px, ${y}px) rotate(${90 + angle}deg)`,
+        position: "absolute",
+        left: `${rx + x - 610}px`,
+        top: `${ry + y - 300}px`,
         color: `rgba(193, 165, 48, ${alpha})`,
       };
     },
@@ -129,7 +158,6 @@ export default {
       this.$router.push(`/yunbu/shijing/${index}`);
     },
   },
-
   created() {
     this.getShijing();
   },
@@ -137,6 +165,37 @@ export default {
 </script>
 
 <style>
+.bg {
+  display: flex;
+  flex-direction: row;
+}
+
+.left-pane {
+  /* 左边部分样式 */
+  width: 40vw;
+  height: 100vh;
+  display: flex;
+  background-color: rosybrown;
+  margin-right: 50px;
+  margin-left: 0px;
+
+}
+
+.right-pane {
+  display: flex;
+  flex-grow: 1;
+  width: 2000px;
+  background-color: aquamarine;
+  overflow: auto;
+}
+
+.scrollable-content {
+  width: 100%;
+  margin: 0 auto;
+  /* 右边滚动内容样式 */
+  /* 设置合适的高度或最大高度，以便内容超出后可以出现滚动条 */
+}
+
 .yb {
   position: absolute;
   top: 50%;
@@ -156,12 +215,5 @@ export default {
   transform-origin: center;
   font-size: 12px;
   white-space: nowrap;
-}
-.scrollable-container {
-  white-space: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 10px;
-  width: 100%;
 }
 </style>

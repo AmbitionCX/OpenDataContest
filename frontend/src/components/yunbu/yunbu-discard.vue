@@ -29,45 +29,43 @@
           <a class="txt2" @click="gy=false, sj=true, zy=true" v-show="gy" href="/yunbu2">广韵</a>
           <a class="txt3" @click="zy=false, sj=true, gy=true" v-show="zy" href="/yunbu3">中原音韵</a>
         </div>
-        <div class="circle12" v-if="!sj"></div>
-        <div class="circle1" v-else="!sj"><div class="circle11"></div></div>
+        <div class="circle12" v-if="sj"></div>
+        <div class="circle1" v-else="sj"><div class="circle11"></div></div>
         <div class="circle2" v-if="!gy"><div class="circle21"></div></div>
       <div class="circle22" v-else="!gy"></div>
-      <div class="circle3" v-if="zy"><div class="circle31"></div></div>
-      <div class="circle32" v-else="zy"></div>
+      <div class="circle3" v-if="!zy"><div class="circle31"></div></div>
+      <div class="circle32" v-else="!zy"></div>
   
       <div class="intro2">文字简介:</div>
       <div class="rect3"></div>
       </div>
   
   <div class="yunbu1">
-    <zyyunbu></zyyunbu>
+    <sjyunbu></sjyunbu>
   </div>
         
-  
-  
     </div>
   </template>
           
       <script>
   import navbar from "@/components/navbar.vue";
   import navbar2 from "@/components/nav/navbar2.vue";
-  import zyyunbu from "@/components/yunbu/zyyunbu.vue";
+  import sjyunbu from "@/components/yunbu/sjyunbu.vue";
   import * as d3 from "d3";
   import axios from "axios";
   
   export default {
     data() {
       return {
-          sj: true,
+          sj: false,
           gy: true,
-          zy: false,
+          zy: true,
       };
     },
     components: {
       navbar,
       navbar2,
-      zyyunbu,
+      sjyunbu,
     },
     methods: {},
   };
@@ -93,6 +91,7 @@
     position: fixed;
     top: 0;
     left: 0;
+  
   }
   .header {
     position: fixed;
@@ -335,10 +334,8 @@
     border-radius: 20px;
   }
   .yunbu1{
-    display: flex;
-    /* position: fixed;
-    z-index: 999;
-    top: 170px;
-    left: 470px; */
+    display: block;
+    overflow-x: auto;
+    width: 1000px;
   }
   </style>

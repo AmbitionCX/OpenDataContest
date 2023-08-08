@@ -31,11 +31,15 @@ const routes:RouteRecordRaw[]=[{
     path:'/yunbu3',
     component:()=>import('@/components/yunbu/yunbu3.vue')
 },{
-    path:'/yunbu/guangyun',
-    component:()=>import('@/components/yunbu/guangyun.vue')
+    path:'/yunbu/guangyun/:index',
+    name: 'YunbuGuangyun',
+    component:()=>import('@/components/yunbu/guangyun.vue'),
+    props: true
 },{
-    path:'/yunbu/zhongyuan',
-    component:()=>import('@/components/yunbu/zhongyuan.vue')
+    path:'/yunbu/zhongyuan/:index',
+    name: 'YunbuZhongyuan',
+    component:()=>import('@/components/yunbu/zhongyuan.vue'),
+    props: true
 },{
     path:'/yunbu/shijing/:index',
     name: 'YunbuShijing',

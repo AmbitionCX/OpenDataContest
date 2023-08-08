@@ -5,8 +5,8 @@
     </div>
 
     <ul class="sublist">
-        <li><a href="/shijing">单字查询</a></li>
-        <li><a href="/guangyun">整体分析</a></li>
+        <!-- <li><a href="/shijing">单字查询</a></li> -->
+        <!-- <li><a href="/guangyun">整体分析</a></li> -->
       </ul>
 
       <div class="sui">
@@ -31,7 +31,7 @@
     position: fixed;
     top: 50px;
     left: 780px;
-    height: 180px;
+    height: 120px;
     width: 200px;
     background-color: #9caf31;
     display: flex;
@@ -72,7 +72,7 @@
   }
   .sui{
     position: fixed;
-    top: 240px;
+    top: 180px;
     left: 725px;
   }
   </style>

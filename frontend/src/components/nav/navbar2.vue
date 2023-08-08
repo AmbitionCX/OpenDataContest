@@ -1,14 +1,14 @@
 <template>
     <div class="navbar">
-      <div class="navbar-left">
+      <a class="navbar-left" href="/yunbu">
         <div class="left1"></div>
         <div class="left2"></div>
-      </div>
+      </a>
       <div class="navbar-center"></div>
-      <div class="navbar-right">
+      <a class="navbar-right" href="/yunbu">
         <div class="right1"></div>
         <div class="right2"></div>
-      </div>
+      </a>
     </div>
   
     <div class="menu1">

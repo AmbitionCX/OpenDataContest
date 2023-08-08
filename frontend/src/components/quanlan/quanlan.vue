@@ -9,11 +9,11 @@
     <div class="header">语音全览</div>
 
     <div class="lines">
-      <img src="@/components/quanlan/water.svg" class="image" style="width: 2400px; height: 2000px" />
+      <img src="@/assets/quanlan/water.svg" class="image" style="width: 2400px; height: 2000px" />
     </div>
 
     <div class="line2">
-      <img src="@/components/quanlan/line.svg" class="image" style="width: 1400px; height: 1200px" />
+      <img src="@/assets/quanlan/line.svg" class="image" style="width: 1400px; height: 1200px" />
     </div>
 
     <div class="shijing"><a href="/quanlan/shijing" @mouseenter="sj = true" @mouseleave="sj = false">诗经</a></div>
@@ -31,10 +31,10 @@
       </div>
     </div>
     <div class="pic12" v-if="sj">
-      <img src="@/components/quanlan/pic12.svg" class="image" style="width: 650px; height: 500px" />
+      <img src="@/assets/quanlan/pic12.svg" class="image" style="width: 650px; height: 500px" />
     </div>
     <div class="pic11" v-else="sj">
-      <img src="@/components/quanlan/pic11.svg" class="image" style="width: 650px; height: 500px" />
+      <img src="@/assets/quanlan/pic11.svg" class="image" style="width: 650px; height: 500px" />
     </div>
 
     <div class="guangyun"><a href="/quanlan/guangyun" @mouseenter="gy = true" @mouseleave="gy = false">广韵</a></div>
@@ -52,10 +52,10 @@
       </div>
     </div>
     <div class="pic22" v-if="gy">
-      <img src="@/components/quanlan/pic22.svg" class="image" style="width: 570px; height: 500px" />
+      <img src="@/assets/quanlan/pic22.svg" class="image" style="width: 570px; height: 500px" />
     </div>
     <div class="pic21" v-else="gy">
-      <img src="@/components/quanlan/pic21.svg" class="image" style="width: 570px; height: 500px" />
+      <img src="@/assets/quanlan/pic21.svg" class="image" style="width: 570px; height: 500px" />
     </div>
 
     <div class="zhongyuan"><a href="/quanlan/zhongyuan" @mouseenter="zy = true" @mouseleave="zy = false">中原音韵</a></div>
@@ -73,10 +73,10 @@
       </div>
     </div>
     <div class="pic32" v-if="zy">
-      <img src="@/components/quanlan/pic32.svg" class="image" style="width: 900px; height: 700px" />
+      <img src="@/assets/quanlan/pic32.svg" class="image" style="width: 900px; height: 700px" />
     </div>
     <div class="pic31" v-else="zy">
-      <img src="@/components/quanlan/pic31.svg" class="image" style="width: 900px; height: 700px" />
+      <img src="@/assets/quanlan/pic31.svg" class="image" style="width: 900px; height: 700px" />
     </div>
 
 
