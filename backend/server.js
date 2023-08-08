@@ -39,6 +39,8 @@ app.get("/get_shijing_cloud", (req, res) => {
 
 app.post("/shijing_full_text", (req, res) => {
     let require_title = request.body.params.title;
+    res.setHeader('Content-Type', 'application/json');
+    
     csvReader.shijing_full_text(require_title).then( (data) => {
         if (data.length == 0){
             res.json({
@@ -105,14 +107,15 @@ app.post("/get_zhongyuan_url", (req, res) => {
     })
 })
 
-app.post("/yunbu_selection", (req, res) => {
+app.post("/yunbu_sankey_data", (req, res) => {
     let target = req.body.params.yunbu;
-    let selected_yunbu = csvReader.yunbu_selection(target);
-
     res.setHeader('Content-Type', 'application/json');
-    res.json({
-        code: 200,
-        data: selected_yunbu
+
+    csvReader.yunbu_sankey_data(target).then((sankey_data) => {
+        res.json({
+            code: 200,
+            data: sankey_data
+        })
     })
 })
 

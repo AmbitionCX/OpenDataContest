@@ -5,6 +5,7 @@ const fs = require("fs");
 const shanggu_shijing_path = path.join(__dirname, '/rawData/shanggu-shijing.csv').toString();
 const zhonggu_guangyun_path = path.join(__dirname, '/rawData/zhonggu-guangyun.csv').toString();
 const jindai_zhongyuan_path = path.join(__dirname, '/rawData/jindai-zhongyuan.csv').toString();
+const sankey_path = path.join(__dirname, '/rawData/sankey-data.csv').toString();
 
 const getColumns = (arr, indices) => arr.map(row => indices.map(i => row[i]));
 
@@ -18,7 +19,7 @@ const match_array_item = (arr, target) => {
     let url = 0;
     arr.forEach((obj) => {
         if (obj[0].charCodeAt(0) == target_code) {
-            url = obj[2];
+            url = obj[3];
         }
     })
     return url;
@@ -93,20 +94,40 @@ const shijing_full_text = ( title ) => {
                 if (err) {
                     reject(err);
                 } else {
-                    let text_data = getColumns(rows, [1, 2]);
+                    let text_data = getColumns(rows, [1, 2, 3, 4]);
                     let picked_text = text_data.filter( (element) => element[0] == title )
                     let full_text = [];
-                    let one_line = '';
+                    let one_line_json = {};
+                    let one_line_text = '';
                     for (let text of picked_text) {
-                        if ( text[1].slice(-1) == "○" ){
-                            one_line += text[1].slice(0, -1);
-                            full_text.push(one_line);
-                            one_line = '';
-                        } else {
-                            one_line += text[1];
+                        one_line_text += text[1];
+                        let new_line = false;
+
+                        if ( one_line_text.slice(-1) == "○" ){
+                            one_line_text = one_line_text.slice(0, -1);
+                            new_line = !new_line;
+                        }
+
+                        if ( text[2] != '' ){
+                            one_line_json.text = one_line_text;
+                            one_line_json.yunjiao = text[2];
+                            one_line_json.yunbu = text[3];
+
+                            full_text.push(one_line_json);
+                            one_line_json = {};
+                            one_line_text = '';
+                        }
+
+                        if (new_line){
+                            full_text.push( {
+                                text: '',
+                                yunjiao: '',
+                                yunbu: ''
+                            } );
+                            new_line = !new_line;
                         }
                     }
-                    resolve(full_text);
+                    resolve(full_text.toString());
                 }
             });
         })
@@ -179,8 +200,27 @@ const zhongyuan_url = (data, target) => {
 }
 
 const yunbu_sankey_data = (yunbu) => {
-    return data;
+    return new Promise((resolve, reject) => {
+        fs.readFile(sankey_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let shijing_data = getColumns(rows, [0, 1]);
+                    let guangyun_data = getColumns(rows, [2, 3]);
+                    let zhongyuan_data = getColumns(rows, [4, 5]);
+
+                    let shijing_picked_data = shijing_data.filter( (element) => element[1] == yunbu )
+                    console.log(shijing_picked_data);
+                    // let sankey_data = {nodes, links};
+                    // resolve(sankey_data);
+                }
+            })
+        })
+    })
 }
+
+yunbu_sankey_data("東").then();
 
 module.exports = {
     get_shanggu_shijing,
