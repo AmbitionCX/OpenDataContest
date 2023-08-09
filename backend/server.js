@@ -38,7 +38,7 @@ app.get("/get_shijing_cloud", (req, res) => {
 })
 
 app.post("/shijing_full_text", (req, res) => {
-    let require_title = request.body.params.title;
+    let require_title = req.body.params.title;
     res.setHeader('Content-Type', 'application/json');
     
     csvReader.shijing_full_text(require_title).then( (data) => {

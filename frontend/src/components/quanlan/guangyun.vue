@@ -15,7 +15,7 @@
 
     <div class="mainBox">
       <div class="leftBox">
-        <a>picture</a>
+        <img :src="picUrl" />
       </div>
 
       <div class="rightBox">
@@ -55,6 +55,7 @@ export default {
   data() {
     return {
       words: [],
+      picUrl: "",
     };
   },
   components: {
@@ -146,6 +147,7 @@ export default {
       );
       console.log("Word clicked:", word); 
       console.log("Backend response:", response.data);
+      this.picUrl = response.data['data'];
     } catch (error) {
       console.error("Error sending clicked word to the backend:", error);
     }
@@ -248,7 +250,7 @@ export default {
   height: 80vh;
   width: 40vw;
   display: flex;
-  background-color: rosybrown;
+  /* background-color: rosybrown; */
   margin-right: 50px;
   margin-left: 150px;
 }

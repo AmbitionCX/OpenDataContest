@@ -11,32 +11,16 @@
     <div class="right-pane">
       <div class="scrollable-content" ref="scrollable">
         <!-- 右边内容 -->
-        <!-- <div v-for="(item, index) in yunjiao" :style="getImageStyle(index)">
-          <span class="yb" @click="goToNewPage(index)">{{ yb[index] }}</span>
+        <div v-for="(item, index) in yunjiao" :style="getYunbuStyle(index)">
+          <div class="yb" @click="goToNewPage(index)">{{ yb[index] }}</div>
           <div
             v-for="(char, Index) in item"
             :key="Index"
             :style="getTextStyle(Index, item, index)"
           >
-            <span class="yj">{{ char }}</span>
+            <div class="yj">{{ char }}</div>
           </div>
-        </div> -->
-        <!-- <div v-for="num in 60" :key="num" :style="getNumberStyle(num)">
-          {{ num }}
-        </div> -->
-        <div v-for="(item, index) in yb" :style="getYunbuStyle(index)">
-          <div class="yb">{{ item }}</div>
-          <!-- <span class="yb" @click="goToNewPage(index)">{{ yb[index] }}</span> -->
         </div>
-
-        <!-- <svg ref="svg" v-html="drawWordCloud(Object.values(this.yunjiao[0]))" class="wordcloud-icon"></svg> -->
-        <svg
-          ref="svg"
-          v-html="drawWordCloud(yunjiao[1])"
-          style="transform: translate(-120px, -3300px)"
-          class="yj"
-        ></svg>
-
       </div>
     </div>
   </div>
@@ -85,9 +69,12 @@ export default {
       });
     },
     getYunbuStyle(index) {
-      const x = index * (500) + 700;
+      const x = index * 300 + 700;
       const y = 200;
       return {
+        // positon: "absolute",
+        // left: `${x}px`,
+        // top: `${y}px`,
         transform: `translate(${x - 400}px, ${y}px)`,
       };
     },
@@ -102,8 +89,8 @@ export default {
             const yunbu = [];
             const yunjiao = [];
             for (let i = 0; i < res.data.length; i++) {
-              if (res.data[i][2] != "" && res.data[i][2] != 0) {
-                yunbu.push(res.data[i][2]);
+              if (res.data[i][1] != "" && res.data[i][1] != 0) {
+                yunbu.push(res.data[i][1]);
               }
             }
             const yunbu2 = Array.from(new Set(yunbu));
@@ -113,8 +100,8 @@ export default {
             }
 
             for (let i = 0; i < res.data.length; i++) {
-              if (yunbu2.indexOf(res.data[i][2]) != -1) {
-                yunjiao[yunbu2.indexOf(res.data[i][2])].push(res.data[i][1]);
+              if (yunbu2.indexOf(res.data[i][1]) != -1) {
+                yunjiao[yunbu2.indexOf(res.data[i][1])].push(res.data[i][0]);
               }
             }
 
@@ -128,75 +115,50 @@ export default {
       });
     },
 
-    drawWordCloud(words) {
-      console.log(words);
-      console.log(words ? Object.values(words) : []);
-      words = words ? Object.values(words) : [];
+    getTextStyle(Index, item, index) {
+      const squareX = index * 500;
+      const squareY = -350;
 
-      const svg = d3
-        .select(this.$refs.svg)
-        .attr("width", 1200)
-        .attr("height", 1200);
+      //const x = squareX + Math.cos(this.degreesToRadians(Index * 10))* (Index*2 + 120)  + Math.floor(Math.random() * 61) - 500;
+      //const y = squareY + Math.sin(this.degreesToRadians(Index * 10))* (Index*2 + 120)  + Math.floor(Math.random() * 61) - 500;
+      //const x = squareX + this.generateRandomNumber() + Math.floor(Math.random() * 301) - 100;
+      //const y = squareY - Index * 100 + this.generateRandomNumber() + Math.floor(Math.random() * 301) - 200 - 100;
+      const x = squareX + this.generateRandomPoint().x;
+      const y = squareY + this.generateRandomPoint().y  - Index * 100;
 
-      const layout = cloud()
-        .size([1100, 1100])
-        .words(words.map((word) => ({ text: word, size: 20 }))) // Ignore txtwidth, set size to a constant value
-        .padding(5)
-        .rotate(() => 0) // 设置旋转角度为0，即不旋转
-        .font("Impact")
-        .fontSize(30) // Use the size property for font size
-        .on("end", (words) => this.draw(svg, words)); // Pass the SVG and words to the draw function
-
-      layout.start();
+      return {
+        transform: `translate(${x}px, ${y}px)`,
+      };
     },
 
-    draw(svg, words) {
-      svg.selectAll("g").remove();
+    generateRandomNumber() {
+      var random = Math.random(); // 生成0到1之间的随机小数
 
-      // Define the position and size of the black square
-      const squareX = 550; // Center X position
-      const squareY = 550; // Center Y position
-      const squareSize = 100;
-
-      // Create a group and translate it to the center of the SVG
-      const g = svg
-        .append("g");
-
-      //const g = svg.append("g").attr("transform", "translate(250,250)");
-
-
-      // Calculate the radius of the circular arrangement
-      const radius = squareSize / 2 + 10;
-
-      g.selectAll("text")
-        .data(words)
-        .enter()
-        .append("text")
-        //最后一个括号里，前面是每一圈间距，后面是圆圈内径
-        .attr("x", (d, i) => squareX + Math.cos(this.degreesToRadians(i * 10))* (i*2 + 120)  + Math.floor(Math.random() * 61) - 30)
-        .attr("y", (d, i) => squareY + Math.sin(this.degreesToRadians(i * 10)) * (i*2 + 180) + Math.floor(Math.random() * 61) - 30)
-        //添加背景图片start
-    //     .append("xhtml:div")
-    // .style("width", "100%")
-    // .style("height", "100%")
-    // .style("background-image", `url(./assets/yunbu/yunjiao.svg)`) // Replace with your background image URL
-    // .style("background-size", "cover")
-    // .style("display", "flex")
-    // .style("align-items", "center")
-    // .style("justify-content", "center")
-    // .append("xhtml:div")
-        //添加背景图片end
-        .style("font-size", (d) => d.size + "px") // Use the size property for font size
-        .style("font-family", "Impact")
-        .style("fill", "black")
-        .attr("text-anchor", "middle")
-        .attr("alignment-baseline", "middle")
-        .text((d) => d.text); // Display the text property of each word
+      if (random < 0.5) {
+        // 50%的概率落在0-200范围内
+        return Math.floor(random * 201) - 200; // 生成0-200的随机整数
+      } else {
+        // 50%的概率落在200-500范围内
+        return Math.floor(100 + random * 301); // 生成200-400的随机整数
+      }
     },
 
-    degreesToRadians(degrees) {
-      return (degrees * Math.PI) / 180;
-    },
+    generateRandomPoint() {
+  var centerX = 200; // 方块的中心x坐标
+  var centerY = 200; // 方块的中心y坐标
+  var halfSquareSize = 400; // 方块边长的一半
+  var emptySize = 100; // 空白区域的边长
+
+  var x, y;
+
+  // 生成随机点，直到它不在空白区域内
+  do {
+    x = Math.random() * (2 * halfSquareSize) - halfSquareSize + centerX;
+    y = Math.random() * (2 * halfSquareSize) - halfSquareSize + centerY;
+  } while (Math.abs(x - centerX) < emptySize / 2 && Math.abs(y - centerY) < emptySize / 2);
+
+  return { x: x, y: y };
+},
 
     // 点击图片时导航到新页面，并传递index作为参数
     goToNewPage(index) {
@@ -230,7 +192,7 @@ export default {
   display: flex;
   flex-grow: 1;
   width: 2000px;
-  background-color: rgb(143, 155, 151);
+  /* background-color: rgb(143, 155, 151); */
   overflow: auto;
 }
 .test {
@@ -255,9 +217,18 @@ export default {
   background-position: center -40px; /* Move the image 40px upward */
   background-repeat: no-repeat;
   color: black;
+  position: relative;
+  z-index: 999;
 }
 .yj {
-
+  width: 50px;
+  height: 100px;
+  font-size: 20px;
+  color: black;
+  background-image: url("@/assets/yunbu/yunjiao.svg");
+  background-size: contain;
+  background-position: 8px 0; 
+  background-repeat: no-repeat;
 }
 /* 左边内容 */
 .nav1 {

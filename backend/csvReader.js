@@ -127,7 +127,7 @@ const shijing_full_text = ( title ) => {
                             new_line = !new_line;
                         }
                     }
-                    resolve(full_text.toString());
+                    resolve(full_text);
                 }
             });
         })

@@ -15,7 +15,18 @@
 
     <div class="mainBox">
       <div class="leftBox">
-        <a>picture</a>
+        <ul>
+            <li v-for="item in content" :key="item.text">
+              <span v-for="(char, charIndex) in item.text">
+                <span :class="{ 'red-text': char === item.yunjiao }"
+                @mouseenter="showTooltip = true"
+                @mouseleave="showTooltip = false">
+                  {{ char  }}
+                </span>
+                <span class="tooltip-text" v-if="showTooltip">{{ item.yunbu }}</span>
+              </span>
+            </li>
+        </ul>
       </div>
 
       <div class="rightBox">
@@ -51,10 +62,13 @@ import cloud from "d3-cloud";
 export default {
   mounted() {
     this.getWords();
+    //this.getContent();
   },
   data() {
     return {
       words: [],
+      content: [],
+      showTooltip: false,
     };
   },
   components: {
@@ -109,7 +123,7 @@ export default {
         .data(words)
         .enter()
         .append("rect")
-        .on("click", (event, d) => this.wordClicked(d.text))
+        .on("click", (event, d) => {this.getContent(d.text)})
         .attr("x", (d) => d.x - d.txtwidth*15 -10)
         .attr("y", (d) => d.y - 20)
         .attr("width", (d) => d.txtwidth * 30 + 20)
@@ -123,7 +137,7 @@ export default {
         .data(words)
         .enter()
         .append("text")
-        .on("click", (event, d) => this.wordClicked(d.text))
+        .on("click", (event, d) => {this.getContent(d.text)})
         .attr("x", (d) => d.x)
         .attr("y", (d) => d.y)
         .style("font-size", (d) => 30 + "px")
@@ -134,21 +148,22 @@ export default {
         .text((d) => d.text);
     },
 
-    async wordClicked(word) {
-    // Send the clicked word to the backend using an API call
+  async getContent(title) {
     try {
       const response = await axios.post(
-        "http://localhost:5000/get_shijing_url",
+        "http://localhost:5000/shijing_full_text",
         { params: {
-          Word: word
+          "title": title
         } }
       );
-      console.log("Word clicked:", word); 
-      console.log("Backend response:", response.data);
+      console.log("Backend response:", response.data.data);
+      this.content = response.data.data;
+
     } catch (error) {
       console.error("Error sending clicked word to the backend:", error);
     }
-  },
+    },
+    
   },
 };
 </script>
@@ -247,10 +262,33 @@ export default {
   height: 80vh;
   width: 40vw;
   display: flex;
-  background-color: rosybrown;
+  background-color: rgb(190, 187, 187);
   margin-right: 50px;
   margin-left: 150px;
 }
+.red-text {
+            color: red;
+            display: inline;
+            cursor: pointer;
+        }
+        .tooltip {
+            position: relative;
+            display: inline;
+        }
+        .tooltip-text {
+            position: absolute;
+            top: 200px;
+            left: 200px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            display: none;
+        }
+        .tooltip:hover .tooltip-text {
+            display: block;
+        }
+
 .rightBox {
   height: 600px;
   width: 45vw;
