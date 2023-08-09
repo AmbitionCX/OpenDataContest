@@ -28,7 +28,7 @@ const match_array_item = (arr, target) => {
 const remove_unrecognized_yunbu = (arr, position) => {
     arr.forEach((item) => {
         let index = arr.indexOf(item);
-        if (item[position].length > 1) { arr.splice( index, 1 ); }
+        if (item[position].length > 1) { arr.splice(index, 1); }
     })
     return arr;
 }
@@ -40,7 +40,7 @@ const yunbu_deduplication = (arr, position) => {
     for (let i = 0; i < arr.length; i++) {
         let item = arr[i];
         let yunbu = item[position];
-        if( itemsFound[yunbu] ) { continue; }
+        if (itemsFound[yunbu]) { continue; }
         uniques.push(item);
         itemsFound[yunbu] = true;
     }
@@ -87,7 +87,7 @@ const shijing_word_cloud = () => {
     })
 }
 
-const shijing_full_text = ( title ) => {
+const shijing_full_text = (title) => {
     return new Promise((resolve, reject) => {
         fs.readFile(shanggu_shijing_path, function (err, fileData) {
             parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
@@ -95,7 +95,7 @@ const shijing_full_text = ( title ) => {
                     reject(err);
                 } else {
                     let text_data = getColumns(rows, [1, 2, 3, 4]);
-                    let picked_text = text_data.filter( (element) => element[0] == title )
+                    let picked_text = text_data.filter((element) => element[0] == title)
                     let full_text = [];
                     let one_line_json = {};
                     let one_line_text = '';
@@ -103,12 +103,12 @@ const shijing_full_text = ( title ) => {
                         one_line_text += text[1];
                         let new_line = false;
 
-                        if ( one_line_text.slice(-1) == "○" ){
+                        if (one_line_text.slice(-1) == "○") {
                             one_line_text = one_line_text.slice(0, -1);
                             new_line = !new_line;
                         }
 
-                        if ( text[2] != '' ){
+                        if (text[2] != '') {
                             one_line_json.text = one_line_text;
                             one_line_json.yunjiao = text[2];
                             one_line_json.yunbu = text[3];
@@ -118,12 +118,12 @@ const shijing_full_text = ( title ) => {
                             one_line_text = '';
                         }
 
-                        if (new_line){
-                            full_text.push( {
+                        if (new_line) {
+                            full_text.push({
                                 text: '',
                                 yunjiao: '',
                                 yunbu: ''
-                            } );
+                            });
                             new_line = !new_line;
                         }
                     }
@@ -210,17 +210,115 @@ const yunbu_sankey_data = (yunbu) => {
                     let guangyun_data = getColumns(rows, [2, 3]);
                     let zhongyuan_data = getColumns(rows, [4, 5]);
 
-                    let shijing_picked_data = shijing_data.filter( (element) => element[1] == yunbu )
-                    console.log(shijing_picked_data);
-                    // let sankey_data = {nodes, links};
-                    // resolve(sankey_data);
+                    let layer_1 = [];
+                    let layer_2 = [];
+                    let layer_3 = [];
+                    let nodes = { layer_1, layer_2, layer_3 };
+
+                    let link_1 = [];
+                    let link_2 = [];
+                    let links = { link_1, link_2 };
+
+                    let shijing_yunbu = new Set();
+                    let guangyun_yunbu = new Set();
+                    let zhongyuan_yunbu = new Set();
+
+                    // shijing -> guangyun
+                    let shijing_picked_data = shijing_data.filter((element) => element[1] == yunbu);
+                    for (let shijing_item of shijing_picked_data) {
+
+                        if (!shijing_yunbu.has(shijing_item[1])) {
+                            shijing_yunbu.add(shijing_item[1]);
+
+                            let shijing_node = {};
+                            shijing_node.text = shijing_item[1];
+                            shijing_node.count = 1;
+                            layer_1.push(shijing_node);
+                        } else {
+                            layer_1.find((element) => element.text == shijing_item[1]).count++;
+                        }
+
+                        let guangyun_matched_data = guangyun_data.find((element) => element[0] == shijing_item[0]);
+                        if (guangyun_matched_data != null) {
+                            if (!guangyun_yunbu.has(guangyun_matched_data[1])) {
+                                guangyun_yunbu.add(guangyun_matched_data[1]);
+
+                                let guangyun_node = {};
+                                guangyun_node.text = guangyun_matched_data[1];
+                                guangyun_node.count = 1;
+                                layer_2.push(guangyun_node);
+
+
+                            } else {
+                                layer_2.find((element) => element.text == guangyun_matched_data[1]).count++;
+                            }
+
+                            let find_link = link_1.find((element) => (element.source == shijing_item[1]) && (element.target == guangyun_matched_data[1]));
+                            if (find_link == null) {
+
+                                let link = {};
+                                link.source = shijing_item[1];
+                                link.target = guangyun_matched_data[1];
+                                link.value = 1;
+                                link_1.push(link);
+
+                            } else {
+                                find_link.value++;
+                            }
+                        }
+
+
+                    }
+
+                    // guangyun -> zhongyuan
+                    guangyun_yunbu.forEach((each_yunbu) => {
+
+                        let guangyun_picked_data = guangyun_data.filter((element) => element[1] == each_yunbu);
+                        for (let guangyun_item of guangyun_picked_data) {
+                            let zhongyuan_matched_data = zhongyuan_data.find((element) => element[0] == guangyun_item[0]);
+
+                            if (zhongyuan_matched_data != null) {
+                                if (!zhongyuan_yunbu.has(zhongyuan_matched_data[1])) {
+                                    zhongyuan_yunbu.add(zhongyuan_matched_data[1]);
+
+                                    let zhongyuan_node = {};
+                                    zhongyuan_node.text = zhongyuan_matched_data[1];
+                                    zhongyuan_node.count = 1;
+                                    layer_3.push(zhongyuan_node);
+
+                                    let link = {};
+                                    link.source = guangyun_item[1];
+                                    link.target = zhongyuan_matched_data[1];
+                                    link.value = 1;
+                                    link_2.push(link);
+                                } else {
+                                    layer_3.find((element) => element.text == zhongyuan_matched_data[1]).count++;
+                                }
+
+                                let find_link = link_2.find((element) => (element.source == guangyun_item[1]) && (element.target == zhongyuan_matched_data[1]));
+                                if(find_link == null){
+
+                                    let link = {};
+                                    link.source = guangyun_item[1];
+                                    link.target = zhongyuan_matched_data[1];
+                                    link.value = 1;
+                                    link_2.push(link);
+
+                                } else {
+                                    find_link.value++;
+                                }
+
+                            }
+                        }
+                    })
+
+                    let sankey_data = { nodes, links };
+                    resolve(sankey_data);
                 }
             })
         })
     })
 }
-
-yunbu_sankey_data("東").then();
 
 module.exports = {
     get_shanggu_shijing,
