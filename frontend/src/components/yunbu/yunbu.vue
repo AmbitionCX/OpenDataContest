@@ -6,6 +6,41 @@
         <navbar2></navbar2>
       </div>
       <div class="header">韵部系联</div>
+
+      <div class="intro">
+        <div class="intro1">文字简介:</div>
+        <div class="rect1"></div>
+        <div class="pic">
+          <img
+            src="@/components/yunbu/shan.svg"
+            class="image"
+            style="width: 380px; height: 300px"
+          />
+        </div>
+        <div class="shijing1" v-show="!sj"></div>
+        <div class="shijing2" v-show="!gy"></div>
+        <div class="shijing3" v-show="!zy"></div>
+  
+          <div class="shijing" v-show="!sj">诗经</div>
+          <div class="shijing" v-show="!gy">广韵</div>
+          <div class="zyyy" v-show="!zy">中原音韵</div>
+  
+        <div class="rect2"></div>
+        <div class="txt">
+          <a class="txt1" @click="sj=false, gy=true, zy=true" v-show="sj" href="/yunbu">诗经</a>
+          <a class="txt2" @click="gy=false, sj=true, zy=true" v-show="gy" href="/yunbu2">广韵</a>
+          <a class="txt3" @click="zy=false, sj=true, gy=true" v-show="zy" href="/yunbu3">中原音韵</a>
+        </div>
+        <div class="circle12" v-if="sj"></div>
+        <div class="circle1" v-else="sj"><div class="circle11"></div></div>
+        <div class="circle2" v-if="!gy"><div class="circle21"></div></div>
+      <div class="circle22" v-else="!gy"></div>
+      <div class="circle3" v-if="!zy"><div class="circle31"></div></div>
+      <div class="circle32" v-else="!zy"></div>
+  
+      <div class="intro2">文字简介:</div>
+      <div class="rect3"></div>
+      </div>
     </div>
 
     <div class="right-pane">

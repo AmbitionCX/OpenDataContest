@@ -15,17 +15,43 @@
 
     <div class="mainBox">
       <div class="leftBox">
-        <ul>
-            <li v-for="item in content" :key="item.text">
-              <span v-for="(char, charIndex) in item.text">
-                <span :class="{ 'red-text': char === item.yunjiao }"
-                @mouseenter="showTooltip = true"
-                @mouseleave="showTooltip = false">
-                  {{ char  }}
+        <ul class="content">
+          <span v-for="(item, index) in content"  class="tooltip">
+            <span v-if="item.text === ''" style="color: transparent;">none<br /></span>
+            <span
+            v-else-if="
+                item.text.endsWith('。') ||
+                item.text.endsWith('！') ||
+                item.text.endsWith('？') ||
+                item.text.endsWith('：')
+              "
+            >
+              <template v-for="(char, charIndex) in item.text">
+                <span
+                  :class="{ 'red-text': char === item.yunjiao }"
+                  @mouseenter="showTooltip = true"
+                  @mouseleave="showTooltip = false"
+                >
+                  {{ char }}
                 </span>
-                <span class="tooltip-text" v-if="showTooltip">{{ item.yunbu }}</span>
-              </span>
-            </li>
+                <span class="tooltip-text" v-if="showTooltip">韵部：{{ item.yunbu }}</span>
+              </template>
+              <br
+            /></span>
+
+            <span v-else
+              ><template v-for="(char, charIndex) in item.text"  class="tooltip">
+                <span
+                  :class="{ 'red-text': char === item.yunjiao }"
+                  @mouseenter="showTooltip = true"
+                  @mouseleave="showTooltip = false"
+                >
+                  {{ char }}
+                </span>
+                <span class="tooltip-text" v-if="showTooltip">韵部：{{ item.yunbu }}</span>
+              </template></span
+            >
+          </span>
         </ul>
       </div>
 
@@ -35,20 +61,30 @@
     </div>
 
     <div class="ciyun">
-      <img src="@/assets/quanlan/title.svg" class="image" 
-      style="width: 300px; height: 150px; transform: translate(20px, -25px)" />
+      <img
+        src="@/assets/quanlan/title.svg"
+        class="image"
+        style="width: 300px; height: 150px; transform: translate(20px, -25px)"
+      />
       <div class="txt">词云</div>
     </div>
 
     <div class="image2">
-      <img src="@/assets/quanlan/arrow.svg" class="image" 
-      style="width: 400px; height: 40px" @click="getWords()"/>
+      <img
+        src="@/assets/quanlan/arrow.svg"
+        class="image"
+        style="width: 400px; height: 40px"
+        @click="getWords()"
+      />
     </div>
 
     <div class="image3">
-      <img src="@/assets/quanlan/bottom.svg" class="image" style="width: 800px; height: 600px" />
+      <img
+        src="@/assets/quanlan/bottom.svg"
+        class="image"
+        style="width: 800px; height: 600px"
+      />
     </div>
-
   </div>
 </template>
         
@@ -69,6 +105,19 @@ export default {
       words: [],
       content: [],
       showTooltip: false,
+      testData: [
+        { text: "aaaa，" },
+        { text: "bbbb，" },
+        { text: "cccc。" },
+        { text: "cccc，" },
+        { text: "cccc，" },
+        { text: "cccc，" },
+        { text: "cccc？" },
+        { text: "cccc，" },
+        { text: "cccc！" },
+        { text: "cccc。" },
+        // ... other data items
+      ],
     };
   },
   components: {
@@ -101,7 +150,7 @@ export default {
               .padding(5)
               .rotate(() => 0) // 设置旋转角度为0，即不旋转
               .font("Impact")
-              .fontSize(30)  //词云间距
+              .fontSize(30) //词云间距
               .on("end", this.draw);
 
             layout.start();
@@ -123,8 +172,10 @@ export default {
         .data(words)
         .enter()
         .append("rect")
-        .on("click", (event, d) => {this.getContent(d.text)})
-        .attr("x", (d) => d.x - d.txtwidth*15 -10)
+        .on("click", (event, d) => {
+          this.getContent(d.text);
+        })
+        .attr("x", (d) => d.x - d.txtwidth * 15 - 10)
         .attr("y", (d) => d.y - 20)
         .attr("width", (d) => d.txtwidth * 30 + 20)
         .attr("height", (d) => 40)
@@ -137,7 +188,9 @@ export default {
         .data(words)
         .enter()
         .append("text")
-        .on("click", (event, d) => {this.getContent(d.text)})
+        .on("click", (event, d) => {
+          this.getContent(d.text);
+        })
         .attr("x", (d) => d.x)
         .attr("y", (d) => d.y)
         .style("font-size", (d) => 30 + "px")
@@ -148,22 +201,22 @@ export default {
         .text((d) => d.text);
     },
 
-  async getContent(title) {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/shijing_full_text",
-        { params: {
-          "title": title
-        } }
-      );
-      console.log("Backend response:", response.data.data);
-      this.content = response.data.data;
-
-    } catch (error) {
-      console.error("Error sending clicked word to the backend:", error);
-    }
+    async getContent(title) {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/shijing_full_text",
+          {
+            params: {
+              title: title,
+            },
+          }
+        );
+        console.log("Backend response:", response.data.data);
+        this.content = response.data.data;
+      } catch (error) {
+        console.error("Error sending clicked word to the backend:", error);
+      }
     },
-    
   },
 };
 </script>
@@ -262,32 +315,44 @@ export default {
   height: 80vh;
   width: 40vw;
   display: flex;
-  background-color: rgb(190, 187, 187);
+  /* background-color: rgb(190, 187, 187); */
   margin-right: 50px;
   margin-left: 150px;
 }
+.content {
+  transform: translate(100px, 20px);
+  font-size: 20px;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+}
 .red-text {
-            color: red;
-            display: inline;
-            cursor: pointer;
-        }
-        .tooltip {
-            position: relative;
-            display: inline;
-        }
-        .tooltip-text {
-            position: absolute;
-            top: 200px;
-            left: 200px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 5px;
-            border-radius: 5px;
-            display: none;
-        }
-        .tooltip:hover .tooltip-text {
-            display: block;
-        }
+  color: red;
+  display: inline;
+  cursor: pointer;
+}
+.tooltip {
+  position: relative;
+  display: inline;
+}
+.tooltip-text {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  display: none;
+}
+.tooltip:hover .tooltip-text {
+  display: block;
+}
+.same-line {
+  display: inline-block;
+  margin-right: 10px; /* Adjust spacing as needed */
+}
 
 .rightBox {
   height: 600px;
