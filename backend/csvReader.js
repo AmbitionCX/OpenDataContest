@@ -307,15 +307,12 @@ const yunbu_sankey_data = (yunbu) => {
                     })
 
                     let sankey_data = { nodes, links };
-                    console.log( sankey_data );
-                    //resolve(sankey_data);
+                    resolve(sankey_data);
                 }
             })
         })
     })
 }
-
-yunbu_sankey_data("東").then();
 
 module.exports = {
     get_shanggu_shijing,
