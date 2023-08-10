@@ -210,14 +210,8 @@ const yunbu_sankey_data = (yunbu) => {
                     let guangyun_data = getColumns(rows, [2, 3]);
                     let zhongyuan_data = getColumns(rows, [4, 5]);
 
-                    let layer_1 = [];
-                    let layer_2 = [];
-                    let layer_3 = [];
-                    let nodes = { layer_1, layer_2, layer_3 };
-
-                    let link_1 = [];
-                    let link_2 = [];
-                    let links = { link_1, link_2 };
+                    let nodes = [];
+                    let links = [];
 
                     let shijing_yunbu = new Set();
                     let guangyun_yunbu = new Set();
@@ -231,11 +225,11 @@ const yunbu_sankey_data = (yunbu) => {
                             shijing_yunbu.add(shijing_item[1]);
 
                             let shijing_node = {};
-                            shijing_node.text = shijing_item[1];
-                            shijing_node.count = 1;
-                            layer_1.push(shijing_node);
+                            shijing_node.name = shijing_item[1];
+                            // shijing_node.count = 1;
+                            nodes.push(shijing_node);
                         } else {
-                            layer_1.find((element) => element.text == shijing_item[1]).count++;
+                            // nodes.find((element) => element.name == shijing_item[1]).count++;
                         }
 
                         let guangyun_matched_data = guangyun_data.find((element) => element[0] == shijing_item[0]);
@@ -244,23 +238,23 @@ const yunbu_sankey_data = (yunbu) => {
                                 guangyun_yunbu.add(guangyun_matched_data[1]);
 
                                 let guangyun_node = {};
-                                guangyun_node.text = guangyun_matched_data[1];
-                                guangyun_node.count = 1;
-                                layer_2.push(guangyun_node);
+                                guangyun_node.name = guangyun_matched_data[1];
+                                // guangyun_node.count = 1;
+                                nodes.push(guangyun_node);
 
 
                             } else {
-                                layer_2.find((element) => element.text == guangyun_matched_data[1]).count++;
+                                // nodes.find((element) => element.name == guangyun_matched_data[1]).count++;
                             }
 
-                            let find_link = link_1.find((element) => (element.source == shijing_item[1]) && (element.target == guangyun_matched_data[1]));
+                            let find_link = links.find((element) => (element.source == shijing_item[1]) && (element.target == guangyun_matched_data[1]));
                             if (find_link == null) {
 
                                 let link = {};
                                 link.source = shijing_item[1];
                                 link.target = guangyun_matched_data[1];
                                 link.value = 1;
-                                link_1.push(link);
+                                links.push(link);
 
                             } else {
                                 find_link.value++;
@@ -282,27 +276,27 @@ const yunbu_sankey_data = (yunbu) => {
                                     zhongyuan_yunbu.add(zhongyuan_matched_data[1]);
 
                                     let zhongyuan_node = {};
-                                    zhongyuan_node.text = zhongyuan_matched_data[1];
-                                    zhongyuan_node.count = 1;
-                                    layer_3.push(zhongyuan_node);
+                                    zhongyuan_node.name = zhongyuan_matched_data[1];
+                                    // zhongyuan_node.count = 1;
+                                    nodes.push(zhongyuan_node);
 
                                     let link = {};
                                     link.source = guangyun_item[1];
                                     link.target = zhongyuan_matched_data[1];
                                     link.value = 1;
-                                    link_2.push(link);
+                                    links.push(link);
                                 } else {
-                                    layer_3.find((element) => element.text == zhongyuan_matched_data[1]).count++;
+                                    // nodes.find((element) => element.name == zhongyuan_matched_data[1]).count++;
                                 }
 
-                                let find_link = link_2.find((element) => (element.source == guangyun_item[1]) && (element.target == zhongyuan_matched_data[1]));
+                                let find_link = links.find((element) => (element.source == guangyun_item[1]) && (element.target == zhongyuan_matched_data[1]));
                                 if(find_link == null){
 
                                     let link = {};
                                     link.source = guangyun_item[1];
                                     link.target = zhongyuan_matched_data[1];
                                     link.value = 1;
-                                    link_2.push(link);
+                                    links.push(link);
 
                                 } else {
                                     find_link.value++;
@@ -313,12 +307,15 @@ const yunbu_sankey_data = (yunbu) => {
                     })
 
                     let sankey_data = { nodes, links };
-                    resolve(sankey_data);
+                    console.log( sankey_data );
+                    //resolve(sankey_data);
                 }
             })
         })
     })
 }
+
+yunbu_sankey_data("東").then();
 
 module.exports = {
     get_shanggu_shijing,
