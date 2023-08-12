@@ -119,6 +119,18 @@ app.post("/yunbu_sankey_data", (req, res) => {
     })
 })
 
+app.post("/get_yunjiaozi", (req, res) => {
+    let link = req.body.params.yunbu;
+    res.setHeader('Content-Type', 'application/json');
+
+    csvReader.get_yunjiaozi(link).then((yunjiaozi) => {
+        res.json({
+            code: 200,
+            data: yunjiaozi
+        })
+    })
+})
+
 app.listen(port, '0.0.0.0', () => {
     console.log(`App listening on port ${port}...`);
 });

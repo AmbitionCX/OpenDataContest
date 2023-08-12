@@ -290,7 +290,7 @@ const yunbu_sankey_data = (yunbu) => {
                                 }
 
                                 let find_link = links.find((element) => (element.source == guangyun_item[1]) && (element.target == zhongyuan_matched_data[1]));
-                                if(find_link == null){
+                                if (find_link == null) {
 
                                     let link = {};
                                     link.source = guangyun_item[1];
@@ -314,6 +314,35 @@ const yunbu_sankey_data = (yunbu) => {
     })
 }
 
+const get_yunjiaozi = (link) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(sankey_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let find_lines;
+                    let yunjiaozi = [];
+
+                    if (link.source.slice(0, 2) == "上古") {
+                        find_lines = rows.filter((element) => (element[1] == link.source) && (element[3] == link.target));
+                        for (item of find_lines) {
+                            yunjiaozi.push(item[0])
+                        }
+                    }
+                    if (link.source.slice(0, 2) == "中古") {
+                        find_lines = rows.filter((element) => (element[3] == link.source) && (element[5] == link.target));
+                        for (item of find_lines) {
+                            yunjiaozi.push(item[2])
+                        }
+                    }
+                    resolve(yunjiaozi);
+                }
+            })
+        })
+    })
+}
+
 module.exports = {
     get_shanggu_shijing,
     get_zhonggu_guangyun,
@@ -324,5 +353,6 @@ module.exports = {
     guangyun_url,
     zhongyuan_url,
     yunbu_sankey_data,
-    shijing_full_text
+    shijing_full_text,
+    get_yunjiaozi
 }
