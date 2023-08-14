@@ -260,8 +260,6 @@ const yunbu_sankey_data = (yunbu) => {
                                 find_link.value++;
                             }
                         }
-
-
                     }
 
                     // guangyun -> zhongyuan
@@ -321,22 +319,32 @@ const get_yunjiaozi = (link) => {
                 if (err) {
                     reject(err);
                 } else {
-                    let find_lines;
-                    let yunjiaozi = [];
+                    let shijing_data = getColumns(rows, [0, 1]);
+                    let guangyun_data = getColumns(rows, [2, 3]);
+                    let zhongyuan_data = getColumns(rows, [4, 5]);
+
+                    let find_sources;
+                    let yunjiaozi = new Set();
 
                     if (link.source.slice(0, 2) == "上古") {
-                        find_lines = rows.filter((element) => (element[1] == link.source) && (element[3] == link.target));
-                        for (item of find_lines) {
-                            yunjiaozi.push(item[0])
+                        find_sources = shijing_data.filter((element) => element[1] == link.source);
+                        for (item of find_sources) {
+                            let find_target = guangyun_data.find((element) => (element[0] == item[0]) && (element[1] == link.target))
+                            if (find_target != null) {
+                                yunjiaozi.add(find_target[0]);
+                            }
                         }
                     }
                     if (link.source.slice(0, 2) == "中古") {
-                        find_lines = rows.filter((element) => (element[3] == link.source) && (element[5] == link.target));
-                        for (item of find_lines) {
-                            yunjiaozi.push(item[2])
+                        find_sources = guangyun_data.filter((element) => element[3] == link.source);
+                        for (item of find_sources) {
+                            let find_target = zhongyuan_data.find((element) => (element[0] == item[0]) && (element[1] == link.target))
+                            if (find_target != null) {
+                                yunjiaozi.add(find_target[0]);
+                            }
                         }
                     }
-                    resolve(yunjiaozi);
+                    resolve(Array.from(yunjiaozi));
                 }
             })
         })
