@@ -36,17 +36,18 @@
 .bg{
   width: 100vw;
   height: 100vh;
+  display: flex;
   position: fixed;
   top: 0;
   left: 0;
 }
 .header {
-  position: fixed;
+  /* position: fixed; */
   z-index: 999;
   top: 5px;
-  left: 47vw;
   font-size: 30px;
   color: #f6f5f5;
-  text-align: center;
+  /* text-align: center; */
+  margin: 0 auto;
 }
   </style>

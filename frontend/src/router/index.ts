@@ -46,11 +46,13 @@ const routes:RouteRecordRaw[]=[{
     component:()=>import('@/components/yunbu/shijing.vue'),
     props: true
 },{
-    path:'/danzi',
-    component:()=>import('@/components/fenxi/danzi.vue')
+    path:'/fenxi',
+    component:()=>import('@/components/fenxi/fenxi.vue')
 },{
-    path:'/zhengti',
-    component:()=>import('@/components/fenxi/zhengti.vue')
+    path:'/fenxi/juanzhou/:source/:target',
+    component:()=>import('@/components/fenxi/juanzhou.vue'),
+    name: 'juanzhou',
+    props: true
 },{
     path:'/datasource',
     component:()=>import('@/components/datasource.vue')

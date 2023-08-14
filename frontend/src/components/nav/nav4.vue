@@ -25,7 +25,7 @@
   .menu1 {
     position: fixed;
     top: 50px;
-    left: 1060px;
+    left: 76vw;
     height: 120px;
     width: 200px;
     background-color: #a8802f;
@@ -35,7 +35,7 @@
   .menu1l{
   position: fixed;
     top: 0;
-    left: 1090px;
+    left: 79vw;
     height: 50px;
     width: 5px;
     background-color:#d8992a;
@@ -43,7 +43,7 @@
   .menu1r{
   position: fixed;
     top: 0;
-    left: 1100px;
+    left: 80vw;
     height: 50px;
     width: 5px;
     background-color: #d8992a;
@@ -54,7 +54,7 @@
   .sui{
     position: fixed;
     top: 180px;
-    left: 1010px;
+    left: 72.5vw;
   }
   </style>
       

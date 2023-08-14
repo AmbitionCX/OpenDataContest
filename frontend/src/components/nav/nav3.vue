@@ -4,11 +4,6 @@
       <div class="menu1r"></div>
     </div>
 
-    <ul class="sublist">
-        <!-- <li><a href="/shijing">单字查询</a></li> -->
-        <!-- <li><a href="/guangyun">整体分析</a></li> -->
-      </ul>
-
       <div class="sui">
       <img src="@/components/nav/sui2.svg" class="image" />
     </div>
@@ -30,7 +25,7 @@
   .menu1 {
     position: fixed;
     top: 50px;
-    left: 780px;
+    left: 56vw;
     height: 120px;
     width: 200px;
     background-color: #9caf31;
@@ -40,7 +35,7 @@
   .menu1l{
   position: fixed;
     top: 0;
-    left: 820px;
+    left: 59vw;
     height: 50px;
     width: 5px;
     background-color:#bccc5c;
@@ -48,24 +43,10 @@
   .menu1r{
   position: fixed;
     top: 0;
-    left: 830px;
+    left: 60vw;
     height: 50px;
     width: 5px;
     background-color: #bccc5c;
-  }
-  .sublist{
-    position: fixed;
-    top: 130px;
-    left: 835px;
-    text-align: center;
-    z-index: 99;
-  }
-  .sublist a {
-    color: #fbf6f6;
-  }
-  .sublist li {
-    padding: 10px;
-    text-align: center;
   }
   .image{
     width: 8%;
@@ -73,7 +54,7 @@
   .sui{
     position: fixed;
     top: 180px;
-    left: 725px;
+    left: 52.5vw;
   }
   </style>
       

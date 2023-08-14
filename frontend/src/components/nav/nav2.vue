@@ -31,7 +31,7 @@
   .menu1 {
     position: fixed;
     top: 50px;
-    left: 500px;
+    left: 35.5vw;
     height: 230px;
     width: 200px;
     background-color: #c1a530;
@@ -41,7 +41,7 @@
   .menu1l{
   position: fixed;
     top: 0;
-    left: 540px;
+    left: 38.5vw;
     height: 50px;
     width: 5px;
     background-color:#ddbb2f;
@@ -49,7 +49,7 @@
   .menu1r{
   position: fixed;
     top: 0;
-    left: 550px;
+    left: 39.5vw;
     height: 50px;
     width: 5px;
     background-color: #ddbb2f;
@@ -57,7 +57,7 @@
   .sublist{
     position: fixed;
     top: 130px;
-    left: 510px;
+    left: 36.5vw;
     text-align: center;
     z-index: 99;
   }
@@ -74,7 +74,7 @@
   .sui{
     position: fixed;
     top: 290px;
-    left: 450px;
+    left: 32vw;
   }
   </style>
       

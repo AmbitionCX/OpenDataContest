@@ -48,13 +48,13 @@
         <!-- 右边内容 -->
         <div v-for="(item, index) in yunjiao" :style="getYunbuStyle(index)">
           <div class="yb" @click="goToNewPage(index)">{{ yb[index] }}</div>
-          <div
+          <!-- <div
             v-for="(char, Index) in item"
             :key="Index"
             :style="getTextStyle(Index, item, index)"
           >
             <div class="yj">{{ char }}</div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -104,13 +104,14 @@ export default {
       });
     },
     getYunbuStyle(index) {
-      const x = index * 300 + 700;
+      const x = index * 300 + 200;
+      //const x = 800;
       const y = 200;
       return {
-        // positon: "absolute",
-        // left: `${x}px`,
-        // top: `${y}px`,
-        transform: `translate(${x - 400}px, ${y}px)`,
+        positon: "absolute",
+        left: `${x}px`,
+        top: `${y}px`,
+        transform: `translate(${x}px, ${y}px)`,
       };
     },
 
@@ -162,7 +163,10 @@ export default {
       const y = squareY + this.generateRandomPoint().y  - Index * 100;
 
       return {
-        transform: `translate(${x}px, ${y}px)`,
+        position: "absolute",
+        left: `${x}px`,
+        top: `${y}px`,
+        //transform: `translate(${x}px, ${y}px)`,
       };
     },
 
@@ -228,18 +232,13 @@ export default {
   flex-grow: 1;
   width: 2000px;
   /* background-color: rgb(143, 155, 151); */
-  overflow: auto;
 }
 .test {
   transform: translate(100px, 100px);
 }
 .scrollable-content {
   width: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  white-space: nowrap; /* Prevent content from wrapping */
+  overflow: scroll;
 }
 
 .yb {

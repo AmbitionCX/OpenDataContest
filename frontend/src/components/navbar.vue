@@ -37,7 +37,7 @@
 
     <el-dropdown>
       <span class="el-dropdown-link">
-        <a href="#" @mouseenter="showSub3=true">综合分析</a>
+        <a href="/fenxi" @mouseenter="showSub3=true">综合分析</a>
       </span>
     </el-dropdown>
 

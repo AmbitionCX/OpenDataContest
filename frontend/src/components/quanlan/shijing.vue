@@ -66,7 +66,12 @@
         class="image"
         style="width: 300px; height: 150px; transform: translate(20px, -25px)"
       />
-      <div class="txt">词云</div>
+      <div class="txt" v-if="ciyun">词云</div>
+      <!-- <div class="txt2" v-else>请输入标题</div> -->
+      <el-input class="txt2" v-else v-model="input" placeholder="请输入标题" 
+      style="width: 170px; background-color:transparent;" @keyup.enter="updateInput" />
+      <Search class="search" style="width: 30px; height: 30px; margin-right: 8px; 
+      color: #fffdfd;" @click="ciyun=false"/>
     </div>
 
     <div class="image2">
@@ -80,9 +85,9 @@
 
     <div class="image3">
       <img
-        src="@/assets/quanlan/bottom.svg"
+        src="@/assets/quanlan/bottom1.svg"
         class="image"
-        style="width: 800px; height: 600px"
+        style="width: 100vw; height: 100vh"
       />
     </div>
   </div>
@@ -105,19 +110,8 @@ export default {
       words: [],
       content: [],
       showTooltip: false,
-      testData: [
-        { text: "aaaa，" },
-        { text: "bbbb，" },
-        { text: "cccc。" },
-        { text: "cccc，" },
-        { text: "cccc，" },
-        { text: "cccc，" },
-        { text: "cccc？" },
-        { text: "cccc，" },
-        { text: "cccc！" },
-        { text: "cccc。" },
-        // ... other data items
-      ],
+      ciyun: true,
+      input: '',
     };
   },
   components: {
@@ -125,6 +119,13 @@ export default {
     navbar1,
   },
   methods: {
+    updateInput() {
+      // 在回车键按下事件处理程序中更新input数据属性
+      // 这会将输入框中的值赋给input
+      this.input = event.target.value;
+      console.log(this.input);
+      this.getContent(this.input);
+    },
     async getWords() {
       return new Promise((resolve, reject) => {
         const url = "http://localhost:5000/get_shijing_cloud";
@@ -175,6 +176,7 @@ export default {
         .on("click", (event, d) => {
           this.getContent(d.text);
         })
+        .attr("cursor", "pointer")
         .attr("x", (d) => d.x - d.txtwidth * 15 - 10)
         .attr("y", (d) => d.y - 20)
         .attr("width", (d) => d.txtwidth * 30 + 20)
@@ -191,6 +193,7 @@ export default {
         .on("click", (event, d) => {
           this.getContent(d.text);
         })
+        .attr("cursor", "pointer")
         .attr("x", (d) => d.x)
         .attr("y", (d) => d.y)
         .style("font-size", (d) => 30 + "px")
@@ -312,23 +315,34 @@ export default {
   flex-direction: row;
 }
 .leftBox {
-  height: 80vh;
-  width: 40vw;
+  height: 65vh;
+  width: 30vw;
   display: flex;
-  /* background-color: rgb(190, 187, 187); */
+  background-color: rgb(223, 224, 224);
+  border-radius: 5%;
   margin-right: 50px;
-  margin-left: 150px;
+  margin-left: 170px;
+  margin-top: 8vh;
+  overflow: auto;
+  opacity: 0.75;
 }
 .content {
-  transform: translate(100px, 20px);
+  transform: translate(0, 20px);
   font-size: 20px;
+  /* margin-top: 50px; */
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   /* display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center; */
 }
 .red-text {
-  color: red;
+  color: white;
+  background-color: #BC3E17;
   display: inline;
   cursor: pointer;
 }
@@ -358,27 +372,49 @@ export default {
   height: 600px;
   width: 45vw;
   display: flex;
+  margin-left: 50px;
+}
+.el-input__wrapper {
+  background-color: transparent;
+  --el-input-border-color: transparent;
+  --el-input-focus-border: transparent;
+  --el-input-focus-border-color: transparent;
+  --el-input-hover-border-color: transparent;
+  --el-input-clear-hover-color: transparent;
 }
 .txt {
   position: fixed;
   top: 125px;
-  left: 74vw;
+  left: 70vw;
   font-size: 30px;
 }
+.txt2 {
+  position: fixed;
+  top: 133px;
+  left: 65vw;
+  font-size: 20px;
+  color: #838080;
+}
+.search {
+  position: fixed;
+  top: 133px;
+  left: 78vw;
+}
 .ciyun {
-  position: relative;
+  position: fixed;
   top: 100px;
-  left: 350px;
+  left: 57vw;
+  width: 400px;
 }
 .image2 {
   position: relative;
-  top: 250px;
+  top: 400px;
   left: 630px;
 }
 .image3 {
-  position: relative;
+  position: fixed;
   z-index: -1;
-  top: 70px;
-  left: 340px;
+  bottom: 0;
+  left: 0;
 }
 </style>
