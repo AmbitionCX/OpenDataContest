@@ -1,6 +1,8 @@
 const { parse } = require("csv-parse");
 const path = require('path');
 const fs = require("fs");
+const OpenCC = require('opencc');
+const converter = new OpenCC('s2t.json');
 
 const shanggu_shijing_path = path.join(__dirname, '/rawData/shanggu-shijing.csv').toString();
 const zhonggu_guangyun_path = path.join(__dirname, '/rawData/zhonggu-guangyun.csv').toString();
@@ -114,40 +116,43 @@ const shijing_full_text = (title) => {
                 if (err) {
                     reject(err);
                 } else {
-                    let text_data = getColumns(rows, [1, 2, 3, 4]);
-                    let picked_text = text_data.filter((element) => element[0] == title)
-                    let full_text = [];
-                    let one_line_json = {};
-                    let one_line_text = '';
-                    for (let text of picked_text) {
-                        one_line_text += text[1];
-                        let new_line = false;
+                    converter.convertPromise(title).then(converted => {
+                        let text_data = getColumns(rows, [1, 2, 3, 4]);
+                        let picked_text = text_data.filter((element) => element[0] == converted)
+                        let full_text = [];
+                        let one_line_json = {};
+                        let one_line_text = '';
+                        for (let text of picked_text) {
+                            one_line_text += text[1];
+                            let new_line = false;
 
-                        if (one_line_text.slice(-1) == "○") {
-                            one_line_text = one_line_text.slice(0, -1);
-                            new_line = !new_line;
+                            if (one_line_text.slice(-1) == "○") {
+                                one_line_text = one_line_text.slice(0, -1);
+                                new_line = !new_line;
+                            }
+
+                            if (text[2] != '') {
+                                one_line_json.text = one_line_text;
+                                one_line_json.yunjiao = text[2];
+                                one_line_json.yunbu = text[3];
+
+                                full_text.push(one_line_json);
+                                one_line_json = {};
+                                one_line_text = '';
+                            }
+
+                            if (new_line) {
+                                full_text.push({
+                                    text: '',
+                                    yunjiao: '',
+                                    yunbu: ''
+                                });
+                                new_line = !new_line;
+                            }
                         }
-
-                        if (text[2] != '') {
-                            one_line_json.text = one_line_text;
-                            one_line_json.yunjiao = text[2];
-                            one_line_json.yunbu = text[3];
-
-                            full_text.push(one_line_json);
-                            one_line_json = {};
-                            one_line_text = '';
-                        }
-
-                        if (new_line) {
-                            full_text.push({
-                                text: '',
-                                yunjiao: '',
-                                yunbu: ''
-                            });
-                            new_line = !new_line;
-                        }
-                    }
-                    resolve(full_text);
+                        console.log(full_text);
+                        resolve(full_text);
+                    });
                 }
             });
         })
