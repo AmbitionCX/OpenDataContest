@@ -33,8 +33,18 @@ app.get("/get_shanggu_shijing", (req, res) => {
     csvReader.get_shanggu_shijing().then(data => res.send(data))
 })
 
-app.get("/get_shijing_cloud", (req, res) => {
-    csvReader.shijing_word_cloud().then(data => res.send(data))
+app.get("/get_shijing_chapter", (req, res) => {
+    csvReader.get_shijing_chapter().then(data => res.send(data))
+})
+
+app.post("/shijing_word_cloud", (req, res) => {
+    let chapter = req.body.params.chapter;
+    if (chapter == null) {
+        chapter = "国风·周南";
+    }
+    
+    res.setHeader('Content-Type', 'application/json');
+    csvReader.shijing_word_cloud(chapter).then(data => res.send(data))
 })
 
 app.post("/shijing_full_text", (req, res) => {

@@ -66,21 +66,41 @@ const get_shanggu_shijing = () => {
     })
 }
 
-const shijing_word_cloud = () => {
+const get_shijing_chapter = () => {
     return new Promise((resolve, reject) => {
         fs.readFile(shanggu_shijing_path, function (err, fileData) {
             parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
                 if (err) {
                     reject(err);
                 } else {
-                    let title_data = getColumns(rows, [1]);
-                    let title_deduplicated = yunbu_deduplication(title_data, 0)
-                    let randomTitle = get_random_elements(title_deduplicated, 30);
-                    let titles = [];
-                    randomTitle.forEach((item) => {
-                        titles.push(item[0]);
-                    })
-                    resolve(titles);
+                    let data = getColumns(rows, [0]);
+                    let data_removed = remove_unrecognized_yunbu(data, 0);
+                    let data_deduplicated = yunbu_deduplication(data_removed, 0)
+
+                    let chapter = [];
+                    for (item of data_deduplicated) {
+                        chapter.push(item[0])
+                    }
+                    resolve(chapter);
+                }
+            })
+        })
+    })
+}
+
+const shijing_word_cloud = (chapter) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(shanggu_shijing_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let titles = new Set();
+                    let selected_row = rows.filter((element) => element[0] == chapter);
+                    for (item of selected_row) {
+                        titles.add(item[1]);
+                    }
+                    resolve(Array.from(titles));
                 }
             });
         })
@@ -353,6 +373,7 @@ const get_yunjiaozi = (link) => {
 
 module.exports = {
     get_shanggu_shijing,
+    get_shijing_chapter,
     get_zhonggu_guangyun,
     get_jindai_zhongyuan,
     shijing_word_cloud,
