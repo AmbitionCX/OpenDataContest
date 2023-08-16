@@ -67,21 +67,31 @@
         style="width: 300px; height: 150px; transform: translate(20px, -25px)"
       />
       <div class="txt" v-if="ciyun">词云</div>
-      <!-- <div class="txt2" v-else>请输入标题</div> -->
-      <el-input class="txt2" v-else v-model="input" placeholder="请输入标题" 
-      style="width: 170px; background-color:transparent;" @keyup.enter="updateInput" />
-      <Search class="search" style="width: 30px; height: 30px; margin-right: 8px; 
+      <el-select
+      v-model="selectedOption" v-else
+      class="choose"
+      placeholder="请选择诗经篇章"
+      @change="handleOptionChange"
+    >
+      <el-option
+        v-for="item in chapter"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      />
+    </el-select>
+    <Search class="search" style="width: 30px; height: 30px; margin-right: 8px; 
       color: #fffdfd;" @click="ciyun=false"/>
-    </div>
+    </div>  
 
-    <div class="image2">
+    <!-- <div class="image2">
       <img
         src="@/assets/quanlan/arrow.svg"
         class="image"
         style="width: 400px; height: 40px"
         @click="getWords()"
       />
-    </div>
+    </div> -->
 
     <div class="image3">
       <img
@@ -102,7 +112,10 @@ import cloud from "d3-cloud";
 
 export default {
   mounted() {
-    this.getWords();
+    this.getChapter();
+    this.selectedOption = "国风·周南";
+    this.getTitle("国风·周南");
+    this.getContent('關雎');
     //this.getContent();
   },
   data() {
@@ -111,7 +124,8 @@ export default {
       content: [],
       showTooltip: false,
       ciyun: true,
-      input: '',
+      chapter: [],
+      selectedOption: null,
     };
   },
   components: {
@@ -119,107 +133,134 @@ export default {
     navbar1,
   },
   methods: {
-    updateInput() {
-      // 在回车键按下事件处理程序中更新input数据属性
-      // 这会将输入框中的值赋给input
-      this.input = event.target.value;
-      console.log(this.input);
-      this.getContent(this.input);
-    },
-    async getWords() {
+    //获取所有章节名称，做成下拉菜单
+    async getChapter() {
       return new Promise((resolve, reject) => {
-        const url = "http://localhost:5000/get_shijing_cloud";
+        const url = "http://localhost:5000/get_shijing_chapter";
         axios
           .get(url)
           .then((res) => {
-            //console.log(res.data);
-            const words = [];
-            for (var i = 0; i < res.data.length; i++) {
-              words.push({ text: res.data[i], txtwidth: res.data[i].length });
+            console.log('chapter: ',res.data);
+            for(let i = 0; i < res.data.length; i++){
+              this.chapter.push({ value: res.data[i], label: res.data[i] });
             }
-            console.log(words);
-            this.words = words;
-
-            const svg = d3
-              .select(this.$refs.svg)
-              .attr("width", 700)
-              .attr("height", 800);
-
-            const layout = cloud()
-              .size([500, 300])
-              .words(words)
-              .padding(5)
-              .rotate(() => 0) // 设置旋转角度为0，即不旋转
-              .font("Impact")
-              .fontSize(30) //词云间距
-              .on("end", this.draw);
-
-            layout.start();
+            console.log(this.chapter);
           })
-          .catch(function (err) {
-            reject(err);
-          });
-      });
+        })
     },
 
-    draw(words) {
-      const svg = d3.select(this.$refs.svg);
-
-      svg.selectAll("g").remove();
-
-      const g = svg.append("g").attr("transform", "translate(300,350)");
-
-      g.selectAll("rect")
-        .data(words)
-        .enter()
-        .append("rect")
-        .on("click", (event, d) => {
-          this.getContent(d.text);
-        })
-        .attr("cursor", "pointer")
-        .attr("x", (d) => d.x - d.txtwidth * 15 - 10)
-        .attr("y", (d) => d.y - 20)
-        .attr("width", (d) => d.txtwidth * 30 + 20)
-        .attr("height", (d) => 40)
-        .style("fill", "red")
-        .attr("rx", 8)
-        .attr("ry", 8)
-        .style("opacity", 0.3);
-
-      g.selectAll("text")
-        .data(words)
-        .enter()
-        .append("text")
-        .on("click", (event, d) => {
-          this.getContent(d.text);
-        })
-        .attr("cursor", "pointer")
-        .attr("x", (d) => d.x)
-        .attr("y", (d) => d.y)
-        .style("font-size", (d) => 30 + "px")
-        .style("font-family", "Impact")
-        .style("fill", "white")
-        .attr("text-anchor", "middle")
-        .attr("alignment-baseline", "middle")
-        .text((d) => d.text);
-    },
-
-    async getContent(title) {
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/shijing_full_text",
-          {
-            params: {
-              title: title,
-            },
-          }
-        );
-        console.log("Backend response:", response.data.data);
-        this.content = response.data.data;
-      } catch (error) {
-        console.error("Error sending clicked word to the backend:", error);
+    handleOptionChange() {
+      // 调用您的函数，并将选中的选项作为参数传递
+      if (this.selectedOption) {
+        //console.log(this.selectedOption);
+        this.getTitle(this.selectedOption);
       }
     },
+
+    async getTitle(chapter) {
+        try {
+          const response = await axios.post(
+            "http://localhost:5000/shijing_word_cloud",
+            {
+              params: {
+                chapter: chapter,
+              },
+            }
+          );
+          //console.log("Backend response:", response.data);
+          const words = [];
+              for (var i = 0; i < response.data.length; i++) {
+                words.push({ text: response.data[i], txtwidth: response.data[i].length });
+              }
+          //console.log(words);
+          this.words = words;
+
+          const svg = d3
+                .select(this.$refs.svg)
+                .attr("width", 700)
+                .attr("height", 800);
+  
+              const layout = cloud()
+                .size([500, 300])
+                .words(words)
+                .padding(5)
+                .rotate(() => 0) // 设置旋转角度为0，即不旋转
+                .font("Impact")
+                .fontSize(30) //词云间距
+                .on("end", this.draw);
+  
+              layout.start();
+        } catch (error) {
+          console.error("Error sending clicked word to the backend:", error);
+        }
+      },
+
+      draw(words) {
+        const svg = d3.select(this.$refs.svg);
+  
+        svg.selectAll("g").remove();
+  
+        const g = svg.append("g").attr("transform", "translate(300,350)");
+  
+        g.selectAll("rect")
+          .data(words)
+          .enter()
+          .append("rect")
+          .on("click", (event, d) => {
+            this.getContent(d.text);
+          })
+          .attr("cursor", "pointer")
+          .attr("x", (d) => d.x - d.txtwidth * 15 - 10)
+          .attr("y", (d) => d.y - 20)
+          .attr("width", (d) => d.txtwidth * 30 + 20)
+          .attr("height", (d) => 40)
+          .style("fill", "red")
+          .attr("rx", 8)
+          .attr("ry", 8)
+          .style("opacity", 0.3);
+  
+        g.selectAll("text")
+          .data(words)
+          .enter()
+          .append("text")
+          .on("click", (event, d) => {
+            this.getContent(d.text);
+          })
+          .attr("cursor", "pointer")
+          .attr("x", (d) => d.x)
+          .attr("y", (d) => d.y)
+          .style("font-size", (d) => 30 + "px")
+          .style("font-family", "Impact")
+          .style("fill", "white")
+          .attr("text-anchor", "middle")
+          .attr("alignment-baseline", "middle")
+          .text((d) => d.text);
+      },
+
+      async getContent(title) {
+        try {
+          const response = await axios.post(
+            "http://localhost:5000/shijing_full_text",
+            {
+              params: {
+                title: title,
+              },
+            }
+          );
+          console.log("Backend response:", response.data.data);
+          this.content = response.data.data;
+          this.content.unshift(
+            {text: this.selectedOption, yunjiao: '', yunbu: ''},
+            {text: '', yunjiao: '', yunbu: ''},
+            {text: title, yunjiao: '', yunbu: ''},
+            {text: '', yunjiao: '', yunbu: ''},
+            {text: '', yunjiao: '', yunbu: ''}
+          )
+        } catch (error) {
+          console.error("Error sending clicked word to the backend:", error);
+        }
+      },
+
   },
 };
 </script>
@@ -374,13 +415,40 @@ export default {
   display: flex;
   margin-left: 50px;
 }
+.choose {
+  display: flex;
+  position: fixed;
+  top: 133px;
+  left: 65vw;
+}
 .el-input__wrapper {
   background-color: transparent;
-  --el-input-border-color: transparent;
-  --el-input-focus-border: transparent;
-  --el-input-focus-border-color: transparent;
-  --el-input-hover-border-color: transparent;
-  --el-input-clear-hover-color: transparent;
+    --el-input-border-color: transparent;
+    --el-input-focus-border: transparent;
+    --el-input-focus-border-color: transparent;
+    --el-input-hover-border-color: transparent;
+    --el-input-clear-hover-color: transparent;
+    --el-input-hover-border: transparent;
+}
+.el-select {
+  --el-select-border-color-hover: transparent;
+  --el-select-input-focus-border-color: transparent;
+  width: 220px;
+}
+.el-input__inner {
+  font-size: 20px;
+}
+.el-input {
+  --el-input-placeholder-color: rgb(94, 90, 90);
+}
+:root {
+  /* --el-fill-color-light: linear-gradient(to right, red, white); */
+  --el-fill-color-light: rgba(252, 237, 227, 0.8);
+  --el-bg-color-overlay: linear-gradient(rgba(232, 129, 73, 1),
+      rgba(252, 237, 227, 1));
+}
+.el-select-dropdown__item.selected {
+  color: #000;
 }
 .txt {
   position: fixed;

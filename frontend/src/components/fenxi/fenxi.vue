@@ -58,8 +58,6 @@ export default {
       selectedOption: null,
       yunbu: [],
       yunjiao: [],
-      textData:
-        "这是我用来测试的一段话，如果你看到他正确显示在应有的位置上那就说明我的代码非常正确，否则我就要继续修改",
     };
   },
   components: {
@@ -183,7 +181,7 @@ export default {
         })
         .on("mouseover", function (d, i) {
           const PathData = this.getAttribute("d");
-          console.log(i.source.name, i.target.name);
+          //console.log(i.source.name, i.target.name);
           drawTxt(PathData, i.source.name, i.target.name);
 
           d3.select(this).style("stroke", "url(#gradient)");
@@ -205,7 +203,7 @@ export default {
         const txtlistpromise = getTxt(target, source).then(function (txtlist) {
           if (Array.isArray(txtlist)) {
             textData = txtlist.join("");
-            console.log("txtdata:", textData);
+            //console.log("txtdata:", textData);
 
             svg.selectAll("textPath").remove();
             d3.select("#my-path-id").remove();
@@ -246,7 +244,7 @@ export default {
                 .attr("href", "#my-path-id") // Reference the path by its ID
                 .attr("startOffset", "50%") // Start text at the middle of the path
                 .append("tspan")
-                .attr("dy", `${index * 30 - 10}px`) // Adjust vertical positioning
+                .attr("dy", `${index * 20 - 5}px`) // Adjust vertical positioning
                 .text(line)
                 .style("fill", "#5b574f");
             });
@@ -255,9 +253,6 @@ export default {
           }
         });
       }
-
-      /////////////////////////////////////////////////////////////
-      /////////////////////////////getTxt//////////////////////////
 
       async function getTxt(target, source) {
         try {
@@ -269,15 +264,15 @@ export default {
               },
             }
           );
-          console.log("Backend response list:", response.data.data);
+          //console.log("Backend response list:", response.data.data);
           return response.data.data;
         } catch (error) {
           console.error("Error sending clicked word to the backend:", error);
         }
       }
 
-      svg
-        .selectAll(".node")
+      const node = svg.append('g')
+      .selectAll('.node')
         .data(sankeyNodes)
         .enter()
         .append("rect")
@@ -290,6 +285,22 @@ export default {
         //.style("fill", "#bccc5c")
         //.style("stroke", "gray") // 设置节点边框颜色为灰色
         .style("stroke-width", 1); // 设置节点边框宽度
+        
+        // 添加节点标签
+        svg.append('g')
+        .selectAll('.text')
+        .data(sankeyNodes)
+        .enter().append('text')
+        .attr('class', 'text')
+        .attr('x', d => (d.x0 + d.x1) / 2)
+        .attr('y', d => (d.y0 + d.y1) / 2)
+        .attr('dy', '0.35em')
+        .attr('dx', '50px')
+        .attr('text-anchor', 'middle')
+        .text(function(d){
+          //console.log(d);
+          return d.name;
+        });
     },
 
     //跳转到新的页面，展开卷轴

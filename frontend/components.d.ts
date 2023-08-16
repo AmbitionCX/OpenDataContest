@@ -35,6 +35,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Shijing: typeof import('./src/components/quanlan/shijing.vue')['default']
+    ShijingDiscard: typeof import('./src/components/quanlan/shijing-discard.vue')['default']
     Shouye: typeof import('./src/components/shouye/shouye.vue')['default']
     Show: typeof import('./src/components/show.vue')['default']
     SjL3: typeof import('./src/components/yunbu/sjL3.vue')['default']
