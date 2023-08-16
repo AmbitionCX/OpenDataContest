@@ -1,41 +1,43 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2">
     <div class="nav1">
-        <navbar3></navbar3>
-      </div>
-
-      <div class="header">综合分析</div>
-
-      <div class="intro">
-        <div class="intro1">文字简介:</div>
-        <div class="rect1"></div>
-      </div>
-
-      <el-select v-model="selectedOption" class="choose" 
-      placeholder="请选择上古韵部" @change="handleOptionChange">
-    <el-option
-      v-for="item in yunbu"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value"
-    />
-  </el-select>
-
-  <div class="sankey-chart">
-    <div class="scrollable-content" ref="scrollable">
-      <svg :width="width" :height="height" ref="svgContainer"></svg>
+      <navbar3></navbar3>
     </div>
-  </div>
 
+    <div class="header">综合分析</div>
+
+    <div class="intro">
+      <div class="intro1">文字简介:</div>
+      <div class="rect1"></div>
+    </div>
+
+    <el-select
+      v-model="selectedOption"
+      class="choose"
+      placeholder="请选择上古韵部"
+      @change="handleOptionChange"
+    >
+      <el-option
+        v-for="item in yunbu"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      />
+    </el-select>
+
+    <div class="sankey-chart">
+      <div class="scrollable-content" ref="scrollable">
+        <svg :width="width" :height="height" ref="svgContainer"></svg>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  import navbar3 from '@/components/nav/navbar3.vue';
-  import axios from 'axios';
+import navbar3 from "@/components/nav/navbar3.vue";
+import axios from "axios";
 import * as d3 from "d3";
 import * as d3Sankey from "d3-sankey";
-
 
 function mapNodes(links, nodes) {
   const nodeMap = new Map(nodes.map((d, i) => [d.name, i]));
@@ -56,10 +58,12 @@ export default {
       selectedOption: null,
       yunbu: [],
       yunjiao: [],
+      textData:
+        "这是我用来测试的一段话，如果你看到他正确显示在应有的位置上那就说明我的代码非常正确，否则我就要继续修改",
     };
   },
-  components:{
-    navbar3
+  components: {
+    navbar3,
   },
   mounted() {
     this.getYunbu();
@@ -71,7 +75,7 @@ export default {
       // 调用您的函数，并将选中的选项作为参数传递
       if (this.selectedOption) {
         console.log(this.selectedOption);
-        this.getData('上古：'+this.selectedOption);
+        this.getData("上古：" + this.selectedOption);
       }
     },
     async getYunbu() {
@@ -80,6 +84,7 @@ export default {
         axios
           .get(url)
           .then((res) => {
+            console.log(res.data);
             const yunbu = [];
             for (let i = 0; i < res.data.length; i++) {
               if (res.data[i][1] != "" && res.data[i][1] != 0) {
@@ -89,8 +94,8 @@ export default {
             const yunbu2 = Array.from(new Set(yunbu)); //去重
 
             const yunbu3 = [];
-            for(let i = 0; i < yunbu2.length; i++){
-              yunbu3.push({value:yunbu2[i], label:yunbu2[i]});
+            for (let i = 0; i < yunbu2.length; i++) {
+              yunbu3.push({ value: yunbu2[i], label: yunbu2[i] });
             }
 
             this.yunbu = yunbu3;
@@ -113,18 +118,15 @@ export default {
             },
           }
         );
-        //this.sankeyData = response.data.data;
-        
-        //console.log("Backend response:", response.data);
         this.drawChart(response.data.data);
-       // console.log("Backend response links:", response.data.data.links);
+        // console.log("Backend response links:", response.data.data.links);
       } catch (error) {
         console.error("Error sending word to the backend:", error);
       }
     },
 
     drawChart(sankeyData) {
-      d3.select(this.$refs.svgContainer).html('');  //清空画布
+      d3.select(this.$refs.svgContainer).html(""); //清空画布
       //console.log('success:', this.sankeyData);
       const { nodes, links } = sankeyData;
 
@@ -144,6 +146,26 @@ export default {
         links: convertedLinks,
       });
 
+      // 创建颜色渐变
+      const gradient = svg
+        .append("defs")
+        .append("linearGradient")
+        .attr("id", "gradient")
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "100%")
+        .attr("y2", "0%");
+
+      gradient
+        .append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "rgba(188, 204, 92, 1)");
+
+      gradient
+        .append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "rgba(222, 222, 222, 1)");
+
       svg
         .selectAll(".link")
         .data(sankeyLinks)
@@ -154,22 +176,105 @@ export default {
         .style("stroke-width", (d) => Math.max(1, d.width))
         .style("stroke", "#dedede") // 设置连线颜色为灰色
         .style("fill", "none")
+        .style("stroke-opacity", 0.8)
         .attr("cursor", "pointer")
-        .on('click', (event, d) => {
-          // Mouseover event handler
+        .on("click", (event, d) => {
           this.getJuanzhou(d);
         })
-        .on('mouseover', function() {
-          d3.select(this).attr('stroke', 'green');
-          svg.node().dispatchEvent(new Event('input'));
-          console.log(this); // 鼠标悬浮时改变链接颜色为绿色
+        .on("mouseover", function (d, i) {
+          const PathData = this.getAttribute("d");
+          console.log(i.source.name, i.target.name);
+          drawTxt(PathData, i.source.name, i.target.name);
+
+          d3.select(this).style("stroke", "url(#gradient)");
         })
-        .on('mouseout', function() {
-          d3.select(this).attr('stroke', "#dedede"); // 鼠标离开时恢复链接颜色为黑色
+        .on("mouseout", function () {
+          d3.select(this).style("stroke", "#dedede"); // 鼠标离开时恢复链接颜色为黑色
+          svg.selectAll("textPath").remove();
         });
 
-        // 颜色比例尺
       const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+      /////////////////////////////////////////////////////////
+      // const textData = "这是我用来测试的一段话，如果你看到他正确显示在应有的位置上那就说明我的代码非常正确，否则我就要继续修改";
+
+      function drawTxt(pathData, source, target) {
+        //test();
+        var textData = "";
+
+        const txtlistpromise = getTxt(target, source).then(function (txtlist) {
+          if (Array.isArray(txtlist)) {
+            textData = txtlist.join("");
+            console.log("txtdata:", textData);
+
+            svg.selectAll("textPath").remove();
+            d3.select("#my-path-id").remove();
+
+            const path = svg
+              .append("path")
+              .attr("d", pathData)
+              .attr("stroke", "none")
+              .attr("stroke-width", 1)
+              .attr("fill", "none")
+              .attr("id", "my-path-id"); // Add a unique ID to the path element
+
+            const text = svg
+              .append("text")
+              .attr("text-anchor", "middle") // Center-align text
+              .attr("alignment-baseline", "middle") // Vertically center-align text
+              .style("white-space", "pre-line"); // Enable line breaks
+
+            const pathElement = path.node();
+            const pathLength = pathElement.getTotalLength();
+
+            // Split text into lines
+            function splitTextIntoChunks(text, chunkSize) {
+              const chunks = [];
+              for (let i = 0; i < text.length; i += chunkSize) {
+                chunks.push(text.substr(i, chunkSize));
+              }
+              return chunks;
+            }
+
+            const chunkSize = Math.floor(pathLength / 15);
+            const lines = splitTextIntoChunks(textData, chunkSize);
+
+            // Append each line as a tspan element
+            lines.forEach((line, index) => {
+              text
+                .append("textPath")
+                .attr("href", "#my-path-id") // Reference the path by its ID
+                .attr("startOffset", "50%") // Start text at the middle of the path
+                .append("tspan")
+                .attr("dy", `${index * 30 - 10}px`) // Adjust vertical positioning
+                .text(line)
+                .style("fill", "#5b574f");
+            });
+          } else {
+            console.log("txtlist 不是一个数组");
+          }
+        });
+      }
+
+      /////////////////////////////////////////////////////////////
+      /////////////////////////////getTxt//////////////////////////
+
+      async function getTxt(target, source) {
+        try {
+          const response = await axios.post(
+            "http://localhost:5000/get_yunjiaozi",
+            {
+              params: {
+                yunbu: { source: source, target: target },
+              },
+            }
+          );
+          console.log("Backend response list:", response.data.data);
+          return response.data.data;
+        } catch (error) {
+          console.error("Error sending clicked word to the backend:", error);
+        }
+      }
 
       svg
         .selectAll(".node")
@@ -181,40 +286,30 @@ export default {
         .attr("y", (d) => d.y0)
         .attr("width", (d) => d.x1 - d.x0)
         .attr("height", (d) => d.y1 - d.y0)
-        //.style('fill', d => colorScale(d.name)) // 设置节点颜色
-        .style('fill', '#bccc5c')
+        .style("fill", (d) => colorScale(d.name)) // 设置节点颜色
+        //.style("fill", "#bccc5c")
         //.style("stroke", "gray") // 设置节点边框颜色为灰色
         .style("stroke-width", 1); // 设置节点边框宽度
-
-        svg.append('g')
-        .selectAll('.text')
-        .data(sankeyNodes)
-        .enter().append('text')
-        .attr('class', 'text')
-        .attr('x', d => (d.x0 + d.x1) / 2 + 50)
-        .attr('y', d => (d.y0 + d.y1) / 2)
-        .attr('dy', '0.35em')
-        .attr('text-anchor', 'middle')
-        .text(d => d.name);
     },
 
     //跳转到新的页面，展开卷轴
     getJuanzhou(node) {
-      const queryObject = {source: node.source.name, target: node.target.name};
+      const queryObject = {
+        source: node.source.name,
+        target: node.target.name,
+      };
       const yunbu = 1;
       console.log(queryObject);
       this.$router.push({
-        name: 'juanzhou',
+        name: "juanzhou",
         params: {
           source: node.source.name,
           target: node.target.name,
         },
       });
     },
-
   },
 };
-
 </script>
 
 <style>
@@ -282,5 +377,4 @@ export default {
   top: 50vh;
   left: 50px;
 }
-
 </style>

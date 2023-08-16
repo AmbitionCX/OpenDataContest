@@ -15,12 +15,12 @@ const get_random_elements = (arr, num) => {
     return shuffled.slice(0, num);
 }
 
-const match_array_item = (arr, target) => {
+const match_array_item = (arr, target, column) => {
     let target_code = target.charCodeAt(0);
     let url = 0;
     arr.forEach((obj) => {
         if (obj[0].charCodeAt(0) == target_code) {
-            url = obj[3];
+            url = obj[column];
         }
     })
     return url;
@@ -187,7 +187,7 @@ const guangyun_word_cloud = (data) => {
 }
 
 const guangyun_url = (data, target) => {
-    let url = match_array_item(data, target);
+    let url = match_array_item(data, target, 3);
     return url;
 }
 
@@ -220,9 +220,9 @@ const zhongyuan_word_cloud = (data) => {
 }
 
 const zhongyuan_url = (data, target) => {
-    let url = match_array_item(data, target);
+    let url = match_array_item(data, target, 2);
     return url;
-}
+}   
 
 const yunbu_sankey_data = (yunbu) => {
     return new Promise((resolve, reject) => {
@@ -361,7 +361,7 @@ const get_yunjiaozi = (link) => {
                         }
                     }
                     if (link.source.slice(0, 2) == "中古") {
-                        find_sources = guangyun_data.filter((element) => element[3] == link.source);
+                        find_sources = guangyun_data.filter((element) => element[1] == link.source);
                         for (item of find_sources) {
                             let find_target = zhongyuan_data.find((element) => (element[0] == item[0]) && (element[1] == link.target))
                             if (find_target != null) {

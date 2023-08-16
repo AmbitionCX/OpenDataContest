@@ -90,7 +90,7 @@ export default {
     draw(yunjiao) {
       const svg = d3.select(this.$refs.svg);
       svg.selectAll("g").remove();
-      const g = svg.append("g").attr("transform", "translate(600,330)");
+      const g = svg.append("g").attr("transform", "translate(600,380)");
 
       g.selectAll("text")
         .data(yunjiao)
