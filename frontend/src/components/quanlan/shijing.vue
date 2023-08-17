@@ -545,7 +545,7 @@ justify-content: center; /* 水平居中文本 */
 .search {
   position: fixed;
   top: 133px;
-  left: 85vw;
+  left: calc(63vw + 300px);
 }
 .ciyun {
   position: fixed;
@@ -566,7 +566,7 @@ justify-content: center; /* 水平居中文本 */
 }
 .link {
   position: fixed;
-  top: 600px;
+  bottom: 200px;
   left: 73vw;
   width: 180px;
   height: 40px;

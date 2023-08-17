@@ -30,7 +30,11 @@
     <div class="ciyun">
       <img src="@/assets/quanlan/title.svg" class="image" 
       style="width: 300px; height: 150px; transform: translate(20px, -25px)" />
-      <div class="txt">词云</div>
+      <div class="txt" v-if="ciyun">词云</div>
+      <el-input class="txt2" v-else v-model="input" placeholder="请输入韵脚字" 
+      style="width: 170px; background-color:transparent;" @keyup.enter="updateInput" />
+      <Search class="search" style="width: 30px; height: 30px; margin-right: 8px; 
+      color: #fffdfd;" @click="ciyun=false"/>
     </div>
 
     <div class="image2">
@@ -84,6 +88,8 @@ export default {
       yunbu: [],
       yunjiao: [],
       num: 1,
+      ciyun: true,
+      input: '',
     };
   },
   components: {
@@ -91,6 +97,13 @@ export default {
     navbar1,
   },
   methods: {
+    updateInput() {
+        // 在回车键按下事件处理程序中更新input数据属性
+        // 这会将输入框中的值赋给input
+        this.input = event.target.value;
+        console.log(this.input);
+        this.wordClicked(this.input);
+      },
     incrementNum(){
       this.num = this.num+1;
       this.drawPre(this.words);
@@ -435,6 +448,27 @@ color: black;
   left: 76vw;
   font-size: 30px;
 }
+.txt2 {
+  position: fixed;
+  top: 133px;
+  left: 70vw;
+  font-size: 20px;
+  color: #838080;
+}
+.search {
+  position: fixed;
+  top: 133px;
+  left: calc(63vw + 300px);
+}
+.el-input__wrapper {
+  background-color: transparent;
+    --el-input-border-color: transparent;
+    --el-input-focus-border: transparent;
+    --el-input-focus-border-color: transparent;
+    --el-input-hover-border-color: transparent;
+    --el-input-clear-hover-color: transparent;
+    --el-input-hover-border: transparent;
+}
 .ciyun {
   position: fixed;
   top: 100px;
@@ -458,12 +492,12 @@ color: black;
   position: fixed;
   z-index: 90;
   width: 50px;
-  right: 480px;
+  left: 63vw;
   top: 350px;
 }
 .link {
   position: fixed;
-  top: 600px;
+  bottom: 200px;
   left: 73vw;
   width: 180px;
   height: 40px;
