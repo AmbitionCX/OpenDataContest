@@ -12,7 +12,6 @@
     </div>
 
     <div class="shijing"><a>广韵</a></div>
-    <div class="btn2"></div>
 
     <div class="circle-container">
       <span class="yunbu">{{ yb[Index] }}</span>
@@ -196,16 +195,12 @@ export default {
   left: 80px;
 }
 .shijing a {
-  position: fixed;
-  z-index: 899;
-  top: 210px;
-  left: 68px;
   writing-mode: vertical-lr;
   letter-spacing: 0.3em;
   font-size: 23px;
   color: black;
 }
-.btn2 {
+.shijing {
   position: fixed;
   z-index: 99;
   top: 175px;
@@ -218,5 +213,8 @@ export default {
   width: 50px;
   border-radius: 5px;
   border: 3px solid #c1a530;
+  display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
 }
 </style>

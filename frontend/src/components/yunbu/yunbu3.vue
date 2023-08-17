@@ -15,26 +15,18 @@
             style="width: 380px; height: 300px"
           />
         </div>
-        <div class="shijing1" v-show="!sj"></div>
-        <div class="shijing2" v-show="!gy"></div>
-        <div class="shijing3" v-show="!zy"></div>
-  
-          <div class="shijing" v-show="!sj">诗经</div>
-          <div class="shijing" v-show="!gy">广韵</div>
-          <div class="zyyy" v-show="!zy">中原音韵</div>
+
+        <div class="shijing3"><a>中原音韵</a></div>
   
         <div class="rect2"></div>
         <div class="txt">
-          <a class="txt1" @click="sj=false, gy=true, zy=true" v-show="sj" href="/yunbu">诗经</a>
-          <a class="txt2" @click="gy=false, sj=true, zy=true" v-show="gy" href="/yunbu2">广韵</a>
-          <a class="txt3" @click="zy=false, sj=true, gy=true" v-show="zy" href="/yunbu3">中原音韵</a>
+          <a class="txt1" href="/yunbu">诗经</a>
+          <a class="txt2" href="/yunbu2">广韵</a>
+          <a class="txt3" href="/yunbu3">中原音韵</a>
         </div>
-        <div class="circle12" v-if="!sj"></div>
-        <div class="circle1" v-else="!sj"><div class="circle11"></div></div>
-        <div class="circle2" v-if="!gy"><div class="circle21"></div></div>
-      <div class="circle22" v-else="!gy"></div>
-      <div class="circle3" v-if="zy"><div class="circle31"></div></div>
-      <div class="circle32" v-else="zy"></div>
+        <div class="circle12"></div>
+      <div class="circle22"></div>
+      <div class="circle3"><div class="circle31"></div></div>
   
       <div class="intro2">文字简介:</div>
       <div class="rect3"></div>
@@ -44,7 +36,7 @@
     <zyyunbu></zyyunbu>
   </div>
         
-  
+  <div class="line-chart"></div>
   
     </div>
   </template>
@@ -59,9 +51,8 @@
   export default {
     data() {
       return {
-          sj: true,
-          gy: true,
-          zy: false,
+        yb: [],
+      yunjiao: [],
       };
     },
     components: {
@@ -69,7 +60,107 @@
       navbar2,
       zyyunbu,
     },
-    methods: {},
+    methods: {
+      async getShijing() {
+        return new Promise((resolve, reject) => {
+          const url = "http://localhost:5000/get_jindai_zhongyuan";
+          axios
+            .get(url)
+            .then((res) => {
+              const yunbu = [];
+              const yunjiao = [];
+              for (let i = 0; i < res.data.length; i++) {
+                if (res.data[i][1] != "" && res.data[i][1] != 0) {
+                  yunbu.push(res.data[i][1]);
+                }
+              }
+              const yunbu2 = Array.from(new Set(yunbu));
+  
+              for (let i = 0; i < yunbu2.length; i++) {
+                yunjiao[i] = [];
+              }
+  
+              for (let i = 0; i < res.data.length; i++) {
+                if (yunbu2.indexOf(res.data[i][1]) != -1 && res.data[i][0].length<2) {
+                  yunjiao[yunbu2.indexOf(res.data[i][1])].push(res.data[i][0]);
+                }
+              }
+  
+              this.yb = yunbu2;
+            this.yunjiao = yunjiao;
+
+            const plotData = [];
+            for (let i = 0; i < yunbu2.length; i++) {
+              plotData.push({x: i, y: yunjiao[i].length})
+            }
+            console.log('plotdata:',plotData);
+            resolve([plotData, yunbu2]); // 请求成功后resolve数据
+            })
+            .catch(function (err) {
+              reject(err); // 请求失败后reject错误
+            });
+        });
+      },
+
+             //绘制折线图
+    async drawPlot(){
+      try {
+    const data = await this.getShijing(); // 等待promise的结果
+    //console.log('data: ',data);
+
+    const plotdata = data[0];
+    const yunbu = data[1];
+
+    const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+      const width = 500 - margin.left - margin.right;
+      const height = 200 - margin.top - margin.bottom;
+
+      const svg = d3
+        .select('.line-chart')
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+
+      var x = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.x)]).range([0, width]);
+      var y = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.y)]).range([height, 0]);
+
+      const line = d3
+        .line()
+        .x(d => x(d.x))
+        .y(d => y(d.y));
+
+      svg
+        .append('path')
+        .datum(plotdata)
+        .attr('class', 'line')
+        .attr('d', line)
+        .attr('fill', 'none')
+        .attr('stroke-width', 2)
+        .attr('stroke', 'black');
+
+      //坐标轴
+      const xLabels = yunbu;
+      x = d3.scalePoint().domain(xLabels).range([0, width]);
+      y = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.y)]).range([height, 0]);
+
+      const xAxis = d3.axisBottom(x);
+      const yAxis = d3.axisLeft(y);
+
+      svg.append('g').attr('class', 'x-axis').attr('transform', `translate(0, ${height})`).call(xAxis);
+      svg.append('g').attr('class', 'y-axis').call(yAxis);
+
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+    }
+    },
+    created() {
+    this.getShijing();
+    this.drawPlot();
+  },
   };
   </script>
           
@@ -127,34 +218,6 @@
     left: 50px;
     z-index: 899;
   }
-  .shijing1 {
-    position: fixed;
-    z-index: 99;
-    top: 240px;
-    left: 270px;
-    background-image: linear-gradient(
-      rgba(198, 145, 14, 1),
-      rgba(252, 237, 227, 0.1)
-    );
-    height: 130px;
-    width: 50px;
-    border-radius: 5px;
-    border: 3px solid #c6910e;
-  }
-  .shijing2 {
-    position: fixed;
-    z-index: 99;
-    top: 240px;
-    left: 270px;
-    background-image: linear-gradient(
-      rgba(224, 157, 10, 1),
-      rgba(252, 237, 227, 0.1)
-    );
-    height: 130px;
-    width: 50px;
-    border-radius: 5px;
-    border: 3px solid #e09d0a;
-  }
   .shijing3 {
     position: fixed;
     z-index: 99;
@@ -168,12 +231,11 @@
     width: 50px;
     border-radius: 5px;
     border: 3px solid #c1a530;
+    display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
   }
-  .shijing {
-    position: fixed;
-    z-index: 999;
-    top: 280px;
-    left: 275px;
+  .shijing3 a {
     writing-mode: vertical-lr;
     letter-spacing: 0.3em;
     font-size: 23px;
@@ -222,27 +284,6 @@
       position: fixed;
       left: 350px;
   }
-  .circle11 {
-    position: fixed;
-    z-index: 999;
-    top: 462px;
-    left: 36.5px;
-    width: 22px;
-    height: 22px;
-    background-color: #c6910e;
-    border-radius: 50%;
-  }
-  .circle1 {
-    position: fixed;
-    z-index: 100;
-    top: 455px;
-    left: 30px;
-    width: 35px;
-    height: 35px;
-    background-color: #f9f5f2;
-    border-radius: 50%;
-    border: 2px solid #c6910e;
-  }
   .circle12{
     position: fixed;
     z-index: 100;
@@ -254,27 +295,7 @@
     border-radius: 50%;
     border: 4px solid #c6910e;
   }
-  .circle21 {
-    position: fixed;
-    z-index: 999;
-    top: 462px;
-    left: 206.5px;
-    width: 22px;
-    height: 22px;
-    background-color: #e09d0a;
-    border-radius: 50%;
-  }
-  .circle2 {
-    position: fixed;
-    z-index: 100;
-    top: 455px;
-    left: 200px;
-    width: 35px;
-    height: 35px;
-    background-color: #f9f5f2;
-    border-radius: 50%;
-    border: 2px solid #e09d0a;
-  }
+
   .circle22{
     position: fixed;
     z-index: 100;
@@ -307,17 +328,6 @@
     border-radius: 50%;
     border: 2px solid #c1a530;
   }
-  .circle32{
-    position: fixed;
-    z-index: 100;
-    top: 460px;
-    left: 370px;
-    width: 25px;
-    height: 25px;
-    background-color: #f9f5f2;
-    border-radius: 50%;
-    border: 4px solid #c1a530;
-  }
   .intro2 {
     position: fixed;
     top: 560px;
@@ -341,4 +351,13 @@
     top: 170px;
     left: 470px; */
   }
+  .line-chart {
+  position: fixed;
+  top: 600px;
+  left: 50px;
+  z-index: 999;
+  height: 200px;
+  width: 380px;
+  overflow: scroll;
+}
   </style>

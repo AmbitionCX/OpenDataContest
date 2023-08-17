@@ -195,7 +195,7 @@ export default {
 }
 .menu-text{
   display: flex;
-  gap: 200px;
+  gap: 15vw;
   width: 91.5vw;
   position: fixed;
   top: 85px;

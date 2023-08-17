@@ -5,13 +5,16 @@
     </div>
     <div class="header">语音全览</div>
 
-    <div class="btn1">
-      <div class="left1"></div>
-      <div class="left2"></div>
-    </div>
-
     <div class="shijing"><a>诗经</a></div>
-    <div class="btn2"></div>
+    <div>
+    <div class="cir11"></div>
+    <div class="cir12"></div>
+    <div class="line1"></div>
+    <div class="line2"></div>
+    <a href="/quanlan/guangyun"><div class="cir2"></div></a>
+    <div class="line3"></div>
+    <a href="/quanlan/zhongyuan"><div class="cir3"></div></a>
+  </div>
 
     <div class="mainBox">
       <div class="leftBox">
@@ -67,19 +70,8 @@
         style="width: 300px; height: 150px; transform: translate(20px, -25px)"
       />
       <div class="txt" v-if="ciyun">词云</div>
-      <el-select
-      v-model="selectedOption" v-else
-      class="choose"
-      placeholder="请选择诗经篇章"
-      @change="handleOptionChange"
-    >
-      <el-option
-        v-for="item in chapter"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      />
-    </el-select>
+      <el-input class="txt2" v-else v-model="input" placeholder="请输入标题" 
+      style="width: 170px; background-color:transparent;" @keyup.enter="updateInput" />
     <Search class="search" style="width: 30px; height: 30px; margin-right: 8px; 
       color: #fffdfd;" @click="ciyun=false"/>
     </div>  
@@ -92,6 +84,18 @@
         @click="getWords()"
       />
     </div> -->
+    <div class="choose">
+      <div class="choose-title"><a>词云筛选</a></div>
+      <!-- <el-icon><Filter /></el-icon> -->
+      <ul class="choose-content">
+        <li v-for="item in chapter" class="hover-item"
+        @click="getTitle(item.value)">{{ item.value }}</li>
+      </ul>
+    </div>
+
+    <div class="link">
+      <a href="/yunbu">了解详情</a>
+    </div>
 
     <div class="image3">
       <img
@@ -125,6 +129,7 @@ export default {
       showTooltip: false,
       ciyun: true,
       chapter: [],
+      input: '',
       selectedOption: null,
     };
   },
@@ -133,6 +138,14 @@ export default {
     navbar1,
   },
   methods: {
+    updateInput() {
+        // 在回车键按下事件处理程序中更新input数据属性
+        // 这会将输入框中的值赋给input
+        this.input = event.target.value;
+        console.log(this.input);
+        this.getContent(this.input);
+      },
+
     //获取所有章节名称，做成下拉菜单
     async getChapter() {
       return new Promise((resolve, reject) => {
@@ -177,7 +190,7 @@ export default {
 
           const svg = d3
                 .select(this.$refs.svg)
-                .attr("width", 700)
+                .attr("width", 800)
                 .attr("height", 800);
   
               const layout = cloud()
@@ -200,7 +213,7 @@ export default {
   
         svg.selectAll("g").remove();
   
-        const g = svg.append("g").attr("transform", "translate(300,350)");
+        const g = svg.append("g").attr("transform", "translate(430,300)");
   
         g.selectAll("rect")
           .data(words)
@@ -296,58 +309,93 @@ export default {
   color: #f6f5f5;
   text-align: center;
 }
-.btn1 {
+.cir11 {
   position: fixed;
   top: 125px;
-  left: 60px;
-  background-image: linear-gradient(
-    to right,
-    rgba(232, 129, 73, 1),
-    rgba(252, 237, 227, 0.1)
-  );
-  height: 40px;
-  width: 50px;
-  border: 3px solid #e88149;
-}
-.left1 {
+  left: 55px;
+  width: 45px;
+  height: 45px;
   background-color: #f9f5f2;
-  height: 8px;
-  width: 8px;
+  border-radius: 50%;
+  border: 6px solid #e88149;
+}
+.cir12 {
   position: fixed;
-  top: 140px;
-  left: 67px;
-}
-.left2 {
-  background-color: #f9f5f2;
-  height: 2px;
+  top: 137px;
+  left: 68px;
   width: 20px;
+  height: 20px;
+  background-color: #e88149;
+  border-radius: 50%;
+}
+.line1 {
   position: fixed;
-  top: 143px;
-  left: 80px;
+  top: 165px;
+  left: 75px;
+  height: 25px;
+width: 5px;
+background-color: #e88149;
+}
+.line2 {
+  position: fixed;
+  top: 330px;
+  left: 75px;
+  height: 25px;
+width: 5px;
+background-color: #e88149;
+}
+.cir2 {
+  position: fixed;
+  z-index: 100;
+  top: 353px;
+  left: 63px;
+  width: 30px;
+  height: 30px;
+  background-color: #f9f5f2;
+  border-radius: 50%;
+  border: 5px solid #e88149;
+}
+.line3 {
+  position: fixed;
+  top: 380px;
+  left: 75px;
+  height: 170px;
+width: 5px;
+background-color: #e88149;
+}
+.cir3 {
+  position: fixed;
+  z-index: 100;
+  top: 550px;
+  left: 63px;
+  width: 30px;
+  height: 30px;
+  background-color: #f9f5f2;
+  border-radius: 50%;
+  border: 5px solid #e88149;
+}
+.shijing {
+position: fixed;
+z-index: 99;
+top: 190px;
+left: 51px;
+background-image: linear-gradient(
+  rgba(232, 129, 73, 1),
+  rgba(252, 237, 227, 0.1)
+);
+height: 140px;
+width: 50px;
+border-radius: 5px;
+border: 3px solid #e88149;
+display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+align-items: center; /* 垂直居中文本 */
+justify-content: center; /* 水平居中文本 */
 }
 .shijing a {
-  position: fixed;
-  z-index: 899;
-  top: 210px;
-  left: 68px;
   writing-mode: vertical-lr;
   letter-spacing: 0.3em;
   font-size: 23px;
   color: black;
-}
-.btn2 {
-  position: fixed;
-  z-index: 99;
-  top: 175px;
-  left: 60px;
-  background-image: linear-gradient(
-    rgba(232, 129, 73, 1),
-    rgba(252, 237, 227, 0.1)
-  );
-  height: 140px;
-  width: 50px;
-  border-radius: 5px;
-  border: 3px solid #e88149;
 }
 .mainBox {
   position: fixed;
@@ -356,14 +404,14 @@ export default {
   flex-direction: row;
 }
 .leftBox {
-  height: 65vh;
+  height: 70vh;
   width: 30vw;
   display: flex;
   background-color: rgb(223, 224, 224);
   border-radius: 5%;
   margin-right: 50px;
-  margin-left: 170px;
-  margin-top: 8vh;
+  margin-left: 150px;
+  margin-top: 4vh;
   overflow: auto;
   opacity: 0.75;
 }
@@ -411,15 +459,46 @@ export default {
 
 .rightBox {
   height: 600px;
-  width: 45vw;
+  width: 50vw;
   display: flex;
   margin-left: 50px;
 }
 .choose {
   display: flex;
+  flex-direction: column;
   position: fixed;
   top: 133px;
-  left: 65vw;
+  left: 45vw;
+}
+.choose-title {
+  width: 180px;
+  height: 45px;
+  background-image: linear-gradient(rgba(232, 129, 73, 1),
+      rgba(252, 237, 227, 0.1));
+  border-radius: 5px;
+      display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
+}
+.choose-title a {
+  color: #000;
+  font-size: 25px;
+}
+.choose-content {
+  border: 3px solid rgba(232, 129, 73, 0.5);
+  background-color: #f9f5f2;
+  width: inherit;
+  height: 530px;
+  overflow: auto;
+}
+.choose-content::-webkit-scrollbar-thumb {
+  background-color: red; /* 设置滚动条滑块颜色 */
+}
+.hover-item {
+  cursor: pointer; /* 将鼠标指针设置为手指形状 */
+}
+.hover-item:hover {
+  background-color: rgba(232, 129, 73, 0.3); /* 设置悬浮时的背景颜色 */
 }
 .el-input__wrapper {
   background-color: transparent;
@@ -453,25 +532,25 @@ export default {
 .txt {
   position: fixed;
   top: 125px;
-  left: 70vw;
+  left: 76vw;
   font-size: 30px;
 }
 .txt2 {
   position: fixed;
   top: 133px;
-  left: 65vw;
+  left: 70vw;
   font-size: 20px;
   color: #838080;
 }
 .search {
   position: fixed;
   top: 133px;
-  left: 78vw;
+  left: calc(63vw + 300px);
 }
 .ciyun {
   position: fixed;
   top: 100px;
-  left: 57vw;
+  left: 63vw;
   width: 400px;
 }
 .image2 {
@@ -484,5 +563,23 @@ export default {
   z-index: -1;
   bottom: 0;
   left: 0;
+}
+.link {
+  position: fixed;
+  bottom: 200px;
+  left: 73vw;
+  width: 180px;
+  height: 40px;
+  background-image: linear-gradient(to left, rgba(232, 129, 73, 1),
+      rgba(252, 237, 227, 0.1));
+  border-radius: 5px;
+  border: 3px solid #e88149;
+      display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
+}
+.link a {
+  color: #000;
+  font-size: 20px;
 }
 </style>
