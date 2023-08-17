@@ -42,7 +42,7 @@ app.post("/shijing_word_cloud", (req, res) => {
     if (chapter == null) {
         chapter = "国风·周南";
     }
-    
+
     res.setHeader('Content-Type', 'application/json');
     csvReader.shijing_word_cloud(chapter).then(data => res.send(data))
 })
@@ -50,9 +50,9 @@ app.post("/shijing_word_cloud", (req, res) => {
 app.post("/shijing_full_text", (req, res) => {
     let require_title = req.body.params.title;
     res.setHeader('Content-Type', 'application/json');
-    
-    csvReader.shijing_full_text(require_title).then( (data) => {
-        if (data.length == 0){
+
+    csvReader.shijing_full_text(require_title).then((data) => {
+        if (data.length == 0) {
             res.json({
                 code: 400,
                 message: `No content matched with title ${require_title}`
@@ -75,6 +75,21 @@ app.get("/get_guangyun_cloud", (req, res) => {
     csvReader.get_zhonggu_guangyun().then((data) => {
         let cloud = csvReader.guangyun_word_cloud(data);
         res.send(cloud);
+    })
+})
+
+app.get("/get_guangyun_search_item", (req, res) => {
+    csvReader.get_guangyun_search_item().then(data => res.send(data))
+})
+
+app.post("/guangyun_search", (req, res) => {
+    let search_item = req.body.params.search_item;
+    csvReader.guangyun_search(search_item).then((data) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.json({
+            code: 200,
+            data: data
+        })
     })
 })
 
@@ -101,6 +116,20 @@ app.get("/get_zhongyuan_cloud", (req, res) => {
     csvReader.get_jindai_zhongyuan().then((data) => {
         let cloud = csvReader.zhongyuan_word_cloud(data);
         res.send(cloud);
+    })
+})
+
+app.get("/get_zhongyuan_search_item", (req, res) => {
+    csvReader.get_zhongyuan_search_item().then(data => res.send(data))
+})
+
+app.post("/zhongyuan_search", (req, res) => {
+    csvReader.guangyun_search(search_item).then((data) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.json({
+            code: 200,
+            data: data
+        })
     })
 })
 

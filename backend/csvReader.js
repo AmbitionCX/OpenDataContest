@@ -149,15 +149,12 @@ const shijing_full_text = (title) => {
                             new_line = !new_line;
                         }
                     }
-                    console.log(full_text);
                     resolve(full_text);
                 }
             });
         })
     })
 }
-
-shijing_full_text("关雎");
 
 // ------------ guangyun ------------
 const get_zhonggu_guangyun = () => {
@@ -177,6 +174,88 @@ const get_zhonggu_guangyun = () => {
     })
 }
 
+const get_guangyun_search_item = () => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(zhonggu_guangyun_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let data = getColumns(rows, [9, 4, 5, 6, 8, 10]);
+                    
+                    let zu = new Set();
+                    let shengniu = new Set();
+                    let hu = new Set();
+                    let deng = new Set();
+                    let shengdiao = new Set();
+                    let she = new Set();
+
+                    for (item of data) {
+                        if (item[0] != null) {
+                            zu.add(item[0])
+                        }
+                        if (item[1] != null) {
+                            shengniu.add(item[1])
+                        }
+                        if (item[2] != null) {
+                            hu.add(item[2])
+                        }
+                        if (item[3] != null) {
+                            deng.add(item[3])
+                        }
+                        if (item[4] != null) {
+                            shengdiao.add(item[4])
+                        }
+                        if (item[5] != null) {
+                            she.add(item[5])
+                        }
+                    }
+
+                    let guangyun_search_item = {};
+                    guangyun_search_item.zu = Array.from(zu);
+                    guangyun_search_item.shengniu = Array.from(shengniu);
+                    guangyun_search_item.hu = Array.from(hu);
+                    guangyun_search_item.deng = Array.from(deng);
+                    guangyun_search_item.shengdiao = Array.from(shengdiao);
+                    guangyun_search_item.she = Array.from(she);
+
+                    resolve(guangyun_search_item);
+                }
+            })
+        })
+    })
+}
+
+
+const guangyun_search = (search_item) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(zhonggu_guangyun_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let data = getColumns(rows, [9, 4, 5, 6, 8, 10, 1]);
+
+                    for (let key in search_item) {
+                        if (search_item[key].length != 0) {
+                            let index = Object.keys(search_item).indexOf(key);
+                            data = data.filter((element) => element[index] == search_item[key])
+                        }
+                    }
+
+                    let find_zitou = [];
+                    for (let item of data) {
+                        if (item[6].length != 0 && item[6].length <= 1) {
+                            find_zitou.push(item[6]);
+                        }
+                    }
+                    resolve (find_zitou)
+                }
+            })
+        })
+    })
+}
+
 const guangyun_word_cloud = (data) => {
     let random_data = get_random_elements(data, 40);
     let cloud = [];
@@ -187,7 +266,8 @@ const guangyun_word_cloud = (data) => {
 }
 
 const guangyun_url = (data, target) => {
-    let url = match_array_item(data, target, 3);
+    let converted = chineseConv.tify(target);
+    let url = match_array_item(data, converted, 3);
     return url;
 }
 
@@ -210,6 +290,77 @@ const get_jindai_zhongyuan = () => {
     })
 }
 
+const get_zhongyuan_search_item = () => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(jindai_zhongyuan_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let data = getColumns(rows, [4, 5, 6, 3]);
+                    
+                    let shengniu = new Set();
+                    let qingzhuo = new Set();
+                    let sihu = new Set();
+                    let shengdiao = new Set();
+
+                    for (item of data) {
+                        if (item[0] != null) {
+                            shengniu.add(item[0])
+                        }
+                        if (item[1] != null) {
+                            qingzhuo.add(item[1])
+                        }
+                        if (item[2] != null) {
+                            sihu.add(item[2])
+                        }
+                        if (item[3] != null) {
+                            shengdiao.add(item[3])
+                        }
+                    }
+
+                    let zhongyuan_search_item = {};
+                    zhongyuan_search_item.shengniu = Array.from(shengniu);
+                    zhongyuan_search_item.qingzhuo = Array.from(qingzhuo);
+                    zhongyuan_search_item.sihu = Array.from(sihu);
+                    zhongyuan_search_item.shengdiao = Array.from(shengdiao);
+
+                    resolve(zhongyuan_search_item);
+                }
+            })
+        })
+    })
+}
+
+const zhongyuan_search = (search_item) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(jindai_zhongyuan_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let data = getColumns(rows, [4, 5, 6, 3, 1]);
+
+                    for (let key in search_item) {
+                        if (search_item[key].length != 0) {
+                            let index = Object.keys(search_item).indexOf(key);
+                            data = data.filter((element) => element[index] == search_item[key])
+                        }
+                    }
+
+                    let find_zi = [];
+                    for (let item of data) {
+                        if (item[4].length != 0 && item[4].length <= 1) {
+                            find_zi.push(item[4]);
+                        }
+                    }
+                    resolve (find_zi)
+                }
+            })
+        })
+    })
+}
+
 const zhongyuan_word_cloud = (data) => {
     let random_data = get_random_elements(data, 40);
     let cloud = [];
@@ -220,9 +371,10 @@ const zhongyuan_word_cloud = (data) => {
 }
 
 const zhongyuan_url = (data, target) => {
-    let url = match_array_item(data, target, 2);
+    let converted = chineseConv.tify(target);
+    let url = match_array_item(data, converted, 2);
     return url;
-}   
+}
 
 const yunbu_sankey_data = (yunbu) => {
     return new Promise((resolve, reject) => {
@@ -388,5 +540,9 @@ module.exports = {
     zhongyuan_url,
     yunbu_sankey_data,
     shijing_full_text,
-    get_yunjiaozi
+    get_yunjiaozi,
+    get_guangyun_search_item,
+    guangyun_search,
+    get_zhongyuan_search_item,
+    zhongyuan_search
 }

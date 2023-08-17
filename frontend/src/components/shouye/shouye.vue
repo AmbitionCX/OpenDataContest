@@ -4,7 +4,7 @@
       <img
         src="@/components/shouye/shouye.svg"
         class="image"
-        style="width: 2400px; height: 1800px"
+        style="width: 100%; height: 100%"
       />
     </div>
 
@@ -54,8 +54,8 @@ export default {
   
   <style scoped>
 .bg {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
@@ -82,8 +82,8 @@ export default {
 }
 .lines{
   position: fixed;
+  width: 100%;
+  height: 100%;
   z-index: 1;
-  top: -270px;
-  left: -560px;
 }
 </style>
