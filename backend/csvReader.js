@@ -108,6 +108,51 @@ const shijing_word_cloud = (chapter) => {
     })
 }
 
+const shijing_search = (search_item) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(shanggu_shijing_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let data = getColumns(rows, [4, 3, 0, 1, 2]);
+                    let titles = new Set();
+
+                    for (let key in search_item) {
+                        if (search_item[key].length != 0) {
+                            let index = Object.keys(search_item).indexOf(key);
+                            data = data.filter((element) => element[index] == search_item[key])
+                        }
+                    }
+
+                    for (let item of data) {
+                        if (item[3].length != 0) {
+                            titles.add(item[3]);
+                        }
+                    }
+                    
+                    let search_results = []
+                    for (let title of Array.from(titles)) {
+                        let one_poem = {};
+                        let target = data.find((element) => element[3] == title);
+                        one_poem.chapter = target[2];
+                        one_poem.title = title;
+
+                        if (target[4].slice(-1) == "○") {
+                            one_poem.text = target[4].slice(0, -2);
+                        } else {
+                            one_poem.text = target[4].slice(0, -1);
+                        }
+                        
+                        search_results.push(one_poem);
+                    }
+                    console.log(search_results);
+                }
+            });
+        })
+    })
+}
+
 const shijing_full_text = (title) => {
     return new Promise((resolve, reject) => {
         fs.readFile(shanggu_shijing_path, function (err, fileData) {
@@ -225,7 +270,6 @@ const get_guangyun_search_item = () => {
         })
     })
 }
-
 
 const guangyun_search = (search_item) => {
     return new Promise((resolve, reject) => {
@@ -541,6 +585,7 @@ module.exports = {
     yunbu_sankey_data,
     shijing_full_text,
     get_yunjiaozi,
+    shijing_search,
     get_guangyun_search_item,
     guangyun_search,
     get_zhongyuan_search_item,

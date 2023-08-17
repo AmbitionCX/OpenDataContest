@@ -37,6 +37,17 @@ app.get("/get_shijing_chapter", (req, res) => {
     csvReader.get_shijing_chapter().then(data => res.send(data))
 })
 
+app.post("/shijing_search", (req, res) => {
+    let search_item = req.body.params.search_item;
+    csvReader.shijing_search(search_item).then((data) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.json({
+            code: 200,
+            data: data
+        })
+    })
+})
+
 app.post("/shijing_word_cloud", (req, res) => {
     let chapter = req.body.params.chapter;
     if (chapter == null) {
@@ -173,4 +184,3 @@ app.post("/get_yunjiaozi", (req, res) => {
 app.listen(port, '0.0.0.0', () => {
     console.log(`App listening on port ${port}...`);
 });
-
