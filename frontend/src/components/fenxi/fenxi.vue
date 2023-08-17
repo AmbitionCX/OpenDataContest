@@ -137,7 +137,7 @@ export default {
         .sankey()
         .nodeWidth(20)
         .nodePadding(10)
-        .size([this.width - 100, this.height]);
+        .size([this.width - 100, this.height - 50]);
 
       const { nodes: sankeyNodes, links: sankeyLinks } = sankey({
         nodes,
@@ -379,8 +379,20 @@ export default {
   justify-content: center;
   align-items: center;
   height: 85vh;
+  width: 70vw;
   overflow: auto;
   /* background-color: antiquewhite; */
+}
+.scrollable-content {
+  display: flex;
+  position: fixed;
+  top: 13vh;
+  left: 50vh;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+  width: 70vw;
+  overflow: auto;
 }
 .choose {
   display: flex;

@@ -1,188 +1,372 @@
 <template>
-  <div class="sankey-chart"></div>
+  <div class="bg" style="background-color: #f9f5f2">
+    <div class="nav1">
+      <navbar1></navbar1>
+    </div>
+    <div class="header">语音全览</div>
+
+    <div class="shijing"><a>中原音韵</a></div>
+    <div>
+    <a href="/quanlan/shijing"><div class="cir1"></div></a>
+    <div class="line1"></div>
+    <div class="cir11"></div>
+    <div class="cir12"></div>
+    <div class="line2"></div>
+    <div class="line3"></div>
+    <a href="/quanlan/guangyun"><div class="cir3"></div></a>
+  </div>
+
+    <div class="mainBox">
+      <div class="leftBox">
+        <img :src="picUrl" />
+      </div>
+
+      <div class="rightBox">
+        <svg ref="svg"></svg>
+      </div>
+    </div>
+
+    <div class="ciyun">
+      <img src="@/assets/quanlan/title.svg" class="image" 
+      style="width: 300px; height: 150px; transform: translate(20px, -25px)" />
+      <div class="txt">词云</div>
+    </div>
+
+    <div class="image2">
+      <img src="@/assets/quanlan/arrow.svg" class="image" 
+      style="width: 400px; height: 40px" @click="getWords()"/>
+    </div>
+
+    <div class="image3">
+      <img
+        src="@/assets/quanlan/bottom1.svg"
+        class="image"
+        style="width: 100vw; height: 100vh"
+      />
+    </div>
+
+    <div class="link">
+      <a href="/yunbu3">了解详情</a>
+    </div>
+
+  </div>
 </template>
-
+        
 <script>
-import * as d3 from 'd3';
-import * as d3Sankey from "d3-sankey";
-
+import navbar from "@/components/navbar.vue";
+import navbar1 from "@/components/nav/navbar1.vue";
+import * as d3 from "d3";
+import axios from "axios";
+import cloud from "d3-cloud";
 
 export default {
-  name: 'SankeyChart',
-  data(){
-    return{
-      textData: "这是我用来测试的一段话，如果你看到他正确显示在应有的位置上那就说明我的代码非常正确，否则我就要继续修改",
-      pathData: '',
-    }
-  },
   mounted() {
-    this.drawSankeyChart();
+    this.getWords();
+  },
+  data() {
+    return {
+      words: [],
+      picUrl: "",
+    };
+  },
+  components: {
+    navbar,
+    navbar1,
   },
   methods: {
-    drawSankeyChart() {
-      // 数据
-      const data = {
-        nodes: [
-          { name: 'Node 1' },
-          { name: 'Node 2' },
-          { name: 'Node 3' },
-          { name: 'Node 4' },
-          { name: 'Node 5' },
-          { name: 'Node 6' },
-        ],
-        links: [
-          { source: 0, target: 1, value: 20 },
-          { source: 0, target: 2, value: 10 },
-          { source: 1, target: 3, value: 15 },
-          { source: 1, target: 5, value: 10 },
-          { source: 2, target: 3, value: 5 },
-          { source: 2, target: 4, value: 15 }
-        ]
-      };
+    async getWords() {
+      return new Promise((resolve, reject) => {
+        const url = "http://localhost:5000/get_zhongyuan_cloud";
+        axios
+          .get(url)
+          .then((res) => {
+            //console.log(res.data);
+            const words = [];
+            for (var i = 0; i < res.data.length; i++) {
+              if(res.data[i].length<2){
+                words.push({ text: res.data[i], txtwidth: 1 });
+              };
+            }
+            console.log(words);
+            this.words = words;
 
-      // SVG容器
-      const svg = d3.select('.sankey-chart')
-        .append('svg')
-        .attr('width', 800)
-        .attr('height', 800);
+            const svg = d3
+              .select(this.$refs.svg)
+              .attr("width", 700)
+              .attr("height", 800);
 
-      // 创建桑基图布局
-      const sankey = d3Sankey
-      .sankey()
-        .nodeWidth(40)
-        .nodePadding(10)
-        .size([700, 700]);
+            const layout = cloud()
+              .size([500, 300])
+              .words(words)
+              .padding(5)
+              .rotate(() => 0) // 设置旋转角度为0，即不旋转
+              .font("Impact")
+              .fontSize(30)
+              .on("end", this.draw);
 
-      const { nodes, links } = sankey(data);
-
-      // 创建颜色渐变
-      const gradient = svg.append('defs')
-        .append('linearGradient')
-        .attr('id', 'gradient')
-        .attr('x1', '0%')
-        .attr('y1', '0%')
-        .attr('x2', '100%')
-        .attr('y2', '0%');
-
-        gradient.append('stop')
-        .attr('offset', '50%')
-        .attr('stop-color', 'rgba(188, 204, 92, 1)');
-      
-      gradient.append('stop')
-        .attr('offset', '100%')
-        .attr('stop-color', 'rgba(222, 222, 222, 1)');
-
-      // 绘制链接
-      const link = svg.append('g')
-        .selectAll('.link')
-        .data(links)
-        .enter()
-        .append('path')
-        .attr('class', 'link')
-        .attr('d', d3Sankey.sankeyLinkHorizontal())
-        .attr("id", function (d, i) { 
-                    return 'path' + i;
-                })
-        .attr('stroke', '#000')
-        .attr('stroke-width', d => Math.max(1, d.width));
-        
-        var PathData = '';
-
-        //添加鼠标悬浮事件
-        link
-        .on('mouseover', function(d,i) {
-          PathData = this.getAttribute('d');
-          console.log(PathData);
-          drawTxt(PathData);
-
-          d3.select(this).attr('stroke', 'url(#gradient)');
-          //d3.select(this).select('.link-text').style('visibility', 'visible');
-        })
-        .on('mouseout', function() {
-          d3.select(this).attr('stroke', "#000"); // 鼠标离开时恢复链接颜色为黑色
-          svg.selectAll("textPath").remove();
-        });;
-
-        /////////////////////////////////////////////////////////
-        const textData = "这是我用来测试的一段话，如果你看到他正确显示在应有的位置上那就说明我的代码非常正确，否则我就要继续修改";
-
-        function drawTxt(pathData){
-          svg.selectAll("textPath").remove();
-          d3.select('#my-path-id').remove();
-          console.log('actual: ',pathData);
-
-          //const pathData ='M370,425.5555555555555C515,425.5555555555555,515,264.44444444444446,660,264.44444444444446'
-
-      const path = svg.append("path")
-        .attr("d", pathData)
-        .attr("stroke", "none")
-        .attr("stroke-width", 1)
-        .attr("fill", "none")
-        .attr("id", "my-path-id"); // Add a unique ID to the path element
-
-      const text = svg.append("text")
-        .attr("text-anchor", "middle") // Center-align text
-        .attr("alignment-baseline", "middle") // Vertically center-align text
-        .style("white-space", "pre-line"); // Enable line breaks
-
-      const pathElement = path.node();
-      const pathLength = pathElement.getTotalLength();
-
-      // Split text into lines
-      function splitTextIntoChunks(text, chunkSize) {
-      const chunks = [];
-      for (let i = 0; i < text.length; i += chunkSize) {
-        chunks.push(text.substr(i, chunkSize));
-      }
-      return chunks;
-    }
-
-      const chunkSize = Math.floor(pathLength/15)
-      const lines = splitTextIntoChunks(textData, chunkSize);
-      
-      // Append each line as a tspan element
-      lines.forEach((line, index) => {
-        text.append("textPath")
-          .attr("href", "#my-path-id") // Reference the path by its ID
-          .attr("startOffset", "50%") // Start text at the middle of the path
-          .append("tspan")
-          .attr("dy", `${index * 30 - 20}px`) // Adjust vertical positioning
-          .text(line);
-        });    
-    }
-
-    /////////////////////////////////////////////////////////////
-              
-      // 绘制节点
-      const node = svg.append('g')
-        .selectAll('.node')
-        .data(nodes)
-        .enter()
-        .append('rect')
-        .attr('class', 'node')
-        .attr('x', d => d.x0)
-        .attr('y', d => d.y0)
-        .attr('height', d => d.y1 - d.y0)
-        .attr('width', d => d.x1 - d.x0)
-        .attr('fill', '#66c2a5');
-
-      // 添加节点标签
-      node.append('title')
-        .text(d => d.name);
+            layout.start();
+          })
+          .catch(function (err) {
+            reject(err);
+          });
+      });
     },
 
-    
-  }
+    draw(words) {
+      const svg = d3.select(this.$refs.svg);
+
+      svg.selectAll("g").remove();
+
+      const g = svg.append("g").attr("transform", "translate(350,350)");
+
+      g.selectAll("rect")
+        .data(words)
+        .enter()
+        .append("rect")
+        .on("click", (event, d) => this.wordClicked(d.text))
+        .attr("x", (d) => d.x - d.txtwidth * 15 - 10)
+        .attr("y", (d) => d.y - 20)
+        .attr("width", (d) => d.txtwidth * 30 + 20)
+        .attr("height", (d) => 40)
+        .style("fill", "red")
+        .attr("rx", 8)
+        .attr("ry", 8)
+        .style("opacity", 0.3);
+
+      g.selectAll("text")
+        .data(words)
+        .enter()
+        .append("text")
+        .on("click", (event, d) => this.wordClicked(d.text))
+        .attr("x", (d) => d.x)
+        .attr("y", (d) => d.y)
+        .style("font-size", (d) => 30 + "px")
+        .style("font-family", "Impact")
+        .style("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("alignment-baseline", "middle")
+        .text((d) => d.text);
+    },
+
+    async wordClicked(word) {
+      // Send the clicked word to the backend using an API call
+      try {
+        console.log(word);
+        const response = await axios.post(
+          "http://localhost:5000/get_zhongyuan_url",
+          {
+            params: {
+              Word: word,
+            },
+          }
+        );
+        console.log("Word clicked:", word);
+        console.log("Backend response:", response.data);
+        console.log("Backend response url:", response.data['data']);
+        this.picUrl = response.data['data'];
+      } catch (error) {
+        console.error("Error sending clicked word to the backend:", error);
+      }
+    },
+  },
 };
 </script>
-
+        
 <style>
-.node {
-  cursor: move;
-  fill-opacity: .9;
+* {
+  /* 内外边距为0 */
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* 各种列表样式为空 */
+  text-decoration: none;
+  list-style: none;
+}
+
+.nav1 {
+  position: fixed;
+  z-index: 990;
+}
+
+.bg {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.header {
+  position: fixed;
+  z-index: 999;
+  top: 5px;
+  left: 47vw;
+  font-size: 30px;
+  color: #f6f5f5;
+  text-align: center;
+}
+
+.cir1 {
+  position: fixed;
+  z-index: 100;
+  top: 125px;
+  left: 63px;
+  width: 30px;
+  height: 30px;
+  background-color: #f9f5f2;
+  border-radius: 50%;
+  border: 5px solid #e88149;
+}
+.cir11 {
+  position: fixed;
+  top: 540px;
+  left: 55px;
+  width: 45px;
+  height: 45px;
+  background-color: #f9f5f2;
+  border-radius: 50%;
+  border: 6px solid #e88149;
+}
+.cir12 {
+  position: fixed;
+  z-index: 999;
+  top: 552px;
+  left: 68px;
+  width: 20px;
+  height: 20px;
+  background-color: #e88149;
+  border-radius: 50%;
+}
+.line1 {
+  position: fixed;
+  top: 155px;
+  left: 75px;
+  height: 200px;
+width: 5px;
+background-color: #e88149;
+}
+.line3 {
+  position: fixed;
+  top: 580px;
+  left: 75px;
+  height: 25px;
+width: 5px;
+background-color: #e88149;
+}
+.cir2 {
+  position: fixed;
+  z-index: 100;
+  top: 353px;
+  left: 63px;
+  width: 30px;
+  height: 30px;
+  background-color: #f9f5f2;
+  border-radius: 50%;
+  border: 5px solid #e88149;
+}
+.line2 {
+  position: fixed;
+  z-index: 1;
+  top: 365px;
+  left: 75px;
+  height: 178px;
+width: 5px;
+background-color: #e88149;
+}
+.cir3 {
+  position: fixed;
+  z-index: 100;
+  top: 353px;
+  left: 63px;
+  width: 30px;
+  height: 30px;
+  background-color: #f9f5f2;
+  border-radius: 50%;
+  border: 5px solid #e88149;
+}
+.shijing {
+position: fixed;
+z-index: 9999;
+top: 600px;
+left: 51px;
+background-image: linear-gradient(
+  rgba(232, 129, 73, 1),
+  rgba(252, 237, 227, 0.1)
+);
+height: 140px;
+width: 50px;
+border-radius: 5px;
+border: 3px solid #e88149;
+display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+align-items: center; /* 垂直居中文本 */
+justify-content: center; /* 水平居中文本 */
+}
+.shijing a {
+writing-mode: vertical-lr;
+letter-spacing: 0.3em;
+font-size: 23px;
+color: black;
+}
+.mainBox {
+  position: fixed;
+  top: 100px;
+  display: flex;
+  flex-direction: row;
+}
+
+.leftBox {
+  height: 80vh;
+  width: 38vw;
+  display: flex;
+  margin-right: 10px;
+  margin-left: 150px;
+}
+
+.rightBox {
+  height: 600px;
+  width: 45vw;
+  display: flex;
+  margin-right: 30px;
+}
+.txt {
+  position: fixed;
+  top: 125px;
+  left: 74vw;
+  font-size: 30px;
+}
+.ciyun {
+  position: relative;
+  top: 100px;
+  left: 350px;
+}
+.image2 {
+  position: relative;
+  top: 250px;
+  left: 630px;
+}
+.image3 {
+  position: fixed;
+  z-index: -1;
+  bottom: 0;
+  left: 0;
 }
 .link {
-  fill: none;
-  stroke-opacity: .2;
+  position: fixed;
+  top: 600px;
+  left: 73vw;
+  width: 180px;
+  height: 40px;
+  background-image: linear-gradient(to left, rgba(232, 129, 73, 1),
+      rgba(252, 237, 227, 0.1));
+  border-radius: 5px;
+  border: 3px solid #e88149;
+      display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
+}
+.link a {
+  color: #000;
+  font-size: 20px;
 }
 </style>
