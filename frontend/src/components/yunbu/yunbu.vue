@@ -7,6 +7,8 @@
       </div>
       <div class="header">韵部系联</div>
 
+      <div class="line-chart"></div>
+
       <div class="intro">
         <div class="intro1">文字简介:</div>
         <div class="rect1"></div>
@@ -58,6 +60,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -121,7 +124,7 @@ export default {
         axios
           .get(url)
           .then((res) => {
-            console.log(res.data);
+            //console.log(res.data);
             const yunbu = [];
             const yunjiao = [];
             for (let i = 0; i < res.data.length; i++) {
@@ -143,7 +146,13 @@ export default {
 
             this.yb = yunbu2;
             this.yunjiao = yunjiao;
-            resolve(yunjiao); // 请求成功后resolve数据
+
+            const plotData = [];
+            for (let i = 0; i < yunbu2.length; i++) {
+              plotData.push({x: i, y: yunjiao[i].length})
+            }
+            console.log('plotdata:',plotData);
+            resolve([plotData, yunbu2]); // 请求成功后resolve数据
           })
           .catch(function (err) {
             reject(err); // 请求失败后reject错误
@@ -203,9 +212,65 @@ export default {
     goToNewPage(index) {
       this.$router.push(`/yunbu/shijing/${index}`);
     },
+
+    //绘制折线图
+    async drawPlot(){
+      try {
+    const data = await this.getShijing(); // 等待promise的结果
+    //console.log('data: ',data);
+
+    const plotdata = data[0];
+    const yunbu = data[1];
+
+    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+      const width = 400 - margin.left - margin.right;
+      const height = 200 - margin.top - margin.bottom;
+
+      const svg = d3
+        .select('.line-chart')
+        .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+        .append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
+
+      var x = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.x)]).range([0, width]);
+      var y = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.y)]).range([height, 0]);
+
+      const line = d3
+        .line()
+        .x(d => x(d.x))
+        .y(d => y(d.y));
+
+      svg
+        .append('path')
+        .datum(plotdata)
+        .attr('class', 'line')
+        .attr('d', line)
+        .attr('fill', 'none')
+        .attr('stroke-width', 2)
+        .attr('stroke', 'black');
+
+      //坐标轴
+      const xLabels = yunbu;
+      x = d3.scalePoint().domain(xLabels).range([0, width]);
+      y = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.y)]).range([height, 0]);
+
+      const xAxis = d3.axisBottom(x);
+      const yAxis = d3.axisLeft(y);
+
+      svg.append('g').attr('class', 'x-axis').attr('transform', `translate(0, ${height})`).call(xAxis);
+      svg.append('g').attr('class', 'y-axis').call(yAxis);
+
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+    }
   },
   created() {
     this.getShijing();
+    this.drawPlot();
   },
 };
 </script>
@@ -515,5 +580,11 @@ export default {
   width: 380px;
   background-color: #dedede;
   border-radius: 20px;
+}
+.line-chart {
+  position: fixed;
+  top: 600px;
+  left: 50px;
+  z-index: 999;
 }
 </style>

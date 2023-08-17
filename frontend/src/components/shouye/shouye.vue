@@ -1,10 +1,18 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2">
-    <div class="lines">
+    <!-- <div class="lines">
       <img
         src="@/components/shouye/shouye.svg"
         class="image"
         style="width: 2400px; height: 1800px"
+      />
+    </div> -->
+
+    <div class="lines">
+      <img
+        src="@/components/shouye/background.png"
+        class="image"
+        style="width: 100vw; height: 100vh"
       />
     </div>
 
@@ -83,7 +91,7 @@ export default {
 .lines{
   position: fixed;
   z-index: 1;
-  top: -270px;
-  left: -560px;
+  top: 0px;
+  left: 0px;
 }
 </style>

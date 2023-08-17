@@ -35,12 +35,12 @@
 
     <div class="image2">
       <img src="@/assets/quanlan/arrow.svg" class="image" 
-      style="width: 40px; height: 40px" @click="incrementNum()"/>
+      style="width: 40px; height: 40px; cursor: pointer;" @click="incrementNum()"/>
     </div>
 
     <div class="image4">
       <img src="@/assets/quanlan/arrow2.svg" class="image" 
-      style="width: 40px; height: 40px" @click="decrementNum()"/>
+      style="width: 40px; height: 40px; cursor: pointer;" @click="decrementNum()"/>
     </div>
 
     <div class="image3">
@@ -276,7 +276,6 @@ export default {
 }
 .cir1 {
   position: fixed;
-  z-index: 100;
   top: 125px;
   left: 63px;
   width: 30px;
@@ -297,7 +296,6 @@ export default {
 }
 .cir12 {
   position: fixed;
-  z-index: 999;
   top: 342px;
   left: 68px;
   width: 20px;
@@ -323,7 +321,6 @@ background-color: #e88149;
 }
 .cir2 {
   position: fixed;
-  z-index: 100;
   top: 353px;
   left: 63px;
   width: 30px;
@@ -445,11 +442,11 @@ color: black;
   width: 400px;
 }
 .image2 {
-  position: relative;
+  position: fixed;
   z-index: 99;
   top: 350px;
-  left: 1280px;
-  width: 100px;
+  right: 20px;
+  width: 50px;
 }
 .image3 {
   position: fixed;
@@ -458,10 +455,11 @@ color: black;
   left: 0;
 }
 .image4 {
-  position: relative;
+  position: fixed;
   z-index: 90;
-  top: 310px;
-  left: 200px;
+  width: 50px;
+  right: 480px;
+  top: 350px;
 }
 .link {
   position: fixed;

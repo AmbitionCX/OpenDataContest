@@ -321,7 +321,6 @@ export default {
 }
 .cir12 {
   position: fixed;
-  z-index: 999;
   top: 137px;
   left: 68px;
   width: 20px;

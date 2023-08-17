@@ -14,7 +14,7 @@
     <div class="cir12"></div>
     <div class="line2"></div>
     <div class="line3"></div>
-    <a href="/quanlan/zhongyuan"><div class="cir3"></div></a>
+    <a href="/quanlan/guangyun"><div class="cir3"></div></a>
   </div>
 
     <div class="mainBox">
@@ -35,12 +35,12 @@
 
     <div class="image2">
       <img src="@/assets/quanlan/arrow.svg" class="image" 
-      style="width: 40px; height: 40px" @click="incrementNum()"/>
+      style="width: 40px; height: 40px; cursor: pointer;" @click="incrementNum()"/>
     </div>
 
     <div class="image4">
       <img src="@/assets/quanlan/arrow2.svg" class="image" 
-      style="width: 40px; height: 40px" @click="decrementNum()"/>
+      style="width: 40px; height: 40px; cursor: pointer;" @click="decrementNum()"/>
     </div>
 
     <div class="image3">
@@ -297,7 +297,6 @@ export default {
 }
 .cir12 {
   position: fixed;
-  z-index: 999;
   top: 552px;
   left: 68px;
   width: 20px;
@@ -445,11 +444,11 @@ color: black;
   width: 400px;
 }
 .image2 {
-  position: relative;
+  position: fixed;
   z-index: 99;
   top: 350px;
-  left: 1280px;
-  width: 100px;
+  right: 20px;
+  width: 50px;
 }
 .image3 {
   position: fixed;
@@ -458,10 +457,11 @@ color: black;
   left: 0;
 }
 .image4 {
-  position: relative;
+  position: fixed;
   z-index: 90;
-  top: 310px;
-  left: 200px;
+  width: 50px;
+  right: 480px;
+  top: 350px;
 }
 .link {
   position: fixed;
