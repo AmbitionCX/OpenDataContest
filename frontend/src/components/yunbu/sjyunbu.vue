@@ -1,14 +1,20 @@
 <template>
   <div class="scrollable-container">
-    <div v-for="(item, index) in yunjiao" :style="getImageStyle(index)">
+    <div v-for="(item, index) in yunjiao" :style="getYunbuStyle(index)">
+      <img
+        src="@/assets/yunbu/yunbu.svg"
+        style="width: 18vw; height: 22vw"
+      />
+      <!-- <span class="text" @click="getYunjiaoRfresh(index)"> {{ yun }}</span> -->
       <span class="yb" @click="goToNewPage(index)">{{ yb[index] }}</span>
       <div
         v-for="(char, Index) in item"
         :key="Index"
         :style="getTextStyle(Index, item, index)"
       >
-        <span class="yj">{{ char }}</span>
+        <div class="yj">{{ char }}</div>
       </div>
+
     </div>
   </div>
 </template>
@@ -20,16 +26,9 @@ import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      imageWidth: 100, // 图片宽度
-      imageHeight: 100, // 图片高度
-      imageSpacingW: 550, // 图片横向间隔
-      imageSpacingH: 200, //图片纵向间隔
       yun: "韵部",
       yb: [],
       yunjiao: [],
-      radius: 100,
-      gap: 8,
-      anglePerCharacter: 8, 
     };
   },
   computed: {
@@ -37,23 +36,22 @@ export default {
       const totalImages = 29;
       const images = [];
       for (let i = 0; i < totalImages; i++) {
-        const row = i % 2;
-        const col = Math.round(i / 2);
-        const x =
-          col * (this.imageWidth + this.imageSpacingW) - row * 350 + 600;
-        const y = row * (this.imageHeight + this.imageSpacingH) + 300;
+        // const row = i % 2;
+        // const col = Math.round(i / 2);
+        const x = i* 90 + 20;
+        const y = 20;
         images.push({ x, y });
       }
       return images;
     },
   },
   methods: {
-    getImageStyle(index) {
+    getYunbuStyle(index) {
       const image = this.images[index];
       return {
         position: "absolute",
-        left: `${image.x}px`,
-        top: `${image.y}px`,
+        left: `${image.x}vw`,
+        top: `${image.y}vh`,
       };
     },
 
@@ -63,11 +61,12 @@ export default {
         axios
           .get(url)
           .then((res) => {
+            console.log(res.data);
             const yunbu = [];
             const yunjiao = [];
             for (let i = 0; i < res.data.length; i++) {
-              if (res.data[i][2] != "" && res.data[i][2] != 0) {
-                yunbu.push(res.data[i][2]);
+              if (res.data[i][1] != "" && res.data[i][1] != 0) {
+                yunbu.push(res.data[i][1]);
               }
             }
             const yunbu2 = Array.from(new Set(yunbu));
@@ -77,8 +76,8 @@ export default {
             }
 
             for (let i = 0; i < res.data.length; i++) {
-              if (yunbu2.indexOf(res.data[i][2]) != -1) {
-                yunjiao[yunbu2.indexOf(res.data[i][2])].push(res.data[i][1]);
+              if (yunbu2.indexOf(res.data[i][1]) != -1) {
+                yunjiao[yunbu2.indexOf(res.data[i][1])].push(res.data[i][0]);
               }
             }
 
@@ -93,35 +92,53 @@ export default {
     },
 
     getTextStyle(Index, item, index) {
-      const totalCharacters = item.length;
-      const angle = this.degreesToRadians(Index * this.anglePerCharacter);
-      const distanceFromCenter = Index/2 + 60; //圆圈间隔+圆圈内径
-      const x = distanceFromCenter * Math.cos(angle);
-      const y = distanceFromCenter * Math.sin(angle);
-      const alpha = 1 - (Index / totalCharacters);
-      //   const angle = (this.gap * index * this.anglePerCharacter * Math.PI / 180) % (2 * Math.PI);
-      //   const x = (this.radius + revolutions * this.gap) * Math.cos(angle);
-      // const y = (this.radius + revolutions * this.gap) * Math.sin(angle);
+      //Index是韵脚字的序号，index是韵部的序号, item是韵脚字列表
+      const image = this.images[index];
 
-      
-      const row = index % 2;
-      const col = Math.round(index / 2);
-      const spaceWidth = 100;
-      const sapceHeight = 100;
-      const rx = col * (this.imageWidth - spaceWidth) - row * 1 + 610;
-      const ry = row * (this.imageHeight - sapceHeight) + 300;
+      const rowNum = 6;  //每行韵脚字个数
+      const space = 2;  //韵脚字间距
+      const picWidth = 5;
+      const picHeight = 7;
+      const col = (Index+1) % rowNum - 1;
+      const row = Math.ceil((Index+1) / rowNum) - 1;
+
+      var dx = 0; var dy = 0;
+      if(row==0){
+        if(col<2){
+          dx = -59+col*(picWidth+space); dy = -53 + picHeight*row;
+        }else{
+          dx = -59+col*(picWidth+space) + 9; dy = -53 + picHeight*row;
+        }
+      }else if(row==1){
+        if(col<2){
+          dx = -62.5+col*(picWidth+space); dy = -53 + picHeight*row;
+        }else{
+          dx = -62.5+col*(picWidth+space) + 15; dy = -53 + picHeight*row;
+        }
+      }else {
+        const rowNum2 = 9;
+        const col2 = (Index+1-12) % rowNum2 - 1;
+        const row2 = Math.ceil((Index+1) / rowNum2);
+        if(row2 % 2 == 0){
+        dx = -59+col2*(picWidth+space); dy = -53 + picHeight*row2;
+        } else if(row2 % 2 == 1){
+        dx = -62.5+col2*(picWidth+space); dy = -53 + picHeight*row2;
+        }
+      }      
 
       return {
-        transform: `translate(${x}px, ${y}px)`,
-        // position: "absolute",
-        // left: `${rx + x - 610}px`,
-        // top: `${ry + y - 300}px`,
-        color: `rgba(193, 165, 48, ${alpha})`,
+        position: "absolute",
+        left: `${dx + 49}vw`, //注意这个left是相对于每个韵脚字而言
+        top: `${image.y + dy + 33}vw`,
       };
-    },
 
-    degreesToRadians(degrees) {
-      return (degrees * Math.PI) / 180;
+      // return {
+      //   // transform: `translate(${x}px, ${y}px) rotate(${90 + angle}deg)`,
+      //   position: "absolute",
+      //   left: `${rx + x - 610}px`,
+      //   top: `${ry + y - 300}px`,
+      //   color: `rgba(193, 165, 48, ${alpha})`,
+      // };
     },
 
     // 点击图片时导航到新页面，并传递index作为参数
@@ -138,30 +155,27 @@ export default {
 
 <style>
 .yb {
-  position: absolute;
+  position: relative;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-110%, -340%);
   font-size: 80px;
-  background-image: linear-gradient(
-    to right,
-    rgba(252, 237, 227, 1),
-    rgba(193, 165, 48, 1)
-  );
-  color: transparent;
-  -webkit-background-clip: text;
+color: black;
+z-index: 999;
+writing-mode: vertical-lr;
+cursor: pointer;
 }
 .yj {
-  position: absolute;
-  transform-origin: center;
-  font-size: 12px;
-  white-space: nowrap;
+width: 8vw;
+height: 12vw;
+font-size: 30px;
+color: black;
+background-image: url("@/assets/yunbu/yunjiao.svg");
+background-size: contain;
+background-position: 1.8vw 0; 
+background-repeat: no-repeat;
 }
 .scrollable-container {
-  white-space: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 10px;
-  width: 100%;
+  position: relative; /* 使用相对定位 */
 }
 </style>

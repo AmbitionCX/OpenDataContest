@@ -1,175 +1,182 @@
 <template>
-    <div class="scrollable-container">
-      <div v-for="(item, index) in yunjiao" :style="getImageStyle(index)">
-        <!-- <img
-          src="@/components/yunbu/circle2.svg"
-          style="width: 250px; height: 250px"
-        /> -->
-        <!-- <span class="text" @click="getYunjiaoRfresh(index)"> {{ yun }}</span> -->
-        <span class="yb" @click="goToNewPage(index)">{{ yb[index] }}</span>
-        <div
-          v-for="(char, Index) in item"
-          :key="Index"
-          :style="getTextStyle(Index, item, index)"
-        >
-          <span class="yj">{{ char }}</span>
-        </div>
-        <!-- <span class="yj">{{ yunjiaoRandom[index].join(' ') }}</span> -->
+  <div class="scrollable-container">
+    <div v-for="(item, index) in yunjiao" :style="getYunbuStyle(index)">
+      <img
+        src="@/assets/yunbu/yunbu.svg"
+        style="width: 18vw; height: 22vw"
+      />
+      <!-- <span class="text" @click="getYunjiaoRfresh(index)"> {{ yun }}</span> -->
+      <span class="yb" @click="goToNewPage(index)">{{ yb[index] }}</span>
+      <div
+        v-for="(char, Index) in item"
+        :key="Index"
+        :style="getTextStyle(Index, item, index)"
+      >
+        <div class="yj">{{ char }}</div>
       </div>
+
     </div>
-  </template>
-  
-  <script>
-  import axios from "axios";
-  import { mapState, mapMutations } from "vuex";
-  
-  export default {
-    data() {
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+import { mapState, mapMutations } from "vuex";
+
+export default {
+  data() {
+    return {
+      yun: "韵部",
+      yb: [],
+      yunjiao: [],
+    };
+  },
+  computed: {
+    images() {
+      const totalImages = 69;
+      const images = [];
+      for (let i = 0; i < totalImages; i++) {
+        // const row = i % 2;
+        // const col = Math.round(i / 2);
+        const x = i* 90 + 20;
+        const y = 20;
+        images.push({ x, y });
+      }
+      return images;
+    },
+  },
+  methods: {
+    getYunbuStyle(index) {
+      const image = this.images[index];
       return {
-        imageWidth: 100, // 图片宽度
-        imageHeight: 100, // 图片高度
-        imageSpacingW: 550, // 图片横向间隔
-        imageSpacingH: 200, //图片纵向间隔
-        yun: "韵部",
-        yb: [],
-        yunjiao: [],
-        radius: 100,
-        gap: 8,
-        anglePerCharacter: 8, 
+        position: "absolute",
+        left: `${image.x}vw`,
+        top: `${image.y}vh`,
       };
     },
-    computed: {
-      images() {
-        const totalImages = 206;
-        const images = [];
-        for (let i = 0; i < totalImages; i++) {
-          const row = i % 2;
-          const col = Math.round(i / 2);
-          const x =
-            col * (this.imageWidth + this.imageSpacingW) - row * 350 + 600;
-          const y = row * (this.imageHeight + this.imageSpacingH) + 300;
-          images.push({ x, y });
+
+    async getShijing() {
+      return new Promise((resolve, reject) => {
+        const url = "http://localhost:5000/get_zhonggu_guangyun";
+        axios
+          .get(url)
+          .then((res) => {
+            const yunbu = [];
+            const yunjiao = [];
+            //console.log(res.data[1])
+            for (let i = 0; i < res.data.length; i++) {
+              if (res.data[i][2] != "" && res.data[i][2] != 0) {
+                yunbu.push(res.data[i][2]);
+              }
+            }
+            const yunbu2 = Array.from(new Set(yunbu));
+
+            for (let i = 0; i < yunbu2.length; i++) {
+              yunjiao[i] = [];
+            }
+
+            for (let i = 0; i < res.data.length; i++) {
+              if (yunbu2.indexOf(res.data[i][2]) != -1) {
+                yunjiao[yunbu2.indexOf(res.data[i][2])].push(res.data[i][0]);
+              }
+            }
+
+            this.yb = yunbu2;
+            this.yunjiao = yunjiao;
+            console.log(yunjiao);
+            resolve(yunjiao); // 请求成功后resolve数据
+          })
+          .catch(function (err) {
+            reject(err); // 请求失败后reject错误
+          });
+      });
+    },
+
+    getTextStyle(Index, item, index) {
+      //Index是韵脚字的序号，index是韵部的序号, item是韵脚字列表
+      const image = this.images[index];
+
+      const rowNum = 6;  //每行韵脚字个数
+      const space = 2;  //韵脚字间距
+      const picWidth = 5;
+      const picHeight = 7;
+      const col = (Index+1) % rowNum - 1;
+      const row = Math.ceil((Index+1) / rowNum) - 1;
+
+      var dx = 0; var dy = 0;
+      if(row==0){
+        if(col<2){
+          dx = -59+col*(picWidth+space); dy = -53 + picHeight*row;
+        }else{
+          dx = -59+col*(picWidth+space) + 9; dy = -53 + picHeight*row;
         }
-        return images;
-      },
+      }else if(row==1){
+        if(col<2){
+          dx = -62.5+col*(picWidth+space); dy = -53 + picHeight*row;
+        }else{
+          dx = -62.5+col*(picWidth+space) + 15; dy = -53 + picHeight*row;
+        }
+      }else {
+        const rowNum2 = 9;
+        const col2 = (Index+1-12) % rowNum2 - 1;
+        const row2 = Math.ceil((Index+1) / rowNum2);
+        if(row2 % 2 == 0){
+        dx = -59+col2*(picWidth+space); dy = -53 + picHeight*row2;
+        } else if(row2 % 2 == 1){
+        dx = -62.5+col2*(picWidth+space); dy = -53 + picHeight*row2;
+        }
+      }      
+
+      return {
+        position: "absolute",
+        left: `${dx + 49}vw`, //注意这个left是相对于每个韵脚字而言
+        top: `${image.y + dy + 33}vw`,
+      };
+
+      // return {
+      //   // transform: `translate(${x}px, ${y}px) rotate(${90 + angle}deg)`,
+      //   position: "absolute",
+      //   left: `${rx + x - 610}px`,
+      //   top: `${ry + y - 300}px`,
+      //   color: `rgba(193, 165, 48, ${alpha})`,
+      // };
     },
-    methods: {
-      getImageStyle(index) {
-        const image = this.images[index];
-        return {
-          position: "absolute",
-          left: `${image.x}px`,
-          top: `${image.y}px`,
-        };
-      },
-  
-      async getShijing() {
-        return new Promise((resolve, reject) => {
-          const url = "http://localhost:5000/get_zhonggu_guangyun";
-          axios
-            .get(url)
-            .then((res) => {
-              const yunbu = [];
-              const yunjiao = [];
-              //console.log(res.data[1])
-              for (let i = 0; i < res.data.length; i++) {
-                if (res.data[i][2] != "" && res.data[i][2] != 0) {
-                  yunbu.push(res.data[i][2]);
-                }
-              }
-              const yunbu2 = Array.from(new Set(yunbu));
-  
-              for (let i = 0; i < yunbu2.length; i++) {
-                yunjiao[i] = [];
-              }
-  
-              for (let i = 0; i < res.data.length; i++) {
-                if (yunbu2.indexOf(res.data[i][2]) != -1) {
-                  yunjiao[yunbu2.indexOf(res.data[i][2])].push(res.data[i][0]);
-                }
-              }
-  
-              this.yb = yunbu2;
-              this.yunjiao = yunjiao;
-              console.log(yunjiao);
-              resolve(yunjiao); // 请求成功后resolve数据
-            })
-            .catch(function (err) {
-              reject(err); // 请求失败后reject错误
-            });
-        });
-      },
-  
-      getTextStyle(Index, item, index) {
-        const totalCharacters = item.length;
-        const angle = this.degreesToRadians(Index * this.anglePerCharacter);
-        const distanceFromCenter = Index/2 + 60; //圆圈间隔+圆圈内径
-        const x = distanceFromCenter * Math.cos(angle);
-        const y = distanceFromCenter * Math.sin(angle);
-        const alpha = 1 - (Index / totalCharacters);
-        //   const angle = (this.gap * index * this.anglePerCharacter * Math.PI / 180) % (2 * Math.PI);
-        //   const x = (this.radius + revolutions * this.gap) * Math.cos(angle);
-        // const y = (this.radius + revolutions * this.gap) * Math.sin(angle);
-  
-        
-        const row = index % 2;
-        const col = Math.round(index / 2);
-        const spaceWidth = 100;
-        const sapceHeight = 100;
-        const rx = col * (this.imageWidth - spaceWidth) - row * 1 + 610;
-        const ry = row * (this.imageHeight - sapceHeight) + 300;
-  
-        return {
-          // transform: `translate(${x}px, ${y}px) rotate(${90 + angle}deg)`,
-          position: "absolute",
-          left: `${rx + x - 610}px`,
-          top: `${ry + y - 300}px`,
-          color: `rgba(193, 165, 48, ${alpha})`,
-        };
-      },
-  
-      degreesToRadians(degrees) {
-        return (degrees * Math.PI) / 180;
-      },
-  
-      // 点击图片时导航到新页面，并传递index作为参数
-      goToNewPage(index) {
-        this.$router.push(`/yunbu/guangyun/${index}`);
-      },
+
+    // 点击图片时导航到新页面，并传递index作为参数
+    goToNewPage(index) {
+      this.$router.push(`/yunbu/guangyun/${index}`);
     },
-  
-    created() {
-      this.getShijing();
-    },
-  };
-  </script>
-  
-  <style>
-  .yb {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 80px;
-    background-image: linear-gradient(
-      to right,
-      rgba(252, 237, 227, 1),
-      rgba(193, 165, 48, 1)
-    );
-    color: transparent;
-    -webkit-background-clip: text;
-  }
-  .yj {
-    position: absolute;
-    transform-origin: center;
-    font-size: 12px;
-    white-space: nowrap;
-  }
-  .scrollable-container {
-    white-space: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 10px;
-    width: 100%;
-  }
-  </style>
+  },
+
+  created() {
+    this.getShijing();
+  },
+};
+</script>
+
+<style>
+.yb {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-110%, -340%);
+  font-size: 80px;
+color: black;
+z-index: 999;
+writing-mode: vertical-lr;
+cursor: pointer;
+}
+.yj {
+width: 8vw;
+height: 12vw;
+font-size: 30px;
+color: black;
+background-image: url("@/assets/yunbu/yunjiao.svg");
+background-size: contain;
+background-position: 1.8vw 0; 
+background-repeat: no-repeat;
+}
+.scrollable-container {
+  position: relative; /* 使用相对定位 */
+}
+</style>

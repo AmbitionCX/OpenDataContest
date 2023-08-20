@@ -22,17 +22,16 @@
         <div class="txt">
           <a class="txt1" href="/yunbu">诗经</a>
           <a class="txt2" href="/yunbu2">广韵</a>
-          <a class="txt3" href="/yunbu3">中原音韵</a>
         </div>
-        <div class="circle12"></div>
-      <div class="circle22"></div>
+        <div class="circle12" @click="ToLinkSJ"></div>
+      <div class="circle22" @click="ToLinkGY"></div>
       <div class="circle3"><div class="circle31"></div></div>
   
       <div class="intro2">文字简介:</div>
       <div class="rect3"></div>
       </div>
   
-  <div class="yunbu1">
+  <div  class="yunbu1">
     <zyyunbu></zyyunbu>
   </div>
         
@@ -61,6 +60,13 @@
       zyyunbu,
     },
     methods: {
+      ToLinkSJ(){
+        window.location.href = "/yunbu"; 
+      },
+      ToLinkGY(){
+        window.location.href = "/yunbu2"; 
+      },
+
       async getShijing() {
         return new Promise((resolve, reject) => {
           const url = "http://localhost:5000/get_jindai_zhongyuan";
@@ -150,6 +156,35 @@
 
       svg.append('g').attr('class', 'x-axis').attr('transform', `translate(0, ${height})`).call(xAxis);
       svg.append('g').attr('class', 'y-axis').call(yAxis);
+
+      // 添加悬浮框
+      const tooltip = d3
+        .select('.line-chart')
+        .append('div')
+        .attr('class', 'tooltip')
+        .style('opacity', 0);
+
+        svg
+        .selectAll('.dot')
+        .data(plotdata)
+        .enter()
+        .append('circle')
+        .attr('class', 'dot')
+        .attr('cx', d => x(xLabels[d.x]))
+        .attr('cy', d => y(d.y))
+        .attr('r', 3)
+        .on('mouseover', function(event, d) {
+          const [xCoord, yCoord] = d3.pointer(event);
+          const dot = d3.select(this); // 当前数据点的引用
+          tooltip.transition().duration(200).style('opacity', 0.9);
+          tooltip
+            .html(`韵部: ${xLabels[d.x]}<br>字数: ${d.y}`) //悬浮框的内容
+            .style('left', xCoord -30 + 'px')
+            .style('top', yCoord + 'px');
+        })
+        .on('mouseout', () => {
+          tooltip.transition().duration(500).style('opacity', 0);
+        });
 
 
   } catch (error) {
@@ -280,10 +315,6 @@
       position: fixed;
       left: 200px;
   }
-  .txt3{
-      position: fixed;
-      left: 350px;
-  }
   .circle12{
     position: fixed;
     z-index: 100;
@@ -294,6 +325,7 @@
     background-color: #f9f5f2;
     border-radius: 50%;
     border: 4px solid #c6910e;
+    cursor: pointer;
   }
 
   .circle22{
@@ -306,6 +338,7 @@
     background-color: #f9f5f2;
     border-radius: 50%;
     border: 4px solid #e09d0a;
+    cursor: pointer;
   }
   .circle31 {
     position: fixed;
@@ -346,10 +379,14 @@
   }
   .yunbu1{
     display: flex;
-    /* position: fixed;
-    z-index: 999;
-    top: 170px;
-    left: 470px; */
+    position: fixed;
+    /* z-index: 999; */
+    top: 50px;
+    left: 470px;
+    width: calc(100% - 470px); /* 设置容器宽度为屏幕宽度减去200px */
+    height: 90vh;
+    /* background-color: aqua; */
+    overflow: scroll;
   }
   .line-chart {
   position: fixed;
@@ -359,5 +396,16 @@
   height: 200px;
   width: 380px;
   overflow: scroll;
+}
+.tooltip {
+  position: absolute;
+  padding: 5px;
+  pointer-events: none;
+  
+  /* 添加背景色和边框样式 */
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
   </style>

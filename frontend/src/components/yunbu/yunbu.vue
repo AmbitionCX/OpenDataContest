@@ -1,121 +1,73 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2">
-    <div class="left-pane">
-      <!-- 左边内容 -->
-      <div class="nav1">
-        <navbar2></navbar2>
-      </div>
-      <div class="header">韵部系联</div>
+    <div class="nav1">
+      <navbar2></navbar2>
+    </div>
+    <div class="header">韵部系联</div>
 
-      <div class="line-chart"></div>
-
-      <div class="intro">
-        <div class="intro1">文字简介:</div>
-        <div class="rect1"></div>
-        <div class="pic">
-          <img
-            src="@/components/yunbu/shan.svg"
-            class="image"
-            style="width: 380px; height: 300px"
-          />
-        </div>
-        <div class="shijing1" v-show="!sj"></div>
-        <div class="shijing2" v-show="!gy"></div>
-        <div class="shijing3" v-show="!zy"></div>
-  
-          <div class="shijing" v-show="!sj">诗经</div>
-          <div class="shijing" v-show="!gy">广韵</div>
-          <div class="zyyy" v-show="!zy">中原音韵</div>
-  
-        <div class="rect2"></div>
-        <div class="txt">
-          <a class="txt1" @click="sj=false, gy=true, zy=true" v-show="sj" href="/yunbu">诗经</a>
-          <a class="txt2" @click="gy=false, sj=true, zy=true" v-show="gy" href="/yunbu2">广韵</a>
-          <a class="txt3" @click="zy=false, sj=true, gy=true" v-show="zy" href="/yunbu3">中原音韵</a>
-        </div>
-        <div class="circle12" v-if="sj"></div>
-        <div class="circle1" v-else="sj"><div class="circle11"></div></div>
-        <div class="circle2" v-if="!gy"><div class="circle21"></div></div>
-      <div class="circle22" v-else="!gy"></div>
-      <div class="circle3" v-if="!zy"><div class="circle31"></div></div>
-      <div class="circle32" v-else="!zy"></div>
-  
-      <div class="intro2">文字简介:</div>
-      <div class="rect3"></div>
+    <div class="intro">
+      <div class="intro1">文字简介:</div>
+      <div class="rect1"></div>
+      <div class="pic">
+        <img
+          src="@/components/yunbu/shan.svg"
+          class="image"
+          style="width: 380px; height: 300px"
+        />
       </div>
+
+      <div class="shijing"><a>诗经</a></div>
+
+      <div class="rect2"></div>
+      <div class="txt">
+          <a class="txt2" href="/yunbu2">广韵</a>
+          <a class="txt3" href="/yunbu3">中原音韵</a>
+        </div>
+      <div class="circle12" @click="ToLinkSJ"></div>
+    <div class="circle22" @click="ToLinkGY"></div>
+
+    <div class="circle1"><div class="circle11"></div></div>
+    <div class="circle22" @click="ToLinkGY"></div>
+    <div class="circle32" @click="ToLinkZY"></div>
+
+    <div class="intro2">文字简介:</div>
+    <div class="rect3"></div>
     </div>
 
-    <div class="right-pane">
-      <div class="scrollable-content" ref="scrollable">
-        <!-- 右边内容 -->
-        <div v-for="(item, index) in yunjiao" :style="getYunbuStyle(index)">
-          <div class="yb" @click="goToNewPage(index)">{{ yb[index] }}</div>
-          <!-- <div
-            v-for="(char, Index) in item"
-            :key="Index"
-            :style="getTextStyle(Index, item, index)"
-          >
-            <div class="yj">{{ char }}</div>
-          </div> -->
-        </div>
-      </div>
-    </div>
+<div  class="yunbu1">
+  <sjyunbu></sjyunbu>
+</div>
+      
+<div class="line-chart"></div>
 
   </div>
 </template>
-
-<script>
-import axios from "axios";
+        
+    <script>
+import navbar from "@/components/navbar.vue";
+import navbar2 from "@/components/nav/navbar2.vue";
+import sjyunbu from "@/components/yunbu/sjyunbu.vue";
 import * as d3 from "d3";
-import cloud from "d3-cloud";
+import axios from "axios";
 
 export default {
   data() {
     return {
-      imageWidth: 100, // 图片宽度
-      imageHeight: 100, // 图片高度
-      imageSpacingW: 550, // 图片横向间隔
-      imageSpacingH: 200, //图片纵向间隔
-      yun: "韵部",
       yb: [],
-      yunjiao: [],
-      radius: 100,
-      gap: 8,
-      anglePerCharacter: 8,
-      sj: false,
-      gy: true,
-      zy: true,
+    yunjiao: [],
     };
   },
-  mounted() {
-    this.addScrollListener();
-    this.scrollToBottom(); // 在页面加载后滚动到底部
+  components: {
+    navbar,
+    navbar2,
+    sjyunbu,
   },
   methods: {
-    addScrollListener() {
-      const scrollableDiv = this.$refs.scrollable;
-      scrollableDiv.addEventListener("scroll", this.handleScroll);
+    ToLinkZY(){
+      window.location.href = "/yunbu3"; 
     },
-    handleScroll(event) {
-      // 处理滚动事件
-      // 在这里你可以获取滚动位置，并执行需要的操作
-    },
-    scrollToBottom() {
-      this.$nextTick(() => {
-        const scrollableDiv = this.$refs.scrollable;
-        scrollableDiv.scrollTop = scrollableDiv.scrollHeight; // 将滚动条滚动到底部
-      });
-    },
-    getYunbuStyle(index) {
-      const x = index * 300 + 200;
-      //const x = 800;
-      const y = 200;
-      return {
-        positon: "absolute",
-        left: `${x}px`,
-        top: `${y}px`,
-        transform: `translate(${x}px, ${y}px)`,
-      };
+    ToLinkGY(){
+      window.location.href = "/yunbu2"; 
     },
 
     async getShijing() {
@@ -124,7 +76,6 @@ export default {
         axios
           .get(url)
           .then((res) => {
-            //console.log(res.data);
             const yunbu = [];
             const yunjiao = [];
             for (let i = 0; i < res.data.length; i++) {
@@ -145,14 +96,14 @@ export default {
             }
 
             this.yb = yunbu2;
-            this.yunjiao = yunjiao;
+          this.yunjiao = yunjiao;
 
-            const plotData = [];
-            for (let i = 0; i < yunbu2.length; i++) {
-              plotData.push({x: i, y: yunjiao[i].length})
-            }
-            console.log('plotdata:',plotData);
-            resolve([plotData, yunbu2]); // 请求成功后resolve数据
+          const plotData = [];
+          for (let i = 0; i < yunbu2.length; i++) {
+            plotData.push({x: i, y: yunjiao[i].length})
+          }
+          console.log('plotdata:',plotData);
+          resolve([plotData, yunbu2]); // 请求成功后resolve数据
           })
           .catch(function (err) {
             reject(err); // 请求失败后reject错误
@@ -160,179 +111,110 @@ export default {
       });
     },
 
-    getTextStyle(Index, item, index) {
-      const squareX = index * 500;
-      const squareY = -350;
+           //绘制折线图
+  async drawPlot(){
+    try {
+  const data = await this.getShijing(); // 等待promise的结果
+  //console.log('data: ',data);
 
-      //const x = squareX + Math.cos(this.degreesToRadians(Index * 10))* (Index*2 + 120)  + Math.floor(Math.random() * 61) - 500;
-      //const y = squareY + Math.sin(this.degreesToRadians(Index * 10))* (Index*2 + 120)  + Math.floor(Math.random() * 61) - 500;
-      //const x = squareX + this.generateRandomNumber() + Math.floor(Math.random() * 301) - 100;
-      //const y = squareY - Index * 100 + this.generateRandomNumber() + Math.floor(Math.random() * 301) - 200 - 100;
-      const x = squareX + this.generateRandomPoint().x;
-      const y = squareY + this.generateRandomPoint().y  - Index * 100;
+  const plotdata = data[0];
+  const yunbu = data[1];
 
-      return {
-        position: "absolute",
-        left: `${x}px`,
-        top: `${y}px`,
-        //transform: `translate(${x}px, ${y}px)`,
-      };
-    },
+  const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+    const width = 500 - margin.left - margin.right;
+    const height = 200 - margin.top - margin.bottom;
 
-    generateRandomNumber() {
-      var random = Math.random(); // 生成0到1之间的随机小数
+    const svg = d3
+      .select('.line-chart')
+      .append('svg')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
 
-      if (random < 0.5) {
-        // 50%的概率落在0-200范围内
-        return Math.floor(random * 201) - 200; // 生成0-200的随机整数
-      } else {
-        // 50%的概率落在200-500范围内
-        return Math.floor(100 + random * 301); // 生成200-400的随机整数
-      }
-    },
+    var x = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.x)]).range([0, width]);
+    var y = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.y)]).range([height, 0]);
 
-    generateRandomPoint() {
-  var centerX = 200; // 方块的中心x坐标
-  var centerY = 200; // 方块的中心y坐标
-  var halfSquareSize = 400; // 方块边长的一半
-  var emptySize = 100; // 空白区域的边长
+    const line = d3
+      .line()
+      .x(d => x(d.x))
+      .y(d => y(d.y));
 
-  var x, y;
+    svg
+      .append('path')
+      .datum(plotdata)
+      .attr('class', 'line')
+      .attr('d', line)
+      .attr('fill', 'none')
+      .attr('stroke-width', 2)
+      .attr('stroke', 'black');
 
-  // 生成随机点，直到它不在空白区域内
-  do {
-    x = Math.random() * (2 * halfSquareSize) - halfSquareSize + centerX;
-    y = Math.random() * (2 * halfSquareSize) - halfSquareSize + centerY;
-  } while (Math.abs(x - centerX) < emptySize / 2 && Math.abs(y - centerY) < emptySize / 2);
+    //坐标轴
+    const xLabels = yunbu;
+    x = d3.scalePoint().domain(xLabels).range([0, width]);
+    y = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.y)]).range([height, 0]);
 
-  return { x: x, y: y };
-},
+    const xAxis = d3.axisBottom(x);
+    const yAxis = d3.axisLeft(y);
 
-    // 点击图片时导航到新页面，并传递index作为参数
-    goToNewPage(index) {
-      this.$router.push(`/yunbu/shijing/${index}`);
-    },
+    svg.append('g').attr('class', 'x-axis').attr('transform', `translate(0, ${height})`).call(xAxis);
+    svg.append('g').attr('class', 'y-axis').call(yAxis);
 
-    //绘制折线图
-    async drawPlot(){
-      try {
-    const data = await this.getShijing(); // 等待promise的结果
-    //console.log('data: ',data);
-
-    const plotdata = data[0];
-    const yunbu = data[1];
-
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-      const width = 400 - margin.left - margin.right;
-      const height = 200 - margin.top - margin.bottom;
-
-      const svg = d3
-        .select('.line-chart')
-        .append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-        .append('g')
-        .attr('transform', `translate(${margin.left},${margin.top})`);
-
-      var x = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.x)]).range([0, width]);
-      var y = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.y)]).range([height, 0]);
-
-      const line = d3
-        .line()
-        .x(d => x(d.x))
-        .y(d => y(d.y));
+    // 添加悬浮框
+    const tooltip = d3
+      .select('.line-chart')
+      .append('div')
+      .attr('class', 'tooltip')
+      .style('opacity', 0);
 
       svg
-        .append('path')
-        .datum(plotdata)
-        .attr('class', 'line')
-        .attr('d', line)
-        .attr('fill', 'none')
-        .attr('stroke-width', 2)
-        .attr('stroke', 'black');
+      .selectAll('.dot')
+      .data(plotdata)
+      .enter()
+      .append('circle')
+      .attr('class', 'dot')
+      .attr('cx', d => x(xLabels[d.x]))
+      .attr('cy', d => y(d.y))
+      .attr('r', 3)
+      .on('mouseover', function(event, d) {
+        const [xCoord, yCoord] = d3.pointer(event);
+        const dot = d3.select(this); // 当前数据点的引用
+        tooltip.transition().duration(200).style('opacity', 0.9);
+        tooltip
+          .html(`韵部: ${xLabels[d.x]}<br>字数: ${d.y}`) //悬浮框的内容
+          .style('left', xCoord -30 + 'px')
+          .style('top', yCoord + 'px');
+      })
+      .on('mouseout', () => {
+        tooltip.transition().duration(500).style('opacity', 0);
+      });
 
-      //坐标轴
-      const xLabels = yunbu;
-      x = d3.scalePoint().domain(xLabels).range([0, width]);
-      y = d3.scaleLinear().domain([0, d3.max(plotdata, d => d.y)]).range([height, 0]);
 
-      const xAxis = d3.axisBottom(x);
-      const yAxis = d3.axisLeft(y);
-
-      svg.append('g').attr('class', 'x-axis').attr('transform', `translate(0, ${height})`).call(xAxis);
-      svg.append('g').attr('class', 'y-axis').call(yAxis);
-
-
-  } catch (error) {
-    console.error('Error:', error);
+} catch (error) {
+  console.error('Error:', error);
+}
   }
-    }
   },
   created() {
-    this.getShijing();
-    this.drawPlot();
-  },
+  this.getShijing();
+  this.drawPlot();
+},
 };
 </script>
-
-<style>
-.bg {
-  display: flex;
-  flex-direction: row;
-}
-
-.left-pane {
-  /* 左边部分样式 */
-  width: 60vw;
-  height: 100vh;
-  display: flex;
-  margin-right: 50px;
-  margin-left: 0px;
-}
-
-.right-pane {
-  margin-top: 50px;
-  height: 90vh;
-  display: flex;
-  flex-grow: 1;
-  width: 2000px;
-  /* background-color: rgb(143, 155, 151); */
-}
-.test {
-  transform: translate(100px, 100px);
-}
-.scrollable-content {
-  width: 100%;
-  overflow: scroll;
-}
-
-.yb {
-  width: 200px;
-  height: 400px;
+        
+    <style>
+* {
+  /* 内外边距为0 */
   margin: 0;
-  font-size: 80px;
-  background-image: url("@/assets/yunbu/yunbu.svg");
-  background-size: contain;
-  background-position: center -40px; /* Move the image 40px upward */
-  background-repeat: no-repeat;
-  color: black;
-  position: relative;
-  z-index: 999;
+  padding: 0;
+  box-sizing: border-box;
+  /* 各种列表样式为空 */
+  text-decoration: none;
+  list-style: none;
 }
-.yj {
-  width: 50px;
-  height: 100px;
-  font-size: 20px;
-  color: black;
-  background-image: url("@/assets/yunbu/yunjiao.svg");
-  background-size: contain;
-  background-position: 8px 0; 
-  background-repeat: no-repeat;
-}
-/* 左边内容 */
 .nav1 {
   position: fixed;
-  z-index: 99;
+  z-index: 999;
 }
 .bg {
   width: 100vw;
@@ -374,53 +256,24 @@ export default {
   left: 50px;
   z-index: 899;
 }
-.shijing1 {
-  position: fixed;
-  z-index: 99;
-  top: 240px;
-  left: 270px;
-  background-image: linear-gradient(
-    rgba(198, 145, 14, 1),
-    rgba(252, 237, 227, 0.1)
-  );
-  height: 130px;
-  width: 50px;
-  border-radius: 5px;
-  border: 3px solid #c6910e;
-}
-.shijing2 {
-  position: fixed;
-  z-index: 99;
-  top: 240px;
-  left: 270px;
-  background-image: linear-gradient(
-    rgba(224, 157, 10, 1),
-    rgba(252, 237, 227, 0.1)
-  );
-  height: 130px;
-  width: 50px;
-  border-radius: 5px;
-  border: 3px solid #e09d0a;
-}
-.shijing3 {
-  position: fixed;
-  z-index: 99;
-  top: 240px;
-  left: 270px;
-  background-image: linear-gradient(
-    rgba(193, 165, 48, 1),
-    rgba(252, 237, 227, 0.1)
-  );
-  height: 130px;
-  width: 50px;
-  border-radius: 5px;
-  border: 3px solid #c1a530;
-}
 .shijing {
+    display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
   position: fixed;
-  z-index: 999;
-  top: 280px;
-  left: 275px;
+    z-index: 99;
+    top: 240px;
+    left: 270px;
+    background-image: linear-gradient(
+      rgba(224, 157, 10, 1),
+      rgba(252, 237, 227, 0.1)
+    );
+    height: 130px;
+    width: 50px;
+    border-radius: 5px;
+    border: 3px solid #e09d0a;
+  }
+.shijing a {
   writing-mode: vertical-lr;
   letter-spacing: 0.3em;
   font-size: 23px;
@@ -453,13 +306,9 @@ export default {
   top: 500px;
   left: 35px;
 }
-.txt a {
-  color: #000;
-  font-size: 20px;
-}
-.txt1 {
-  position: fixed;
-  left: 35px;
+.txt a{
+    color: #000;
+    font-size: 20px;
 }
 .txt2 {
   position: fixed;
@@ -490,39 +339,7 @@ export default {
   border-radius: 50%;
   border: 2px solid #c6910e;
 }
-.circle12 {
-  position: fixed;
-  z-index: 100;
-  top: 460px;
-  left: 40px;
-  width: 25px;
-  height: 25px;
-  background-color: #f9f5f2;
-  border-radius: 50%;
-  border: 4px solid #c6910e;
-}
-.circle21 {
-  position: fixed;
-  z-index: 999;
-  top: 462px;
-  left: 206.5px;
-  width: 22px;
-  height: 22px;
-  background-color: #e09d0a;
-  border-radius: 50%;
-}
-.circle2 {
-  position: fixed;
-  z-index: 100;
-  top: 455px;
-  left: 200px;
-  width: 35px;
-  height: 35px;
-  background-color: #f9f5f2;
-  border-radius: 50%;
-  border: 2px solid #e09d0a;
-}
-.circle22 {
+.circle22{
   position: fixed;
   z-index: 100;
   top: 460px;
@@ -532,27 +349,7 @@ export default {
   background-color: #f9f5f2;
   border-radius: 50%;
   border: 4px solid #e09d0a;
-}
-.circle31 {
-  position: fixed;
-  z-index: 999;
-  top: 462px;
-  left: 366.5px;
-  width: 22px;
-  height: 22px;
-  background-color: #c1a530;
-  border-radius: 50%;
-}
-.circle3 {
-  position: fixed;
-  z-index: 100;
-  top: 455px;
-  left: 360px;
-  width: 35px;
-  height: 35px;
-  background-color: #f9f5f2;
-  border-radius: 50%;
-  border: 2px solid #c1a530;
+  cursor: pointer;
 }
 .circle32 {
   position: fixed;
@@ -564,6 +361,7 @@ export default {
   background-color: #f9f5f2;
   border-radius: 50%;
   border: 4px solid #c1a530;
+  cursor: pointer;
 }
 .intro2 {
   position: fixed;
@@ -581,10 +379,35 @@ export default {
   background-color: #dedede;
   border-radius: 20px;
 }
-.line-chart {
+.yunbu1{
+  display: flex;
   position: fixed;
-  top: 600px;
-  left: 50px;
-  z-index: 999;
+  z-index: 9;
+  top: 50px;
+  left: 470px;
+  width: calc(100% - 470px); /* 设置容器宽度为屏幕宽度减去200px */
+  height: 90vh;
+  /* background-color: aqua; */
+  overflow: scroll;
+}
+.line-chart {
+position: fixed;
+top: 600px;
+left: 50px;
+z-index: 999;
+height: 200px;
+width: 380px;
+overflow: scroll;
+}
+.tooltip {
+position: absolute;
+padding: 5px;
+pointer-events: none;
+
+/* 添加背景色和边框样式 */
+background-color: #f9f9f9;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
 </style>

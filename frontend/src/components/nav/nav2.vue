@@ -1,7 +1,8 @@
 <template>
     <div class="menu1">
-      <div class="menu1l"></div>
-      <div class="menu1r"></div>
+      <div class="ll">
+        <img src="@/assets/navbar/pic21.svg" class="image" />
+      </div>
     </div>
 
     <ul class="sublist">
@@ -11,7 +12,12 @@
       </ul>
 
       <div class="sui">
-      <img src="@/components/nav/sui1.svg" class="image" />
+        <img src="@/assets/navbar/pic22.svg" class="image" />
+    </div>
+
+    <div class="xing">
+      <img src="@/assets/navbar/pic23.svg" class="image" 
+      style="width: 20vw;"/>
     </div>
   </template>
       
@@ -30,34 +36,23 @@
   /* 方框 */
   .menu1 {
     position: fixed;
-    top: 50px;
-    left: 35.5vw;
+    top: 7vh;
+    left: 50vw;
     height: 230px;
-    width: 200px;
-    background-color: #c1a530;
+    width: 23vw;
+    background-color: #C1A530;
     display: flex;
     z-index: 1;
   }
-  .menu1l{
+  .ll {
   position: fixed;
     top: 0;
-    left: 38.5vw;
-    height: 50px;
-    width: 5px;
-    background-color:#ddbb2f;
-  }
-  .menu1r{
-  position: fixed;
-    top: 0;
-    left: 39.5vw;
-    height: 50px;
-    width: 5px;
-    background-color: #ddbb2f;
-  }
+    left: 50vw;
+}
   .sublist{
     position: fixed;
-    top: 130px;
-    left: 36.5vw;
+    top: calc(7vh + 70px);
+    left: 54.5vw;
     text-align: center;
     z-index: 99;
   }
@@ -73,8 +68,13 @@
   }
   .sui{
     position: fixed;
-    top: 290px;
-    left: 32vw;
+    top: calc(7vh + 240px);
+    left: 50vw;
+  }
+  .xing{
+    position: fixed;
+    top: 5vh;
+    left: 41.5vw;
   }
   </style>
       

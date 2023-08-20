@@ -8,7 +8,7 @@ const routes:RouteRecordRaw[]=[{
     component:()=>import('@/components/shouye/shouye.vue')
 },{
     path:'/introduction',
-    component:()=>import('@/components/introduction.vue')
+    component:()=>import('@/components/shouye2/introduction.vue')
 },{
     path:'/quanlan',
     component:()=>import('@/components/quanlan/quanlan.vue')

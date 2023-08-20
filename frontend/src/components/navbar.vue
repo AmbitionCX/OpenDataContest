@@ -1,28 +1,26 @@
 <template>
   <div class="navbar">
-    <div class="navbar-left">
-      <div class="left1"></div>
-      <div class="left2"></div>
-    </div>
-    <div class="navbar-center"></div>
-    <div class="navbar-right">
-      <div class="right1"></div>
-      <div class="right2"></div>
-    </div>
+    <img src="@/assets/navbar/top1.png" class="image" style="width: 100vw; height: 5vh" />
   </div>
 
   <div class="menu">
   </div>
 
-  <div class="menu-text0">
+  <!-- <div class="menu-text0">
     <el-dropdown>
       <span class="el-dropdown-link">
         <a href="/introduction" class="shu">首页</a>
       </span>
     </el-dropdown>
-  </div>
+  </div> -->
 
   <div class="menu-text">
+    <el-dropdown>
+      <span class="el-dropdown-link">
+        <a href="/introduction" @mouseenter="showSub0=true">首页</a>
+      </span>
+    </el-dropdown>
+
     <el-dropdown>
       <span class="el-dropdown-link">
         <a href="/quanlan" @mouseenter="showSub1=true">语音全览</a>
@@ -41,11 +39,10 @@
       </span>
     </el-dropdown>
 
-    <el-dropdown>
-      <span class="el-dropdown-link">
-        <a href="#" @mouseenter="showSub4=true">数据纵览</a>
-      </span>
-    </el-dropdown>
+  </div>
+
+  <div v-show="showSub0"  @mouseleave="showSub0=false">
+    <nav0></nav0>
   </div>
 
   <div v-show="showSub1"  @mouseleave="showSub1=false">
@@ -60,12 +57,10 @@
     <nav3></nav3>
   </div>
 
-  <div v-show="showSub4"  @mouseleave="showSub4=false">
-    <nav4></nav4>
-  </div>
 </template>
     
 <script lang="ts">
+import nav0 from "@/components/nav/nav0.vue";
 import nav1 from "@/components/nav/nav1.vue";
 import nav2 from "@/components/nav/nav2.vue";
 import nav3 from "@/components/nav/nav3.vue";
@@ -74,6 +69,7 @@ import nav4 from "@/components/nav/nav4.vue";
 export default {
   data() {
     return {
+      showSub0: false,
       showSub1: false,
       showSub2: false,
       showSub3: false,
@@ -81,6 +77,7 @@ export default {
     };
   },
   components: {
+    nav0,
     nav1,
     nav2,
     nav3,
@@ -101,116 +98,33 @@ export default {
 }
 /* 消除白边：top0, left0 */
 .navbar {
-  display: flex;
-  gap: 30px;
-  width: 100vw;
-  height: 30px;
   position: fixed;
   top: 0;
   left: 0;
-  /* 上|右|下|左 */
-  padding: 10px 0 10px 0;
-  justify-content: center;
-}
-.left1{
-  background-color: #f9f5f2;
-  height: 8px;
-  width: 8px;
-  position: fixed;
-  top: 20px;
-  left: 10px;
-}
-.left2{
-  background-color: #f9f5f2;
-  height: 2px;
-  width: 20px;
-  position: fixed;
-  top: 23px;
-  left: 23px;
-}
-.right1{
-  background-color: #f9f5f2;
-  height: 8px;
-  width: 8px;
-  position: fixed;
-  top: 20px;
-  left: 1375px;
-}
-.right2{
-  background-color: #f9f5f2;
-  height: 2px;
-  width: 20px;
-  position: fixed;
-  top: 23px;
-  left: 1350px;
-}
-.navbar-left {
-  background-color: #c6910e;
-  height: 50px;
-  width: 53px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding: 10px 0 10px 0;
-}
-.navbar-right {
-  background-color: #c6910e;
-  height: 50px;
-  width: 53px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  padding: 10px 0 10px 0;
-}
-.navbar-center {
-  background-color: #484440;
-  height: 50px;
-  width: 91.5vw;
-  position: fixed;
-  top: 0;
-  padding: 10px 0 10px 0;
-  justify-content: center;
 }
 .menu {
   background-color: #9b928c;
   display: flex;
-  width: 91.5vw;
+  width: 92vw;
   height: 100px;
   position: fixed;
-  top: 55px;
-  left: 60px;
+  top: 7vh;
+  left: 4vw;
   /* 上|右|下|左 */
   padding: 10px 0 10px 0;
   justify-content: center;
-}
-.menu-text0{
-  display: flex;
-  position: fixed;
-  top: 70px;
-  left: 100px;
-  /* 上|右|下|左 */
-  padding: 10px 0 10px 0;
-  justify-content: center;
-  z-index: 99;
 }
 .menu-text{
   display: flex;
-  gap: 15vw;
-  width: 91.5vw;
+  gap: 18vw;
+  width: 100vw;
   position: fixed;
   top: 85px;
-  left: 100px;
+  /* left: 100px; */
   /* 上|右|下|左 */
   padding: 10px 0 10px 0;
   justify-content: center;
   z-index: 99;
-}
-.shu {
-  writing-mode: vertical-lr;
-  letter-spacing: 10px;
-  font-size: 20px;
-  position: fixed;
-  left: 10;
 }
 /* 导航栏文字去掉选择框 */
 .el-dropdown-link {

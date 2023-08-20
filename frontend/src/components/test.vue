@@ -1,60 +1,85 @@
 <template>
-  <div class="line-chart"></div>
+  <div class="menu1">
+    <div class="menu1l"></div>
+    <div class="menu1r"></div>
+  </div>
+
+  <ul class="sublist">
+      <li><a href="/yunbu">《诗经》二十九部</a></li>
+      <li><a href="/yunbu2">《广韵》六十一部</a></li>
+      <li><a href="/yunbu3">《中原音韵》十九部</a></li>
+    </ul>
+
+    <div class="sui">
+    <img src="@/components/nav/sui1.svg" class="image" />
+  </div>
+
+  <div class="xing">
+    <img src="@/components/nav/sui1.svg" class="image" />
+  </div>
+
 </template>
-
-<script>
-import * as d3 from 'd3';
-
-export default {
-  mounted() {
-    this.drawChart();
-  },
-  methods: {
-    drawChart() {
-      // 在这里使用D3.js绘制折线图
-      const data = [
-        { x: 0, y: 5 },
-        { x: 1, y: 9 },
-        { x: 2, y: 7 },
-        // 更多数据点...
-      ];
-
-      const margin = { top: 20, right: 30, bottom: 30, left: 40 };
-      const width = 600 - margin.left - margin.right;
-      const height = 400 - margin.top - margin.bottom;
-
-      const svg = d3
-        .select('.line-chart')
-        .append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-        .append('g')
-        .attr('transform', `translate(${margin.left},${margin.top})`);
-
-      const x = d3.scaleLinear().domain([0, d3.max(data, d => d.x)]).range([0, width]);
-      const y = d3.scaleLinear().domain([0, d3.max(data, d => d.y)]).range([height, 0]);
-
-      const line = d3
-        .line()
-        .x(d => x(d.x))
-        .y(d => y(d.y));
-
-      svg
-        .append('path')
-        .datum(data)
-        .attr('class', 'line')
-        .attr('d', line)
-        .attr('fill', 'none')
-        .attr('stroke-width', 2)
-        .attr('stroke', 'black');
-    },
-  },
-};
+    
+    <script lang="ts" setup>
 </script>
-
-<style>
-/* 样式可以根据您的需要进行调整 */
-.line-chart {
-  /* 添加样式 */
+    
+    <style scoped>
+* {
+  /* 内外边距为0 */
+  margin: 0;
+  padding: 0;
+  /* 各种列表样式为空 */
+  text-decoration: none;
+  list-style: none;
+}
+/* 方框 */
+.menu1 {
+  position: fixed;
+  top: 50px;
+  left: 27vw;
+  height: 230px;
+  width: 23vw;
+  background-color: #C1653D;
+  display: flex;
+  z-index: 1;
+}
+.menu1l{
+position: fixed;
+  top: 0;
+  left: 38.5vw;
+  height: 50px;
+  width: 5px;
+  background-color:#C1653D;
+}
+.menu1r{
+position: fixed;
+  top: 0;
+  left: 39.5vw;
+  height: 50px;
+  width: 5px;
+  background-color: #C1653D;
+}
+.sublist{
+  position: fixed;
+  top: 130px;
+  left: 36.5vw;
+  text-align: center;
+  z-index: 99;
+}
+.sublist a {
+  color: #fbf6f6;
+}
+.sublist li {
+  padding: 10px;
+  text-align: center;
+}
+.image{
+  width: 8%;
+}
+.sui{
+  position: fixed;
+  top: 290px;
+  left: 32vw;
 }
 </style>
+    

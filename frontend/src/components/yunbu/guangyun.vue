@@ -1,5 +1,14 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2">
+
+    <div class="lines">
+      <img
+        src="@/assets/yunbu/background.svg"
+        class="image"
+        style="width: 100vw; height: 100vh"
+      />
+    </div>
+
     <div class="nav1">
       <navbar2></navbar2>
     </div>
@@ -12,17 +21,12 @@
     </div>
 
     <div class="shijing"><a>广韵</a></div>
+    <div class="bu"><a>{{ yb[Index] }}部</a></div>
+    <div class="intro">文字简介:</div>
+    <div class="rect"></div>
 
     <div class="circle-container">
       <span class="yunbu">{{ yb[Index] }}</span>
-      <div
-        class="circle-text"
-        v-for="(char, index) in text"
-        :key="index"
-        :style="getTextStyle(index)"
-      >
-        {{ char }}
-      </div>
     </div>
   </div>
 </template>
@@ -140,13 +144,13 @@ export default {
 }
 .yunbu {
   position: fixed;
-  top: 360px;
-  left: 380px;
+  bottom: 10vh;
+  left: 30vw;
   font-size: 80px;
   background-image: linear-gradient(
     to right,
-    rgba(252, 237, 227, 1),
-    rgba(193, 165, 48, 1)
+    rgb(229, 186, 79, 1),
+    rgb(128, 104, 9, 1)
   );
   color: transparent;
   -webkit-background-clip: text;
@@ -209,12 +213,59 @@ export default {
     rgba(193, 165, 48, 1),
     rgba(252, 237, 227, 0.1)
   );
-  height: 140px;
+  height: 18vh;
   width: 50px;
   border-radius: 5px;
   border: 3px solid #c1a530;
   display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
   align-items: center; /* 垂直居中文本 */
   justify-content: center; /* 水平居中文本 */
+}
+.bu a {
+  writing-mode: vertical-lr;
+  letter-spacing: 0.3em;
+  font-size: 23px;
+  color: black;
+}
+.bu {
+  position: fixed;
+  z-index: 99;
+  top: calc(18vh + 185px);
+  left: 60px;
+  background-image: linear-gradient(
+    rgba(193, 165, 48, 1),
+    rgba(252, 237, 227, 0.1)
+  );
+  height: 10vh;
+  width: 50px;
+  border-radius: 5px;
+  border: 3px solid #c1a530;
+  display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
+}
+.intro {
+  position: fixed;
+  top: calc(28vh + 225px);
+  left: 50px;
+  font-size: 20px;
+  color: rgb(109, 110, 110);
+}
+.rect {
+  position: fixed;
+  top: calc(28vh + 265px);
+  left: 50px;
+  height: 35vh;
+  width: 300px;
+  background-color: #dedede;
+  border-radius: 20px;
+  opacity: 0.6;
+}
+.lines{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
 }
 </style>

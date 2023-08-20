@@ -30,11 +30,10 @@
     <div class="ciyun">
       <img src="@/assets/quanlan/title.svg" class="image" 
       style="width: 300px; height: 150px; transform: translate(20px, -25px)" />
-      <div class="txt" v-if="ciyun">词云</div>
-      <el-input class="txt2" v-else v-model="input" placeholder="请输入韵脚字" 
+      <el-input class="txt2" v-model="input" placeholder="请输入汉字" 
       style="width: 170px; background-color:transparent;" @keyup.enter="updateInput" />
       <Search class="search" style="width: 30px; height: 30px; margin-right: 8px; 
-      color: #fffdfd;" @click="ciyun=false"/>
+      color: #fffdfd; cursor: pointer;" @click="wordClicked(input)"/>
     </div>
 
     <div class="image2">

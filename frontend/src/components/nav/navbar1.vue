@@ -1,27 +1,17 @@
 <template>
   <div class="navbar">
-    <a class="navbar-left" href="/quanlan" @click="handleLinkClick">
-      <div :class="{ 'left1': true, 'light-color': isClicked }"></div>
-      <div :class="{ 'left2': true, 'light-color': isClicked }"></div>
-    </a>
-
-    <div class="navbar-center"></div>
-
-    <a class="navbar-right" href="/quanlan" @click="handleLinkClick">
-      <div :class="{ 'right1': true, 'light-color': isClicked }"></div>
-      <div :class="{ 'right2': true, 'light-color': isClicked }"></div>
-    </a>
+    <img src="@/assets/navbar/top1.png" class="image" style="width: 100vw; height: 5vh" />
   </div>
 
-  <div class="menu1">
-    <div class="menu1l"></div>
-    <div class="menu1r"></div>
+  <div class="menu1" v-show="!showNav">
+    <div class="ll">
+        <img src="@/assets/navbar/pic11.svg" class="image" />
+      </div>
   </div>
 
-  <div class="sui">
-    <img src="@/components/nav/sui4.svg" class="image" 
-    @click="showNav=true"/>
-  </div>
+  <div class="sui" v-show="!showNav">
+        <img src="@/assets/navbar/pic12.svg" class="image" @click="showNav=true"/>
+    </div>
 
   <div v-show="showNav">
     <navbar></navbar>
@@ -60,111 +50,22 @@ export default {
 }
 /* 消除白边：top0, left0 */
 .navbar {
-  display: flex;
-  gap: 30px;
-  width: 100vw;
-  height: 30px;
   position: fixed;
   top: 0;
   left: 0;
-  /* 上|右|下|左 */
-  padding: 10px 0 10px 0;
-  justify-content: center;
 }
-.left1 {
-  background-color: #f9f5f2;
-  height: 8px;
-  width: 8px;
+.ll {
   position: fixed;
-  top: 20px;
-  left: 10px;
-}
-.left1.light-color {
-  background-color: rgb(173, 173, 173);
-}
-.left2.light-color {
-  background-color: rgb(173, 173, 173);
-}
-.left2 {
-  background-color: #f9f5f2;
-  height: 2px;
-  width: 20px;
-  position: fixed;
-  top: 23px;
-  left: 23px;
-}
-.right1 {
-  background-color: #f9f5f2;
-  height: 8px;
-  width: 8px;
-  position: fixed;
-  top: 20px;
-  left: 1375px;
-}
-.right2 {
-  background-color: #f9f5f2;
-  height: 2px;
-  width: 20px;
-  position: fixed;
-  top: 23px;
-  left: 1350px;
-}
-.right1.light-color {
-  background-color: rgb(173, 173, 173);
-}
-.right2.light-color {
-  background-color: rgb(173, 173, 173);
-}
-.navbar-left {
-  background-color: #c6910e;
-  height: 50px;
-  width: 53px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding: 10px 0 10px 0;
-}
-.navbar-right {
-  background-color: #c6910e;
-  height: 50px;
-  width: 53px;
-  position: fixed;
-  top: 0;
-  right: 0;
-  padding: 10px 0 10px 0;
-}
-.navbar-center {
-  background-color: #484440;
-  height: 50px;
-  width: 91.5vw;
-  position: fixed;
-  top: 0;
-  padding: 10px 0 10px 0;
-  justify-content: center;
-}
-.menu1l {
-  position: fixed;
-  top: 0;
-  left: 250px;
-  height: 50px;
-  width: 5px;
-  background-color: #e88149;
-}
-.menu1r {
-  position: fixed;
-  top: 0;
-  left: 265px;
-  height: 50px;
-  width: 5px;
-  background-color: #e88149;
+    top: 0;
+    left: 27vw;
 }
 .image {
-  width: 10%;
+  width: 8%;
 }
-.sui {
-  position: fixed;
-  top: 60px;
-  left: 110px;
-}
+.sui{
+    position: fixed;
+    top: calc(7vh + 10px);
+    left: 27vw;
+  }
 </style>
       

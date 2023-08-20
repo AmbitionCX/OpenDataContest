@@ -1,12 +1,19 @@
 <template>
     <div class="menu1">
-      <div class="menu1l"></div>
-      <div class="menu1r"></div>
+      <div class="ll">
+        <img src="@/assets/navbar/pic31.svg" class="image" />
+      </div>
     </div>
-
+  
       <div class="sui">
-      <img src="@/components/nav/sui1.svg" class="image" />
+      <img src="@/assets/navbar/pic32.svg" class="image" />
     </div>
+  
+    <div class="xing">
+      <img src="@/assets/navbar/pic33.svg" class="image" 
+      style="width: 20vw;"/>
+    </div>
+  
   </template>
       
       <script lang="ts" setup>
@@ -24,37 +31,31 @@
   /* 方框 */
   .menu1 {
     position: fixed;
-    top: 50px;
-    left: 76vw;
-    height: 120px;
-    width: 200px;
-    background-color: #a8802f;
+    top: 7vh;
+    left: 73vw;
+    height: 100px;
+    width: 23vw;
+    background-color: #9CAF31;
     display: flex;
     z-index: 1;
   }
-  .menu1l{
+  .ll {
   position: fixed;
     top: 0;
-    left: 79vw;
-    height: 50px;
-    width: 5px;
-    background-color:#d8992a;
-  }
-  .menu1r{
-  position: fixed;
-    top: 0;
-    left: 80vw;
-    height: 50px;
-    width: 5px;
-    background-color: #d8992a;
+    left: 73vw;
   }
   .image{
     width: 8%;
   }
   .sui{
     position: fixed;
-    top: 180px;
-    left: 72.5vw;
+    top: calc(7vh + 110px);
+    left: 73vw;
+  }
+  .xing{
+    position: fixed;
+    top: 5vh;
+    left: 41.5vw;
   }
   </style>
       
