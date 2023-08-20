@@ -343,9 +343,9 @@ export default {
 .header {
   position: fixed;
   z-index: 999;
-  top: 5px;
+  top: 4px;
   left: 47vw;
-  font-size: 30px;
+  font-size: 25px;
   color: #f6f5f5;
   text-align: center;
 }

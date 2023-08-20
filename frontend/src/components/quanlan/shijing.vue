@@ -69,23 +69,15 @@
         class="image"
         style="width: 300px; height: 150px; transform: translate(20px, -25px)"
       />
-      <div class="txt" v-if="ciyun">词云</div>
-      <el-input class="txt2" v-else v-model="input" placeholder="请输入标题" 
+
+      <el-input class="txt2" v-model="input" placeholder="请输入标题" 
       style="width: 170px; background-color:transparent;" @keyup.enter="updateInput" />
     <Search class="search" style="width: 30px; height: 30px; margin-right: 8px; 
-      color: #fffdfd;" @click="ciyun=false"/>
+      color: #fffdfd;" @click="getContent(input)"/>
     </div>  
 
-    <!-- <div class="image2">
-      <img
-        src="@/assets/quanlan/arrow.svg"
-        class="image"
-        style="width: 400px; height: 40px"
-        @click="getWords()"
-      />
-    </div> -->
     <div class="choose">
-      <div class="choose-title"><a>词云筛选</a></div>
+      <div class="choose-title"><a>筛选</a></div>
       <!-- <el-icon><Filter /></el-icon> -->
       <ul class="choose-content">
         <li v-for="item in chapter" class="hover-item"
@@ -303,9 +295,9 @@ export default {
 .header {
   position: fixed;
   z-index: 999;
-  top: 5px;
+  top: 4px;
   left: 47vw;
-  font-size: 30px;
+  font-size: 25px;
   color: #f6f5f5;
   text-align: center;
 }
@@ -490,6 +482,7 @@ justify-content: center; /* 水平居中文本 */
   width: inherit;
   height: 530px;
   overflow: auto;
+  /* text-align: left; */
 }
 .choose-content::-webkit-scrollbar-thumb {
   background-color: red; /* 设置滚动条滑块颜色 */

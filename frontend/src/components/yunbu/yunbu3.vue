@@ -221,14 +221,14 @@
     left: 0;
   }
   .header {
-    position: fixed;
-    z-index: 999;
-    top: 5px;
-    left: 47vw;
-    font-size: 30px;
-    color: #f6f5f5;
-    text-align: center;
-  }
+  position: fixed;
+  z-index: 999;
+  top: 4px;
+  left: 47vw;
+  font-size: 25px;
+  color: #f6f5f5;
+  text-align: center;
+}
   .intro {
     position: fixed;
     top: 120px;

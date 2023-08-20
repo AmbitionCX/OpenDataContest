@@ -1,7 +1,7 @@
 <template>
     <div class="navbar">
-      <img src="@/assets/navbar/top.svg" class="image" style="width: 100vw; height: 100vh" />
-    </div>
+    <img src="@/assets/navbar/top1.png" class="image" style="width: 100vw; height: 5vh" />
+  </div>
   
     <div class="menu1" v-show="!showNav">
       <div class="ll">
@@ -56,7 +56,7 @@
   /* 消除白边：top0, left0 */
   .navbar {
     position: fixed;
-    top: -47.5vh;
+    top: 0;
     left: 0;
   }
   .ll {

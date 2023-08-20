@@ -59,7 +59,7 @@
     </div>
 
     <div class="choose">
-      <div class="choose-title"><a>词云筛选</a></div>
+      <div class="choose-title"><a>筛选</a></div>
       <ul class="choose-content">
         <li v-for="item in yunbu" class="hover-item"
         @click="getWords(item)">{{ item }}</li>
@@ -280,9 +280,9 @@ export default {
 .header {
   position: fixed;
   z-index: 999;
-  top: 5px;
+  top: 4px;
   left: 47vw;
-  font-size: 30px;
+  font-size: 25px;
   color: #f6f5f5;
   text-align: center;
 }

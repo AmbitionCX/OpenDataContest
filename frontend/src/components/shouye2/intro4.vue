@@ -1,13 +1,13 @@
 <template>
     <div class="quanlan-container">
-      <div id="bg-wave"></div>
+      <!-- <div id="bg-wave"></div> -->
   
       <!-- <div class="lines">
         <img src="@/assets/quanlan/water.svg" class="image" style="width: 100vw; height: 100vh" />
       </div> -->
   
       <div class="line2">
-        <img src="@/assets/quanlan/line3.svg" class="image" style="width: 100vw; height: 100vh" />
+        <img src="@/assets/quanlan/line3.svg" class="image" style="width: 90vw; height: 100vh" />
       </div>
   
       <div class="shijing2" v-if="sj"><a href="/quanlan/shijing" @mouseenter="sj = true" @mouseleave="sj = false">诗经</a></div>
@@ -28,10 +28,10 @@
         </div>
       </div>
       <div class="pic12" v-if="sj">
-        <img src="@/assets/quanlan/pic12.svg" class="image" style="width: 100vw; height: 100vh" />
+        <img src="@/assets/quanlan/pic12.svg" class="image" style="width: 90vw; height: 100vh" />
       </div>
       <div class="pic11" v-else>
-        <img src="@/assets/quanlan/pic11.svg" class="image" style="width: 100vw; height: 100vh" />
+        <img src="@/assets/quanlan/pic11.svg" class="image" style="width: 90vw; height: 100vh" />
       </div>
   
       <div class="guangyun2" v-if="gy"><a href="/quanlan/guangyun" @mouseenter="gy = true" @mouseleave="gy = false">广韵</a></div>
@@ -52,10 +52,10 @@
         </div>
       </div>
       <div class="pic22" v-if="gy">
-        <img src="@/assets/quanlan/pic22.svg" class="image" style="width: 100vw; height: 100vh" />
+        <img src="@/assets/quanlan/pic22.svg" class="image" style="width: 90vw; height: 100vh" />
       </div>
       <div class="pic21" v-else>
-        <img src="@/assets/quanlan/pic21.svg" class="image" style="width: 100vw; height: 100vh" />
+        <img src="@/assets/quanlan/pic21.svg" class="image" style="width: 90vw; height: 100vh" />
       </div>
   
       <div class="zhongyuan2" v-if="zy"><a href="/quanlan/zhongyuan" @mouseenter="zy = true" @mouseleave="zy = false">中原音韵</a></div>
@@ -76,10 +76,10 @@
         </div>
       </div>
       <div class="pic32" v-if="zy">
-        <img src="@/assets/quanlan/pic32.svg" class="image" style="width: 100vw; height: 100vh" />
+        <img src="@/assets/quanlan/pic32.svg" class="image" style="width: 90vw; height: 100vh" />
       </div>
       <div class="pic31" v-else>
-        <img src="@/assets/quanlan/pic31.svg" class="image" style="width: 100vw; height: 100vh" />
+        <img src="@/assets/quanlan/pic31.svg" class="image" style="width: 90vw; height: 100vh" />
       </div>
   
     </div>
@@ -118,37 +118,12 @@
     text-decoration: none;
     list-style: none;
   }
-  
-  .nav1 {
-    position: fixed;
-    z-index: 999;
-  }
-  
-  .bg {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-  }
-  
-  .header {
-    position: absolute;
-    z-index: 9999;
-    top: 4px;
-    left: 48vw;
-    font-size: 25px;
-    color: #f6f5f5;
-    text-align: center;
-  }
-  
   .lines {
     position: absolute;
     z-index: 1;
     top: 0;
     left: 0;
   }
-  
   .line2 {
     position: absolute;
     z-index: 1;
@@ -184,7 +159,7 @@
     position: absolute;
     z-index: 99;
     top: 22vh;
-    left: 33.8vw;
+    left: 32vw;
     background-image: linear-gradient(rgba(232, 129, 73, 1),
         rgba(252, 237, 227, 0.1));
     height: 130px;
@@ -199,7 +174,7 @@
     position: absolute;
     z-index: 99;
     top: 22vh;
-    left: 33.8vw;
+    left: 32vw;
     background-image: linear-gradient(rgba(232, 129, 73, 1),
         rgba(252, 237, 227, 0.1));
     height: 130px;
@@ -221,21 +196,21 @@
   .text1 {
     position: absolute;
     z-index: 99;
-    top: 43vh;
-    left: 14vw;
+    top: 44vh;
+    left: 13vw;
     font-size: 20px;
   }
   
   .circle11, .circle12 {
     position: absolute;
     z-index: 999;
-    top: 38vh;
+    top: 39vh;
     left: 14.5vw;
   }
   
   .intro1 {
     position: absolute;
-    z-index: 100;
+    z-index: 9999;
     top: 180px;
     left: 550px;
     width: 550px;
@@ -247,7 +222,7 @@
   
   .introText1 {
     position: absolute;
-    z-index: 100;
+    z-index: 999999;
     top: 200px;
     left: 820px;
     font-size: 20px;
@@ -255,7 +230,7 @@
   
   .introText2 {
     position: absolute;
-    z-index: 100;
+    z-index: 99999;
     top: 280px;
     left: 800px;
     width: 270px;
@@ -266,7 +241,7 @@
     position: absolute;
     z-index: 99;
     top: 32vh;
-    left: 87vw;
+    left: 77vw;
     background-image: linear-gradient(rgba(232, 129, 73, 1),
         rgba(252, 237, 227, 0.1));
     height: 130px;
@@ -281,7 +256,7 @@
     position: absolute;
     z-index: 99;
     top: 32vh;
-    left: 87vw;
+    left: 77vw;
     background-image: linear-gradient(rgba(232, 129, 73, 1),
         rgba(252, 237, 227, 0.1));
     height: 130px;
@@ -311,15 +286,15 @@
   .circle21, .circle22 {
     position: absolute;
     z-index: 999;
-    top: 63vh;
-    left: 72vw;
+    top: 61vh;
+    left: 65vw;
   }
   
   .intro2 {
     position: absolute;
     z-index: 100;
     top: 150px;
-    left: 650px;
+    left: 470px;
     width: 550px;
     height: 330px;
     background-color: #f9f5f2;
@@ -348,8 +323,8 @@
   .zhongyuan1 {
     position: absolute;
     z-index: 99;
-    top: 60vh;
-    left: 27vw;
+    top: 58vh;
+    left: 23vw;
     background-image: linear-gradient(rgba(232, 129, 73, 1),
         rgba(252, 237, 227, 0.1));
     height: 140px;
@@ -363,8 +338,8 @@
   .zhongyuan2 {
     position: absolute;
     z-index: 99;
-    top: 60vh;
-    left: 27vw;
+    top: 58vh;
+    left: 23vw;
     background-image: linear-gradient(rgba(232, 129, 73, 1),
         rgba(252, 237, 227, 0.1));
     height: 140px;
@@ -386,23 +361,23 @@
   .text3 {
     position: absolute;
     z-index: 99;
-    top: 71vh;
-    left: 50vw;
+    top: 67vh;
+    left: 44vw;
     font-size: 20px;
   }
   
   .circle31, .circle32 {
     position: absolute;
     z-index: 999;
-    top: 77vh;
-    left: 52vw;
+    top: 73vh;
+    left: 47vw;
   }
   
   .intro3 {
     position: absolute;
-    z-index: 990;
+    z-index: 999;
     top: 250px;
-    left: 500px;
+    left: 450px;
     width: 550px;
     height: 330px;
     background-color: #f9f5f2;
@@ -412,7 +387,7 @@
   
   .intro3Text1 {
     position: absolute;
-    z-index: 999;
+    z-index: 9999;
     top: 270px;
     left: 750px;
     font-size: 20px;
@@ -420,7 +395,7 @@
   
   .intro3Text2 {
     position: absolute;
-    z-index: 999;
+    z-index: 9999;
     top: 360px;
     left: 750px;
     width: 270px;
