@@ -130,7 +130,7 @@ const shijing_search = (search_item) => {
                             titles.add(item[3]);
                         }
                     }
-                    
+
                     let search_results = []
                     for (let title of Array.from(titles)) {
                         let one_poem = {};
@@ -143,7 +143,7 @@ const shijing_search = (search_item) => {
                         } else {
                             one_poem.text = target[4].slice(0, -1);
                         }
-                        
+
                         search_results.push(one_poem);
                     }
                     console.log(search_results);
@@ -227,7 +227,7 @@ const get_guangyun_search_item = () => {
                     reject(err);
                 } else {
                     let data = getColumns(rows, [9, 4, 5, 6, 8, 10]);
-                    
+
                     let zu = new Set();
                     let shengniu = new Set();
                     let hu = new Set();
@@ -271,29 +271,55 @@ const get_guangyun_search_item = () => {
     })
 }
 
-const guangyun_search = (search_item) => {
+const guangyun_search = (params) => {
     return new Promise((resolve, reject) => {
         fs.readFile(zhonggu_guangyun_path, function (err, fileData) {
             parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
                 if (err) {
                     reject(err);
                 } else {
-                    let data = getColumns(rows, [9, 4, 5, 6, 8, 10, 1]);
+                    let target_yunbu = params.yunbu;
+                    let search_item = params.guangyun_search;
+
+                    let target_data = getColumns(rows, [0, 9, 4, 5, 6, 8, 10, 1]);
+                    target_data = target_data.filter((element) => element[0] == target_yunbu);
+                    let selected_data = new Set();
+                    let selected_shengniu = new Set();
 
                     for (let key in search_item) {
                         if (search_item[key].length != 0) {
                             let index = Object.keys(search_item).indexOf(key);
-                            data = data.filter((element) => element[index] == search_item[key])
+                            for (let value of search_item[key]) {
+                                let find_data = target_data.filter((element) => element[index + 1] == value);
+                                for (let item of find_data) {
+                                    selected_data.add(item);
+                                    selected_shengniu.add(item[2]);
+                                }
+                            }
                         }
                     }
 
-                    let find_zitou = [];
-                    for (let item of data) {
-                        if (item[6].length != 0 && item[6].length <= 1) {
-                            find_zitou.push(item[6]);
+                    let guangyun_search_results = [];
+                    selected_data = Array.from(selected_data);
+                    shengniu_list = Array.from(selected_shengniu);
+
+                    for (let item of shengniu_list) {
+                        let each_shengniu = {}
+                        let each_zitou = new Set();
+                        each_shengniu.shengniu = item;
+
+                        let selected_zitou = selected_data.filter((element) => element[2] == item);
+                        for (let item of selected_zitou) {
+                            if (item[7].length == 1) {
+                                each_zitou.add(item[7]);
+                            }
                         }
+                        each_shengniu.shengniu = item;
+                        each_shengniu.zitou = Array.from(each_zitou);
+
+                        guangyun_search_results.push(each_shengniu);
                     }
-                    resolve (find_zitou)
+                    resolve(guangyun_search_results)
                 }
             })
         })
@@ -314,7 +340,6 @@ const guangyun_url = (data, target) => {
     let url = match_array_item(data, converted, 3);
     return url;
 }
-
 
 // ------------ zhongyuan ------------
 const get_jindai_zhongyuan = () => {
@@ -342,7 +367,7 @@ const get_zhongyuan_search_item = () => {
                     reject(err);
                 } else {
                     let data = getColumns(rows, [4, 5, 6, 3]);
-                    
+
                     let shengniu = new Set();
                     let qingzhuo = new Set();
                     let sihu = new Set();
@@ -376,29 +401,56 @@ const get_zhongyuan_search_item = () => {
     })
 }
 
-const zhongyuan_search = (search_item) => {
+const zhongyuan_search = (params) => {
     return new Promise((resolve, reject) => {
         fs.readFile(jindai_zhongyuan_path, function (err, fileData) {
             parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
                 if (err) {
                     reject(err);
                 } else {
-                    let data = getColumns(rows, [4, 5, 6, 3, 1]);
+                    let target_yunbu = params.yunbu;
+                    let search_item = params.zhongyuan_search;
+
+                    let target_data = getColumns(rows, [0, 4, 5, 6, 3, 1]);
+                    target_data = target_data.filter((element) => element[0] == target_yunbu);
+
+                    let selected_data = new Set();
+                    let selected_shengniu = new Set();
 
                     for (let key in search_item) {
                         if (search_item[key].length != 0) {
                             let index = Object.keys(search_item).indexOf(key);
-                            data = data.filter((element) => element[index] == search_item[key])
+                            for (let value of search_item[key]) {
+                                let find_data = target_data.filter((element) => element[index + 1] == value);
+                                for (let item of find_data) {
+                                    selected_data.add(item);
+                                    selected_shengniu.add(item[1]);
+                                }
+                            }
                         }
                     }
 
-                    let find_zi = [];
-                    for (let item of data) {
-                        if (item[4].length != 0 && item[4].length <= 1) {
-                            find_zi.push(item[4]);
+                    let zhongyuan_search_results = [];
+                    selected_data = Array.from(selected_data);
+                    shengniu_list = Array.from(selected_shengniu);
+
+                    for (let item of shengniu_list) {
+                        let each_shengniu = {}
+                        let each_zitou = new Set();
+                        each_shengniu.shengniu = item;
+
+                        let selected_zitou = selected_data.filter((element) => element[1] == item);
+                        for (let item of selected_zitou) {
+                            if (item[5].length == 1) {
+                                each_zitou.add(item[5]);
+                            }
                         }
+                        each_shengniu.shengniu = item;
+                        each_shengniu.zitou = Array.from(each_zitou);
+
+                        zhongyuan_search_results.push(each_shengniu);
                     }
-                    resolve (find_zi)
+                    resolve(zhongyuan_search_results)
                 }
             })
         })

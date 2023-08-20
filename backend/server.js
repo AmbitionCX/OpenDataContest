@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const axios = require('axios');
 const cors = require('cors');
 
 const csvReader = require('./csvReader');
@@ -12,19 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-    let key = "&key=" + process.env.API_KEY
-    let url = "http://data1.library.sh.cn/gj/webapi/instances?freetext=三国" + key;
-
-    axios({
-        method: 'get',
-        url
-    })
-        .then(function (response) {
-            res.send(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    res.send("Open Data Contest");
 })
 
 
@@ -94,8 +81,8 @@ app.get("/get_guangyun_search_item", (req, res) => {
 })
 
 app.post("/guangyun_search", (req, res) => {
-    let search_item = req.body.params.search_item;
-    csvReader.guangyun_search(search_item).then((data) => {
+    let params = req.body.params;
+    csvReader.guangyun_search(params).then((data) => {
         res.setHeader('Content-Type', 'application/json');
         res.json({
             code: 200,
@@ -135,7 +122,8 @@ app.get("/get_zhongyuan_search_item", (req, res) => {
 })
 
 app.post("/zhongyuan_search", (req, res) => {
-    csvReader.guangyun_search(search_item).then((data) => {
+    let params = req.body.params;
+    csvReader.zhongyuan_search(params).then((data) => {
         res.setHeader('Content-Type', 'application/json');
         res.json({
             code: 200,
