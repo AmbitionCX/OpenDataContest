@@ -3,11 +3,14 @@
     <div class="nav1">
         <navbar2></navbar2>
       </div>
-
-      <div>
-        <sjL3></sjL3>
-      </div>
   
+      <div class="header">韵部系联</div>
+
+      <div class="btn1"  @click="BackToLastWeb">
+      <div class="left1"></div>
+      <div class="left2"></div>
+    </div>
+
     <div class="circle-container">
       <span class="yunbu">{{ yb[Index] }}</span>
       <div
@@ -26,7 +29,6 @@
 <script>
 import navbar from "@/components/navbar.vue";
 import navbar2 from "@/components/nav/navbar2.vue";
-import sjL3 from "./sjL3.vue";
 import * as d3 from "d3";
 import axios from "axios";
 
@@ -47,7 +49,6 @@ export default {
   components: {
     navbar,
     navbar2,
-    sjL3,
   },
   computed: {},
   methods: {
@@ -60,8 +61,8 @@ export default {
             const yunbu = [];
             const yunjiao = [];
             for (let i = 0; i < res.data.length; i++) {
-              if (res.data[i][2] != "" && res.data[i][2] != 0) {
-                yunbu.push(res.data[i][2]);
+              if (res.data[i][1] != "" && res.data[i][1] != 0) {
+                yunbu.push(res.data[i][1]);
               }
             }
             const yunbu2 = Array.from(new Set(yunbu));
@@ -71,8 +72,8 @@ export default {
             }
 
             for (let i = 0; i < res.data.length; i++) {
-              if (yunbu2.indexOf(res.data[i][2]) != -1) {
-                yunjiao[yunbu2.indexOf(res.data[i][2])].push(res.data[i][1]);
+              if (yunbu2.indexOf(res.data[i][1]) != -1) {
+                yunjiao[yunbu2.indexOf(res.data[i][1])].push(res.data[i][0]);
               }
             }
 
@@ -107,6 +108,9 @@ export default {
     degreesToRadians(degrees) {
       return (degrees * Math.PI) / 180;
     },
+    BackToLastWeb(){
+      window.location.href = `/yunbu`; 
+    },
   },
   created() {
     this.getShijing();
@@ -136,6 +140,45 @@ export default {
     top: 0;
     left: 0;
   }
+  .header {
+  position: fixed;
+  z-index: 999;
+  top: 4px;
+  left: 47vw;
+  font-size: 25px;
+  color: #f6f5f5;
+  text-align: center;
+}
+.btn1 {
+  position: fixed;
+  top: 125px;
+  left: 60px;
+  background-image: linear-gradient(
+    to right,
+    rgba(193, 165, 48, 1),
+    rgba(252, 237, 227, 0.1)
+  );
+  height: 40px;
+  width: 50px;
+  border: 3px solid #c1a530;
+  cursor: pointer;
+}
+.left1 {
+  background-color: #f9f5f2;
+  height: 8px;
+  width: 8px;
+  position: fixed;
+  top: 140px;
+  left: 67px;
+}
+.left2 {
+  background-color: #f9f5f2;
+  height: 2px;
+  width: 20px;
+  position: fixed;
+  top: 143px;
+  left: 80px;
+}
   .yunbu {
     position: fixed;
     top: 360px;

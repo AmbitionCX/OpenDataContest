@@ -72,10 +72,11 @@
     },
     methods: {
       incrementNum(){
-      this.Index = this.Index+1;
+      this.Index = Number(this.Index)+1;
+      console.log(this.Index);
     },
     decrementNum(){
-      this.Index = this.Index-1;
+      this.Index = Number(this.Index)-1;
     },
       ToLinkZY(){
       window.location.href = "/yunbu3"; 
@@ -136,7 +137,7 @@
     const yunbu = data[1];
 
     const margin = { top: 20, right: 30, bottom: 40, left: 40 };
-      const width = 600 - margin.left - margin.right;
+      const width = 1000 - margin.left - margin.right;
       const height = 200 - margin.top - margin.bottom;
 
       const svg = d3
@@ -172,8 +173,9 @@
       const xAxis = d3.axisBottom(x);
       const yAxis = d3.axisLeft(y);
 
-      svg.append('g').attr('class', 'x-axis').attr('transform', `translate(0, ${height})`).call(xAxis);
-      svg.append('g').attr('class', 'y-axis').call(yAxis);
+      svg.append('g').attr('class', 'x-axis').attr('transform', `translate(0, ${height})`)
+      .call(xAxis).attr('stroke', 'black').style("font-weight", 100).style("font-size", "14px");
+      svg.append('g').attr('class', 'y-axis').call(yAxis).attr('stroke', 'black');
 
       // 添加悬浮框
       const tooltip = d3

@@ -72,10 +72,11 @@
     },
     methods: {
       incrementNum(){
-      this.Index = this.Index+1;
+      this.Index = Number(this.Index)+1;
+      console.log(this.Index);
     },
     decrementNum(){
-      this.Index = this.Index-1;
+      this.Index = Number(this.Index)-1;
     },
       ToLinkSJ(){
         window.location.href = "/yunbu"; 
@@ -171,8 +172,9 @@
       const xAxis = d3.axisBottom(x);
       const yAxis = d3.axisLeft(y);
 
-      svg.append('g').attr('class', 'x-axis').attr('transform', `translate(0, ${height})`).call(xAxis);
-      svg.append('g').attr('class', 'y-axis').call(yAxis);
+      svg.append('g').attr('class', 'x-axis').attr('transform', `translate(0, ${height})`)
+      .call(xAxis).attr('stroke', 'black').style("font-weight", 100).style("font-size", "12px");
+      svg.append('g').attr('class', 'y-axis').call(yAxis).attr('stroke', 'black');
 
       // 添加悬浮框
       const tooltip = d3
