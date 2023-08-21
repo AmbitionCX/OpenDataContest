@@ -44,17 +44,23 @@
             <img src="@/assets/introduction/rect3.svg" class="image"/>
         </div>
   
-        <div class="pic1">
-            <img src="@/assets/introduction/pic1.png" class="image"/>
-        </div>
-  
-        <div class="pic2">
-            <img src="@/assets/introduction/pic2.png" class="image"/>
-        </div>
-  
-        <div class="pic3">
-            <img src="@/assets/introduction/pic3.png" class="image"/>
-        </div>
+        <div class="pic1-container">
+  <div class="pic1">
+      <img src="@/assets/introduction/pic1.png" class="image"/>
+  </div>
+</div>
+
+<div class="pic2-container">
+  <div class="pic2">
+      <img src="@/assets/introduction/pic2.png" class="image"/>
+  </div>
+</div>
+
+<div class="pic3-container">
+  <div class="pic3">
+      <img src="@/assets/introduction/pic3.png" class="image"/>
+  </div>
+</div>
   
         <div class="title-container">
           <div class="title">
@@ -212,27 +218,54 @@
     width: 23vw;
     height: 50vh;
   }
-  .pic1 {
-    position: absolute;
-    z-index: 9;
-    top: 50vh;
-    left: 2vw;
-    transform: scaleX(0.4) scaleY(0.6); /* 水平缩放50%，垂直缩放70% */
-  }
-  .pic2 {
-    position: absolute;
-    z-index: 9;
-    top: 56vh;
-    left: 40vw;
-    transform: scaleX(1) scaleY(0.98); /* 水平缩放50%，垂直缩放70% */
-  }
-  .pic3 {
-    position: absolute;
-    z-index: 9;
-    top: 62vh;
-    left: 59vw;
-    transform: scaleX(0.6) scaleY(0.95); /* 水平缩放50%，垂直缩放70% */
-  }
+  .pic1-container {
+position: absolute;
+z-index: 9;
+top: 60vh;
+left: 13.5vw;
+width: 23vw;
+height: 50vh;
+display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+}
+.pic1 {
+position: absolute;
+z-index: 9;
+transform: scaleX(0.4) scaleY(0.6); /* 水平缩放50%，垂直缩放70% */
+}
+.pic2-container {
+position: absolute;
+z-index: 9;
+top: 52vh;
+left: 35vw;
+width: 30vw;
+height: 50vh;
+display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  padding-top: 5vh;
+}
+.pic2 {
+position: absolute;
+z-index: 9;
+transform: scaleX(1) scaleY(0.98); /* 水平缩放50%，垂直缩放70% */
+}
+.pic3-container {
+position: absolute;
+z-index: 9;
+top: 60vh;
+left: 63vw;
+width: 23vw;
+height: 50vh;
+display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+}
+.pic3 {
+position: absolute;
+z-index: 9;
+transform: scaleX(0.6) scaleY(0.95); /* 水平缩放50%，垂直缩放70% */
+}
   .title-container {
     display: flex;
   justify-content: center;

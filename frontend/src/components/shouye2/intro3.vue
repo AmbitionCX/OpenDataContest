@@ -11,9 +11,11 @@
     <p>上古幽部“洲”“逑”“流”“求”在今天汉语普通话读起来押韵，但是上古之部“采”“友”在今天汉语普通话读起来却相差甚远。《诗经》作为中国古代最早的一部诗歌总集，记录上古先民劳作时的歌咏，从而可以归纳出上古音的韵部。</p>
   </div>
 
+  <div class="pic4-container">
   <div class="pic4">
-            <img src="@/assets/introduction/pic4.png" class="image"/>
-    </div>
+      <img src="@/assets/introduction/pic4.png" class="image"/>
+  </div>
+</div>
 
 <div class="shijing-kuang">
     <img src="@/assets/introduction/shijing-kuang.svg" class="image" />
@@ -56,9 +58,11 @@
     <p>孤舟蓑笠翁，独钓寒江雪。</p>
   </div>
 
+  <div class="pic5-container">
   <div class="pic5">
-            <img src="@/assets/introduction/pic5.png" class="image"/>
-    </div>
+      <img src="@/assets/introduction/pic5.png" class="image"/>
+  </div>
+</div>
 
     <div class="guangyun-bottom">
     <img src="@/assets/introduction/guangyun-bottom.svg" class="image" />
@@ -92,9 +96,11 @@
     <p>“鸦”“家”“马”“下”“涯”都押近代家麻韵。研究近代音，主要材料是元代周德清创作的曲韵著作——《中原音韵》。它以辽、金以来北方语音变化发展为依据，废入声，又把平声分为阴、阳两类，归并旧韵为东钟、江阳、支思、齐微等19部，已接近于今北京音。</p>
   </div>
 
+  <div class="pic6-container">
   <div class="pic6">
-            <img src="@/assets/introduction/pic6.png" class="image"/>
-    </div>
+      <img src="@/assets/introduction/pic6.png" class="image"/>
+  </div>
+</div>
 
  </template>
         
@@ -171,12 +177,22 @@ position: absolute;
     color: #000;
   font-size: 20px;
 }
+.pic4-container {
+  position: absolute;
+z-index: 9;
+top: 275vh;
+left: 17vw;
+width: 42vw;
+height: 60vh;
+display: flex; /* 使用 Flexbox 布局 */
+justify-content: center; /* 水平居中 */
+align-items: center; /* 垂直居中 */
+/* background-color: aqua; */
+  }
 .pic4 {
-    position: absolute;
+  position: absolute;
     z-index: 9;
-    top: 250vh;
-    left: 17vw;
-    transform: scaleX(0.6) scaleY(0.5); /* 水平缩放50%，垂直缩放70% */
+  transform: scaleX(0.6) scaleY(0.5); /* 水平缩放50%，垂直缩放70% */
   }
   .shijing-kuang {
     position: absolute;
@@ -258,11 +274,21 @@ position: absolute;
   text-align: center;
   font-size: 1.1rem;
 }
+.pic5-container {
+  position: absolute;
+z-index: 9;
+top: 390vh;
+left: 25vw;
+width: 50vw;
+height: 70vh;
+display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  /* background-color: aqua; */
+}
 .pic5 {
     position: absolute;
     z-index: 9;
-    top: 365vh;
-    left: 25vw;
     transform: scaleX(0.8) scaleY(0.5); /* 水平缩放50%，垂直缩放70% */
   }
   .guangyun-bottom {
@@ -343,11 +369,21 @@ position: absolute;
   height: 40vh;
   text-align: left;
 }
+.pic6-container {
+position: absolute;
+z-index: 9;
+top: 475vh;
+left: 45vw;
+width: 40vw;
+height: 80vh;
+display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  /* background-color: aqua; */
+}
 .pic6 {
     position: absolute;
     z-index: 9;
-    top: 458vh;
-    left: 40vw;
     transform: scaleX(0.6) scaleY(0.6); /* 水平缩放50%，垂直缩放70% */
   }
     </style>

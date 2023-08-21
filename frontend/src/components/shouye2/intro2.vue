@@ -8,6 +8,7 @@
     <img src="@/assets/introduction/china-kuang.svg" class="image" />
   </div>
 
+  <div class="china-txt-container">
   <ul class="china-txt">
     <span v-for="(item, index) in zgx">
       <span v-if="item.text === ''" style="color: transparent;">none<br /></span>
@@ -21,6 +22,7 @@
       </span>
     </span>
   </ul>
+</div>
 
   <div class="china2">
     <p>今天用汉语普通话演唱流行音乐————《我的中国心》</p>
@@ -152,11 +154,22 @@ position: absolute;
   height: 30vh;
   /* transform: scaleX(0.3) scaleY(0.3);  */
 }
+.china-txt-container {
+  position: absolute;
+  z-index: 9;
+  top: 150vh;
+  left: 26vw;
+  width: 21.3vw;
+  height: 80vh;
+  /* background-color: aqua; */
+  display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  padding-top: 2vh;
+}
 .china-txt {
   position: absolute;
   z-index: 999;
-  top: 152vh;
-  left: 30vw;
 }
 .red-text {
   color: white;

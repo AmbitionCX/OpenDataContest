@@ -49,8 +49,8 @@
     <div><a href="/yunbu">韵部系联</a>
       <ul class="sublist">
         <li><a href="/yunbu">《诗经》二十九部</a></li>
-        <li><a href="/yunbu2">《广韵》六十一部</a></li>
-        <li><a href="/yunbu3">《中原音韵》十九部</a></li>
+        <li><a href="/yunbu2/14">《广韵》六十一部</a></li>
+        <li><a href="/yunbu3/14">《中原音韵》十九部</a></li>
       </ul>
     </div>
 
