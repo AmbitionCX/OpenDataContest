@@ -16,34 +16,24 @@
           />
         </div>
 
-        <div class="shijing3"><a>中原音韵</a></div>
+        <div class="shijing"><a>广韵</a></div>
   
         <div class="rect2"></div>
         <div class="txt">
           <a class="txt1" href="/yunbu">诗经</a>
-          <a class="txt2" href="/yunbu2/14">广韵</a>
+          <a class="txt3" href="/yunbu3">中原音韵</a>
         </div>
-        <div class="circle12" @click="ToLinkSJ"></div>
-      <div class="circle22" @click="ToLinkGY"></div>
-      <div class="circle3"><div class="circle31"></div></div>
+        <div class="circle12" @click="ToLinkSY"></div>
+        <div class="circle2"><div class="circle21"></div></div>
+        <div class="circle32" @click="ToLinkZY"></div>
   
       <div class="intro2">文字简介:</div>
       <div class="rect3"></div>
       </div>
   
-  <div  class="yunbu1">
-    <zyyunbu :message="Index"></zyyunbu>
+  <div class="yunbu1">
+    <gyyunbu></gyyunbu>
   </div>
-
-  <div class="image2">
-      <img src="@/assets/quanlan/arrow.svg" class="image" 
-      style="width: 40px; height: 40px; cursor: pointer;" @click="incrementNum()"/>
-    </div>
-
-    <div class="image4">
-      <img src="@/assets/quanlan/arrow2.svg" class="image" 
-      style="width: 40px; height: 40px; cursor: pointer;" @click="decrementNum()"/>
-    </div>
         
   <div class="line-chart"></div>
   
@@ -53,7 +43,7 @@
       <script>
   import navbar from "@/components/navbar.vue";
   import navbar2 from "@/components/nav/navbar2.vue";
-  import zyyunbu from "@/components/yunbu/zyyunbu.vue";
+  import gyyunbu from "@/components/yunbu/gyyunbu.vue";
   import * as d3 from "d3";
   import axios from "axios";
   
@@ -62,39 +52,33 @@
       return {
         yb: [],
       yunjiao: [],
-      Index: this.$route.params.index,
       };
     },
     components: {
       navbar,
       navbar2,
-      zyyunbu,
+      gyyunbu,
     },
     methods: {
-      incrementNum(){
-      this.Index = this.Index+1;
+      ToLinkZY(){
+      window.location.href = "/yunbu3"; 
     },
-    decrementNum(){
-      this.Index = this.Index-1;
+    ToLinkSJ(){
+      window.location.href = "/yunbu"; 
     },
-      ToLinkSJ(){
-        window.location.href = "/yunbu"; 
-      },
-      ToLinkGY(){
-        window.location.href = "/yunbu2"; 
-      },
 
       async getShijing() {
         return new Promise((resolve, reject) => {
-          const url = "http://localhost:5000/get_jindai_zhongyuan";
+          const url = "http://localhost:5000/get_zhonggu_guangyun";
           axios
             .get(url)
             .then((res) => {
               const yunbu = [];
               const yunjiao = [];
+              //console.log(res.data[1])
               for (let i = 0; i < res.data.length; i++) {
-                if (res.data[i][1] != "" && res.data[i][1] != 0) {
-                  yunbu.push(res.data[i][1]);
+                if (res.data[i][2] != "" && res.data[i][2] != 0) {
+                  yunbu.push(res.data[i][2]);
                 }
               }
               const yunbu2 = Array.from(new Set(yunbu));
@@ -104,8 +88,8 @@
               }
   
               for (let i = 0; i < res.data.length; i++) {
-                if (yunbu2.indexOf(res.data[i][1]) != -1 && res.data[i][0].length<2) {
-                  yunjiao[yunbu2.indexOf(res.data[i][1])].push(res.data[i][0]);
+                if (yunbu2.indexOf(res.data[i][2]) != -1) {
+                  yunjiao[yunbu2.indexOf(res.data[i][2])].push(res.data[i][0]);
                 }
               }
   
@@ -125,7 +109,7 @@
         });
       },
 
-             //绘制折线图
+       //绘制折线图
     async drawPlot(){
       try {
     const data = await this.getShijing(); // 等待promise的结果
@@ -135,7 +119,7 @@
     const yunbu = data[1];
 
     const margin = { top: 20, right: 30, bottom: 40, left: 40 };
-      const width = 500 - margin.left - margin.right;
+      const width = 600 - margin.left - margin.right;
       const height = 200 - margin.top - margin.bottom;
 
       const svg = d3
@@ -203,7 +187,6 @@
           tooltip.transition().duration(500).style('opacity', 0);
         });
 
-
   } catch (error) {
     console.error('Error:', error);
   }
@@ -270,29 +253,29 @@
     left: 50px;
     z-index: 899;
   }
-  .shijing3 {
-    position: fixed;
+  .shijing {
+    display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
+  position: fixed;
     z-index: 99;
     top: 240px;
     left: 270px;
     background-image: linear-gradient(
-      rgba(193, 165, 48, 1),
+      rgba(224, 157, 10, 1),
       rgba(252, 237, 227, 0.1)
     );
     height: 130px;
     width: 50px;
     border-radius: 5px;
-    border: 3px solid #c1a530;
-    display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
-  align-items: center; /* 垂直居中文本 */
-  justify-content: center; /* 水平居中文本 */
+    border: 3px solid #e09d0a;
   }
-  .shijing3 a {
-    writing-mode: vertical-lr;
+.shijing a {
+  writing-mode: vertical-lr;
     letter-spacing: 0.3em;
     font-size: 23px;
     color: black;
-  }
+}
   .zyyy {
     position: fixed;
     z-index: 999;
@@ -328,9 +311,9 @@
       position: fixed;
       left: 35px;
   }
-  .txt2{
+  .txt3{
       position: fixed;
-      left: 200px;
+      left: 350px;
   }
   .circle12{
     position: fixed;
@@ -344,39 +327,38 @@
     border: 4px solid #c6910e;
     cursor: pointer;
   }
-
-  .circle22{
-    position: fixed;
-    z-index: 100;
-    top: 460px;
-    left: 210px;
-    width: 25px;
-    height: 25px;
-    background-color: #f9f5f2;
-    border-radius: 50%;
-    border: 4px solid #e09d0a;
-    cursor: pointer;
-  }
-  .circle31 {
+  .circle21 {
     position: fixed;
     z-index: 999;
     top: 462px;
-    left: 366.5px;
+    left: 206.5px;
     width: 22px;
     height: 22px;
-    background-color: #c1a530;
+    background-color: #e09d0a;
     border-radius: 50%;
   }
-  .circle3 {
+  .circle2 {
     position: fixed;
     z-index: 100;
     top: 455px;
-    left: 360px;
+    left: 200px;
     width: 35px;
     height: 35px;
     background-color: #f9f5f2;
     border-radius: 50%;
-    border: 2px solid #c1a530;
+    border: 2px solid #e09d0a;
+  }
+  .circle32{
+    position: fixed;
+    z-index: 100;
+    top: 460px;
+    left: 370px;
+    width: 25px;
+    height: 25px;
+    background-color: #f9f5f2;
+    border-radius: 50%;
+    border: 4px solid #c1a530;
+    cursor: pointer;
   }
   .intro2 {
     position: fixed;
@@ -395,17 +377,16 @@
     border-radius: 20px;
   }
   .yunbu1{
-    display: flex;
-    position: fixed;
-    /* z-index: 999; */
-    top: 50px;
-    left: 470px;
-    width: calc(100% - 470px); /* 设置容器宽度为屏幕宽度减去200px */
-    height: 90vh;
-    /* background-color: aqua; */
-    overflow-y: scroll; /* 只显示竖向滚动条 */
-    overflow-x: hidden; /* 隐藏横向滚动条 */
-  }
+  display: flex;
+  position: fixed;
+  /* z-index: 999; */
+  top: 50px;
+  left: 470px;
+  width: calc(100% - 470px); /* 设置容器宽度为屏幕宽度减去200px */
+  height: 90vh;
+  /* background-color: aqua; */
+  overflow: scroll;
+}
   .line-chart {
   position: fixed;
   top: 600px;
@@ -425,19 +406,5 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-}
-.image2 {
-  position: fixed;
-  z-index: 90;
-  width: 50px;
-  left: 90vw;
-  top: 50vh;
-}
-.image4 {
-  position: fixed;
-  z-index: 90;
-  width: 50px;
-  left: 33vw;
-  top: 50vh;
 }
   </style>

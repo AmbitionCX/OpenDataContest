@@ -1,30 +1,22 @@
 <template>
     <div class="scrollable-container">
-      <div :style="getYunbuStyle()">
-      <img
-        src="@/assets/yunbu/yunbu.svg"
-        style="width: 18vw; height: 22vw"
-      />
-      <span class="yb" @click="goToNewPage(message)">{{ yb[message] }}</span>
-      <div
-        v-for="(char, Index) in yunjiao[message]"
-        :key="Index"
-        :style="getTextStyle(Index)"
-      >
-        <div class="yj">{{ char }}</div>
+      <div v-for="(item, index) in yunjiao" :style="getYunbuStyle(index)">
+        <img
+          src="@/assets/yunbu/yunbu.svg"
+          style="width: 18vw; height: 22vw"
+        />
+        <!-- <span class="text" @click="getYunjiaoRfresh(index)"> {{ yun }}</span> -->
+        <span class="yb" @click="goToNewPage(index)">{{ yb[index] }}</span>
+        <div
+          v-for="(char, Index) in item"
+          :key="Index"
+          :style="getTextStyle(Index, item, index)"
+        >
+          <div class="yj">{{ char }}</div>
+        </div>
+  
       </div>
     </div>
-    </div>
-    
-  <!-- <div class="image2">
-      <img src="@/assets/quanlan/arrow.svg" class="image" 
-      style="width: 40px; height: 40px; cursor: pointer;" @click="incrementNum()"/>
-    </div>
-
-    <div class="image4">
-      <img src="@/assets/quanlan/arrow2.svg" class="image" 
-      style="width: 40px; height: 40px; cursor: pointer;" @click="decrementNum()"/>
-    </div> -->
   </template>
   
   <script>
@@ -32,9 +24,6 @@
   import { mapState, mapMutations } from "vuex";
   
   export default {
-    props: {
-    message: Number  // 声明props，指定数据类型
-  },
     data() {
       return {
         yun: "韵部",
@@ -42,32 +31,42 @@
         yunjiao: [],
       };
     },
+    computed: {
+      images() {
+        const totalImages = 69;
+        const images = [];
+        for (let i = 0; i < totalImages; i++) {
+          // const row = i % 2;
+          // const col = Math.round(i / 2);
+          const x = i* 90 + 20;
+          const y = 20;
+          images.push({ x, y });
+        }
+        return images;
+      },
+    },
     methods: {
-      incrementNum(){
-      this.index = this.index+1;
-    },
-    decrementNum(){
-      this.index = this.index-1;
-    },
-      getYunbuStyle() {
-      return {
-        position: "absolute",
-        left: `${20}vw`,
-        top: `${20}vh`,
-      };
-    },
+      getYunbuStyle(index) {
+        const image = this.images[index];
+        return {
+          position: "absolute",
+          left: `${image.x}vw`,
+          top: `${image.y}vh`,
+        };
+      },
   
       async getShijing() {
         return new Promise((resolve, reject) => {
-          const url = "http://localhost:5000/get_jindai_zhongyuan";
+          const url = "http://localhost:5000/get_zhonggu_guangyun";
           axios
             .get(url)
             .then((res) => {
               const yunbu = [];
               const yunjiao = [];
+              //console.log(res.data[1])
               for (let i = 0; i < res.data.length; i++) {
-                if (res.data[i][1] != "" && res.data[i][1] != 0) {
-                  yunbu.push(res.data[i][1]);
+                if (res.data[i][2] != "" && res.data[i][2] != 0) {
+                  yunbu.push(res.data[i][2]);
                 }
               }
               const yunbu2 = Array.from(new Set(yunbu));
@@ -77,14 +76,14 @@
               }
   
               for (let i = 0; i < res.data.length; i++) {
-                if (yunbu2.indexOf(res.data[i][1]) != -1 && res.data[i][0].length<2) {
-                  yunjiao[yunbu2.indexOf(res.data[i][1])].push(res.data[i][0]);
+                if (yunbu2.indexOf(res.data[i][2]) != -1) {
+                  yunjiao[yunbu2.indexOf(res.data[i][2])].push(res.data[i][0]);
                 }
               }
   
               this.yb = yunbu2;
               this.yunjiao = yunjiao;
-              //console.log(yunbu2);
+              console.log(yunjiao);
               resolve(yunjiao); // 请求成功后resolve数据
             })
             .catch(function (err) {
@@ -93,16 +92,17 @@
         });
       },
   
-      getTextStyle(Index) {
+      getTextStyle(Index, item, index) {
         //Index是韵脚字的序号，index是韵部的序号, item是韵脚字列表
-
+        const image = this.images[index];
+  
         const rowNum = 6;  //每行韵脚字个数
         const space = 2;  //韵脚字间距
         const picWidth = 5;
         const picHeight = 7;
         const col = (Index+1) % rowNum - 1;
         const row = Math.ceil((Index+1) / rowNum) - 1;
-
+  
         var dx = 0; var dy = 0;
         if(row==0){
           if(col<2){
@@ -126,17 +126,17 @@
           dx = -62.5+col2*(picWidth+space); dy = -53 + picHeight*row2;
           }
         }      
-
+  
         return {
           position: "absolute",
           left: `${dx + 49}vw`, //注意这个left是相对于每个韵脚字而言
-          top: `${20 + dy + 33}vw`,
+          top: `${image.y + dy + 33}vw`,
         };
       },
   
       // 点击图片时导航到新页面，并传递index作为参数
       goToNewPage(index) {
-        this.$router.push(`/yunbu/zhongyuan/${index}`);
+        this.$router.push(`/yunbu/guangyun/${index}`);
       },
     },
   
@@ -151,7 +151,7 @@
     position: relative;
     top: 50%;
     left: 50%;
-    transform: translate(-110%, -190%);
+    transform: translate(-110%, -340%);
     font-size: 80px;
   color: black;
   z-index: 999;

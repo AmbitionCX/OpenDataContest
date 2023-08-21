@@ -125,7 +125,7 @@ export default {
             "http://localhost:5000/zhongyuan_search",
             {
               params: {
-                yunbu: '庚青',
+                yunbu: this.message,
                 zhongyuan_search: zhongyuan_search,
               },
             }

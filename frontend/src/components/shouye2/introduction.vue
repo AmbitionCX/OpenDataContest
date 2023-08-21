@@ -31,14 +31,14 @@
   </div>
 
   <div class="bottom-txt">
-    <div>首页
+    <div><a href="introduction">首页</a>
       <ul class="sublist">
         <li><a>古汉语的语音发展</a></li>
         <li><a>汉语韵律之美</a></li>
       </ul>
     </div>
 
-    <div>语音全览
+    <div><a href="/quanlan">语音全览</a>
       <ul class="sublist">
         <li><a href="/quanlan/shijing">《诗经》</a></li>
         <li><a href="/quanlan/guangyun">《广韵》</a></li>
@@ -46,7 +46,7 @@
       </ul>
     </div>
 
-    <div>韵部系联
+    <div><a href="/yunbu">韵部系联</a>
       <ul class="sublist">
         <li><a href="/yunbu">《诗经》二十九部</a></li>
         <li><a href="/yunbu2">《广韵》六十一部</a></li>
@@ -54,7 +54,7 @@
       </ul>
     </div>
 
-    <div>综合分析</div>
+    <div><a href="/fenxi">综合分析</a></div>
   </div>
 
     </div>
@@ -181,6 +181,9 @@ import axios from 'axios';
   gap: 12vw;
   justify-content: center;
   font-size: 1.5rem;
+}
+.bottom-txt a {
+  color: #000;
 }
 .sublist a {
   color: #000;

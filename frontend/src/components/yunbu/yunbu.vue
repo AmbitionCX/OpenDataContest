@@ -20,8 +20,8 @@
 
       <div class="rect2"></div>
       <div class="txt">
-          <a class="txt2" href="/yunbu2">广韵</a>
-          <a class="txt3" href="/yunbu3">中原音韵</a>
+          <a class="txt2" href="/yunbu2/14">广韵</a>
+          <a class="txt3" href="/yunbu3/14">中原音韵</a>
         </div>
       <div class="circle12" @click="ToLinkSJ"></div>
     <div class="circle22" @click="ToLinkGY"></div>

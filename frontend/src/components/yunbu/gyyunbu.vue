@@ -1,22 +1,30 @@
 <template>
   <div class="scrollable-container">
-    <div v-for="(item, index) in yunjiao" :style="getYunbuStyle(index)">
+    <div :style="getYunbuStyle()">
       <img
         src="@/assets/yunbu/yunbu.svg"
         style="width: 18vw; height: 22vw"
       />
-      <!-- <span class="text" @click="getYunjiaoRfresh(index)"> {{ yun }}</span> -->
-      <span class="yb" @click="goToNewPage(index)">{{ yb[index] }}</span>
+      <span class="yb" @click="goToNewPage(message)">{{ yb[message] }}</span>
       <div
-        v-for="(char, Index) in item"
+        v-for="(char, Index) in yunjiao[message]"
         :key="Index"
-        :style="getTextStyle(Index, item, index)"
+        :style="getTextStyle(Index)"
       >
         <div class="yj">{{ char }}</div>
       </div>
-
     </div>
   </div>
+
+  <!-- <div class="image2">
+      <img src="@/assets/quanlan/arrow.svg" class="image" 
+      style="width: 40px; height: 40px; cursor: pointer;" @click="incrementNum()"/>
+    </div>
+
+    <div class="image4">
+      <img src="@/assets/quanlan/arrow2.svg" class="image" 
+      style="width: 40px; height: 40px; cursor: pointer;" @click="decrementNum()"/>
+    </div> -->
 </template>
 
 <script>
@@ -24,6 +32,9 @@ import axios from "axios";
 import { mapState, mapMutations } from "vuex";
 
 export default {
+  props: {
+    message: Number  // 声明props，指定数据类型
+  },
   data() {
     return {
       yun: "韵部",
@@ -31,27 +42,19 @@ export default {
       yunjiao: [],
     };
   },
-  computed: {
-    images() {
-      const totalImages = 69;
-      const images = [];
-      for (let i = 0; i < totalImages; i++) {
-        // const row = i % 2;
-        // const col = Math.round(i / 2);
-        const x = i* 90 + 20;
-        const y = 20;
-        images.push({ x, y });
-      }
-      return images;
-    },
-  },
+
   methods: {
-    getYunbuStyle(index) {
-      const image = this.images[index];
+    incrementNum(){
+      this.index = this.index+1;
+    },
+    decrementNum(){
+      this.index = this.index-1;
+    },
+    getYunbuStyle() {
       return {
         position: "absolute",
-        left: `${image.x}vw`,
-        top: `${image.y}vh`,
+        left: `${20}vw`,
+        top: `${20}vh`,
       };
     },
 
@@ -83,7 +86,7 @@ export default {
 
             this.yb = yunbu2;
             this.yunjiao = yunjiao;
-            console.log(yunjiao);
+            //console.log(yunjiao);
             resolve(yunjiao); // 请求成功后resolve数据
           })
           .catch(function (err) {
@@ -92,9 +95,8 @@ export default {
       });
     },
 
-    getTextStyle(Index, item, index) {
+    getTextStyle(Index) {
       //Index是韵脚字的序号，index是韵部的序号, item是韵脚字列表
-      const image = this.images[index];
 
       const rowNum = 6;  //每行韵脚字个数
       const space = 2;  //韵脚字间距
@@ -130,16 +132,8 @@ export default {
       return {
         position: "absolute",
         left: `${dx + 49}vw`, //注意这个left是相对于每个韵脚字而言
-        top: `${image.y + dy + 33}vw`,
+        top: `${20 + dy + 33}vw`,
       };
-
-      // return {
-      //   // transform: `translate(${x}px, ${y}px) rotate(${90 + angle}deg)`,
-      //   position: "absolute",
-      //   left: `${rx + x - 610}px`,
-      //   top: `${ry + y - 300}px`,
-      //   color: `rgba(193, 165, 48, ${alpha})`,
-      // };
     },
 
     // 点击图片时导航到新页面，并传递index作为参数

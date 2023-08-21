@@ -23,13 +23,16 @@ const routes:RouteRecordRaw[]=[{
     component:()=>import('@/components/quanlan/zhongyuan.vue')
 },{
     path:'/yunbu',
-    component:()=>import('@/components/yunbu/yunbu.vue')
+    component:()=>import('@/components/yunbu/yunbu.vue'),
+    props: true
 },{
-    path:'/yunbu2',
-    component:()=>import('@/components/yunbu/yunbu2.vue')
+    path:'/yunbu2/:index',
+    component:()=>import('@/components/yunbu/yunbu2.vue'),
+    props: true
 },{
-    path:'/yunbu3',
-    component:()=>import('@/components/yunbu/yunbu3.vue')
+    path:'/yunbu3/:index',
+    component:()=>import('@/components/yunbu/yunbu3.vue'),
+    props: true
 },{
     path:'/yunbu/guangyun/:index',
     name: 'YunbuGuangyun',

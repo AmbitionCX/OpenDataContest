@@ -55,7 +55,7 @@
     </div>
 
     <div class="link">
-      <a href="/yunbu3">了解详情</a>
+      <a @click="goToNewPage(yunbu_props)">了解详情</a>
     </div>
 
     <div class="choose">
@@ -89,6 +89,7 @@ export default {
       num: 1,
       ciyun: true,
       input: '',
+      yunbu_props: '',
     };
   },
   components: {
@@ -149,7 +150,7 @@ export default {
 
       getWords(yunbu){
         const yunjiao = this.yunjiao[this.yunbu.indexOf(yunbu)]
-        //console.log(yunjiao);
+        this.yunbu_props = yunbu;
 
         const Words = [];
             for (var i = 0; i < yunjiao.length; i++) {
@@ -250,6 +251,11 @@ export default {
     return arr.slice(wrappedStartIndex).concat(arr.slice(0, wrappedEndIndex));
   }
 },
+
+goToNewPage(yunbu_props) {
+      const index = this.yunbu.indexOf(yunbu_props);
+      this.$router.push(`/yunbu3/${index}`);
+    },
 
   },
 };
@@ -433,6 +439,7 @@ color: black;
   width: inherit;
   height: 530px;
   overflow: auto;
+  color:#000;
 }
 .choose-content::-webkit-scrollbar-thumb {
   background-color: red; /* 设置滚动条滑块颜色 */
@@ -513,5 +520,6 @@ color: black;
 .link a {
   color: #000;
   font-size: 20px;
+  cursor: pointer;
 }
 </style>

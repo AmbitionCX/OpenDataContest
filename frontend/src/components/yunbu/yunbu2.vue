@@ -21,7 +21,7 @@
         <div class="rect2"></div>
         <div class="txt">
           <a class="txt1" href="/yunbu">诗经</a>
-          <a class="txt3" href="/yunbu3">中原音韵</a>
+          <a class="txt3" href="/yunbu3/14">中原音韵</a>
         </div>
         <div class="circle12" @click="ToLinkSY"></div>
         <div class="circle2"><div class="circle21"></div></div>
@@ -32,8 +32,18 @@
       </div>
   
   <div class="yunbu1">
-    <gyyunbu></gyyunbu>
+    <gyyunbu :message="Index"></gyyunbu>
   </div>
+
+  <div class="image2">
+      <img src="@/assets/quanlan/arrow.svg" class="image" 
+      style="width: 40px; height: 40px; cursor: pointer;" @click="incrementNum()"/>
+    </div>
+
+    <div class="image4">
+      <img src="@/assets/quanlan/arrow2.svg" class="image" 
+      style="width: 40px; height: 40px; cursor: pointer;" @click="decrementNum()"/>
+    </div>
         
   <div class="line-chart"></div>
   
@@ -52,6 +62,7 @@
       return {
         yb: [],
       yunjiao: [],
+      Index: this.$route.params.index,
       };
     },
     components: {
@@ -60,6 +71,12 @@
       gyyunbu,
     },
     methods: {
+      incrementNum(){
+      this.Index = this.Index+1;
+    },
+    decrementNum(){
+      this.Index = this.Index-1;
+    },
       ToLinkZY(){
       window.location.href = "/yunbu3"; 
     },
@@ -385,7 +402,9 @@
   width: calc(100% - 470px); /* 设置容器宽度为屏幕宽度减去200px */
   height: 90vh;
   /* background-color: aqua; */
-  overflow: scroll;
+  /* overflow: auto; */
+  overflow-y: scroll; /* 只显示竖向滚动条 */
+    overflow-x: hidden; /* 隐藏横向滚动条 */
 }
   .line-chart {
   position: fixed;
@@ -406,5 +425,19 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+.image2 {
+  position: fixed;
+  z-index: 90;
+  width: 50px;
+  left: 90vw;
+  top: 50vh;
+}
+.image4 {
+  position: fixed;
+  z-index: 90;
+  width: 50px;
+  left: 33vw;
+  top: 50vh;
 }
   </style>

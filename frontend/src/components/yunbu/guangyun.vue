@@ -15,7 +15,7 @@
 
     <div class="header">韵部系联</div>
 
-    <div class="btn1">
+    <div class="btn1"  @click="BackToLastWeb">
       <div class="left1"></div>
       <div class="left2"></div>
     </div>
@@ -28,12 +28,16 @@
     <div class="circle-container">
       <span class="yunbu">{{ yb[Index] }}</span>
     </div>
+
+    <gyoptions :message="yb[Index]"></gyoptions>
+
   </div>
 </template>
 
 <script>
 import navbar from "@/components/navbar.vue";
 import navbar2 from "@/components/nav/navbar2.vue";
+import gyoptions from "@/components/yunbu/gyoptions.vue";
 import * as d3 from "d3";
 import axios from "axios";
 
@@ -54,9 +58,13 @@ export default {
   components: {
     navbar,
     navbar2,
+    gyoptions,
   },
   computed: {},
   methods: {
+    BackToLastWeb(){
+      window.location.href = `/yunbu2/${this.Index}`; 
+    },
     async getShijing() {
       return new Promise((resolve, reject) => {
         const url = "http://localhost:5000/get_zhonggu_guangyun";
@@ -163,9 +171,9 @@ export default {
 .header {
   position: fixed;
   z-index: 999;
-  top: 5px;
+  top: 4px;
   left: 47vw;
-  font-size: 30px;
+  font-size: 25px;
   color: #f6f5f5;
   text-align: center;
 }
@@ -181,6 +189,7 @@ export default {
   height: 40px;
   width: 50px;
   border: 3px solid #c1a530;
+  cursor: pointer;
 }
 .left1 {
   background-color: #f9f5f2;
@@ -256,13 +265,14 @@ export default {
   top: calc(28vh + 265px);
   left: 50px;
   height: 35vh;
-  width: 300px;
+  width: 15vw;
   background-color: #dedede;
   border-radius: 20px;
   opacity: 0.6;
 }
 .lines{
   position: fixed;
+  z-index: -1;
   width: 100%;
   height: 100%;
   top: 0px;

@@ -25,29 +25,37 @@
 
   </div>
  
-  <p>data send to backend: {{ opt }}</p>
+  <!-- <p>data send to backend: {{ opt }}</p> -->
+  <div class="yunjiao-container">
+  <div v-for="(item, index) in yunjiao" :style="getYunbuStyle(index)">
+    <div class="shengniu">
+      {{ item.shengniu }}&nbsp; &nbsp; &nbsp; 
+    <div v-for="(char, charIndex) in item.zitou">
+      {{ char }}
+    </div>
+  </div>
+  </div>
+</div>
+
+
 </template>
 
 <script>
 import axios from "axios";
 
 export default {
+  props: {
+    message: String  // 声明props，指定数据类型
+  },
   data() {
     return {
-      // options: [
-      //   { label: '声组', value: 'option1', subOptionsOpen: false, subOptions: [
-      //     { label: '子选项1-1', value: 'subOption1' },
-      //     { label: '子选项1-2', value: 'subOption2' }
-      //   ] },
-      //   { label: '声纽', value: 'option2', subOptionsOpen: false, subOptions: [
-      //     { label: '子选项2-1', value: 'subOption3' },
-      //     { label: '子选项2-2', value: 'subOption4' }
-      //   ] },]
       options: [],
       selectedOptions: [],
       optionL1: ['声组','声纽','声调','摄','呼','等'],
       optKey: ['zu','shengniu','shengdiao','she','hu','deng'],
       opt: {},
+      test: 0,
+      yunjiao: [],
     };
   },
   methods: {
@@ -80,7 +88,7 @@ export default {
         axios
           .get(url)
           .then((res) => {
-            console.log(res.data);
+            //console.log(res.data);
             const options = [];
             
             for(let i = 0; i < this.optionL1.length; i++){
@@ -92,7 +100,7 @@ export default {
               }
               options[i]['subOptions'] = subOpt;
             }
-            console.log('opt: ',options);
+            //console.log('opt: ',options);
             this.options = options;
             
             resolve(options); // 请求成功后resolve数据
@@ -104,22 +112,52 @@ export default {
     },
 
     //选择后获取韵脚字
-    async getYunjiao() {
+    async getYunjiao(newValue) {
         try {
+          console.log('data to backend: ',newValue);
+          const guangyun_search = {
+            zu: this.opt['zu'],
+            shengniu: this.opt['shengniu'],
+            hu: this.opt['hu'],
+            deng: this.opt['deng'],
+            shengdiao: this.opt['shengdiao'],
+            she: this.opt['she'],
+          };
+          console.log('test: ',guangyun_search);
           const response = await axios.post(
             "http://localhost:5000/guangyun_search",
             {
               params: {
-                search_item: this.opt,
+                yunbu: this.message,
+                guangyun_search: guangyun_search,
               },
             }
           );
           console.log("Backend response:", response.data.data);
+            this.yunjiao = response.data.data;
+          //this.drawYunjiao(response.data.data);
          
         } catch (error) {
           console.error("Error sending clicked word to the backend:", error);
         }
       },
+
+    getYunbuStyle(index) {
+        return {
+          position: "absolute",
+          left: `${index*5}vw`,
+          top: `${2}vh`,
+        };
+      },
+  },
+  watch: {
+    opt: {
+      deep: true,
+      handler(newValue, oldValue) {
+      //console.log('opt has changed:', oldValue, '->', newValue);
+      this.getYunjiao(newValue);
+    },
+    },
   },
   mounted(){
     this.getOption();
@@ -139,7 +177,7 @@ label {
   flex-direction: column;
   position: fixed;
   top: 100px;
-  right: 100px;
+  right: 50px;
   width: 180px;
 }
 .choose-title {
@@ -205,10 +243,32 @@ label {
   cursor: pointer;
   font-size: 16px;
   margin-right: 8px;
-  color: #c1a530; /* 初始颜色为蓝色 */
+  color: #dab82d; /* 初始颜色为蓝色 */
 }
 
 .sub-options {
   margin-left: 20px;
+}
+.shengniu {
+  color: #000;
+  font-size: 1rem;
+  padding-top: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  width: calc(1rem + 16px);
+  height: 60vh;
+  background-image: linear-gradient(
+      rgba(198, 145, 14, 0.7),
+      rgba(252, 237, 227, 0.1)
+    );
+}
+.yunjiao-container {
+  position: absolute;
+  top: 15vh;
+  left: 20vw;
+  height: 84vh;
+  padding-bottom: 20vh;
+  width: calc(80vw - 250px);
+  overflow: auto;
 }
 </style>

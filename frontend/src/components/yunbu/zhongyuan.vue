@@ -6,15 +6,29 @@
 
     <div class="header">韵部系联</div>
 
-    <div class="btn1">
+    <div class="lines">
+      <img
+        src="@/assets/yunbu/background.svg"
+        class="image"
+        style="width: 100vw; height: 100vh"
+      />
+    </div>
+
+    <div class="btn1"  @click="BackToLastWeb">
       <div class="left1"></div>
       <div class="left2"></div>
     </div>
 
     <div class="shijing"><a>中原音韵</a></div>
-    <div class="btn2"></div>
+    <div class="bu"><a>{{ yb[Index] }}部</a></div>
+    <div class="intro">文字简介:</div>
+    <div class="rect"></div>
 
     <div class="circle-container">
+      <span class="yunbu">{{ yb[Index] }}</span>
+    </div>
+
+    <!-- <div class="circle-container">
       <span class="yunbu">{{ yb[Index] }}</span>
       <div
         class="circle-text"
@@ -24,13 +38,17 @@
       >
         {{ char }}
       </div>
-    </div>
+    </div> -->
+
+    <zyoptions :message="yb[Index]"></zyoptions>
+
   </div>
 </template>
 
 <script>
 import navbar from "@/components/navbar.vue";
 import navbar2 from "@/components/nav/navbar2.vue";
+import zyoptions from "@/components/yunbu/zyoptions.vue";
 import * as d3 from "d3";
 import axios from "axios";
 
@@ -50,9 +68,13 @@ export default {
   components: {
     navbar,
     navbar2,
+    zyoptions,
   },
   computed: {},
   methods: {
+    BackToLastWeb(){
+      window.location.href = `/yunbu3/${this.Index}`; 
+    },
     async getShijing() {
       return new Promise((resolve, reject) => {
         const url = "http://localhost:5000/get_jindai_zhongyuan";
@@ -141,13 +163,13 @@ export default {
 }
 .yunbu {
   position: fixed;
-  top: 360px;
-  left: 340px;
+  bottom: 10vh;
+  left: 28vw;
   font-size: 80px;
   background-image: linear-gradient(
     to right,
-    rgba(252, 237, 227, 1),
-    rgba(193, 165, 48, 1)
+    rgb(229, 186, 79, 1),
+    rgb(128, 104, 9, 1)
   );
   color: transparent;
   -webkit-background-clip: text;
@@ -160,9 +182,9 @@ export default {
 .header {
   position: fixed;
   z-index: 999;
-  top: 5px;
+  top: 4px;
   left: 47vw;
-  font-size: 30px;
+  font-size: 25px;
   color: #f6f5f5;
   text-align: center;
 }
@@ -178,6 +200,7 @@ export default {
   height: 40px;
   width: 50px;
   border: 3px solid #c1a530;
+  cursor: pointer;
 }
 .left1 {
   background-color: #f9f5f2;
@@ -196,16 +219,12 @@ export default {
   left: 80px;
 }
 .shijing a {
-  position: fixed;
-  z-index: 899;
-  top: 190px;
-  left: 68px;
   writing-mode: vertical-lr;
   letter-spacing: 0.3em;
   font-size: 23px;
   color: black;
 }
-.btn2 {
+.shijing {
   position: fixed;
   z-index: 99;
   top: 175px;
@@ -214,9 +233,60 @@ export default {
     rgba(193, 165, 48, 1),
     rgba(252, 237, 227, 0.1)
   );
-  height: 140px;
+  height: 18vh;
   width: 50px;
   border-radius: 5px;
   border: 3px solid #c1a530;
+  display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
+}
+.bu a {
+  writing-mode: vertical-lr;
+  letter-spacing: 0.3em;
+  font-size: 23px;
+  color: black;
+}
+.bu {
+  position: fixed;
+  z-index: 99;
+  top: calc(18vh + 185px);
+  left: 60px;
+  background-image: linear-gradient(
+    rgba(193, 165, 48, 1),
+    rgba(252, 237, 227, 0.1)
+  );
+  height: 10vh;
+  width: 50px;
+  border-radius: 5px;
+  border: 3px solid #c1a530;
+  display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
+}
+.intro {
+  position: fixed;
+  top: calc(28vh + 225px);
+  left: 50px;
+  font-size: 20px;
+  color: rgb(109, 110, 110);
+}
+.rect {
+  position: fixed;
+  top: calc(28vh + 265px);
+  left: 50px;
+  height: 35vh;
+  width: 15vw;
+  background-color: #dedede;
+  border-radius: 20px;
+  opacity: 0.6;
+}
+.lines{
+  position: fixed;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
 }
 </style>
