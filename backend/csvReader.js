@@ -2,6 +2,7 @@ const { parse } = require("csv-parse");
 const path = require('path');
 const fs = require("fs");
 var chineseConv = require('chinese-conv');
+const { log } = require("console");
 
 const shanggu_shijing_path = path.join(__dirname, '/rawData/shanggu-shijing.csv').toString();
 const zhonggu_guangyun_path = path.join(__dirname, '/rawData/zhonggu-guangyun.csv').toString();
@@ -118,6 +119,9 @@ const shijing_search = (search_item) => {
                     let data = getColumns(rows, [4, 3, 0, 1, 2]);
                     let titles = new Set();
 
+                    let yunbu = search_item["yunbu"];
+                    let yunbu_data = data.filter((element) => element[0] == yunbu);
+
                     for (let key in search_item) {
                         if (search_item[key].length != 0) {
                             let index = Object.keys(search_item).indexOf(key);
@@ -131,7 +135,11 @@ const shijing_search = (search_item) => {
                         }
                     }
 
-                    let search_results = []
+                    let search_results = [];
+                    let yunbu_length = {};
+                    yunbu_length.yunbu_length = yunbu_data.length;
+                    search_results.push(yunbu_length);
+
                     for (let title of Array.from(titles)) {
                         let one_poem = {};
                         let target = data.find((element) => element[3] == title);

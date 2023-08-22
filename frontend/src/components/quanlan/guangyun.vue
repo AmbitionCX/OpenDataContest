@@ -5,7 +5,7 @@
     </div>
     <div class="header">语音全览</div>
 
-    <div class="shijing"><a>广韵</a></div>
+    <div class="shijing-quanlan"><a>广韵</a></div>
 
   <div>
     <a href="/quanlan/shijing"><div class="cir1"></div></a>
@@ -264,7 +264,7 @@ goToNewPage(yunbu_props) {
 };
 </script>
         
-    <style>
+    <style scoped>
 * {
   /* 内外边距为0 */
   margin: 0;
@@ -371,7 +371,7 @@ background-color: #e88149;
   border-radius: 50%;
   border: 5px solid #e88149;
 }
-.shijing {
+.shijing-quanlan {
 position: fixed;
 z-index: 9999;
 top: 390px;
@@ -388,7 +388,7 @@ display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
 align-items: center; /* 垂直居中文本 */
 justify-content: center; /* 水平居中文本 */
 }
-.shijing a {
+.shijing-quanlan a {
 writing-mode: vertical-lr;
 letter-spacing: 0.3em;
 font-size: 23px;
