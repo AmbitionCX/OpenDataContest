@@ -26,6 +26,7 @@ app.get("/get_shijing_chapter", (req, res) => {
 
 app.post("/shijing_search", (req, res) => {
     let search_item = req.body.params.search_item;
+    console.log(search_item);
     csvReader.shijing_search(search_item).then((data) => {
         res.setHeader('Content-Type', 'application/json');
         res.json({

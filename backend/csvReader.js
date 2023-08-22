@@ -146,7 +146,7 @@ const shijing_search = (search_item) => {
 
                         search_results.push(one_poem);
                     }
-                    console.log(search_results);
+                    resolve(search_results);
                 }
             });
         })
