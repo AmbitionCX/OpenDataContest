@@ -167,13 +167,13 @@ export default {
       drawPre(Words){
         const words = this.getElements(Words, this.num);
 
-            const svg = d3
-              .select(this.$refs.svg)
-              .attr("width", 700)
-              .attr("height", 800);
+        const svg = d3
+                .select(this.$refs.svg)
+                .attr("width", 800)
+                .attr("height", 800);
 
             const layout = cloud()
-              .size([400, 400])
+              .size([500, 300])
               .words(words)
               .padding(5)
               .rotate(() => 0) // 设置旋转角度为0，即不旋转
@@ -189,22 +189,25 @@ export default {
 
       svg.selectAll("g").remove();
 
-      const g = svg.append("g").attr("transform", "translate(220,300)");
+      const g = svg.append("g").attr("transform", "translate(60,0)");
 
-      g.selectAll("rect")
-        .data(words)
-        .enter()
-        .append("rect")
-        .attr("cursor", "pointer")
-        .on("click", (event, d) => this.wordClicked(d.text))
-        .attr("x", (d) => d.x - d.txtwidth*15 -10)
-        .attr("y", (d) => d.y - 20)
-        .attr("width", (d) => d.txtwidth * 30 + 20)
-        .attr("height", (d) => 40)
-        .style("fill", "red")
-        .attr("rx", 8)
-        .attr("ry", 8)
-        .style("opacity", 0.3);
+      const rectList = this.getPosition();
+        // const rectWidth = 100; const rectHeight = 40; const rectPadding = 5;
+        const rectWidth = 100; 
+        const rectHeight = 40; const rectPadding = 5;
+
+        g.selectAll("rect")
+          .data(rectList)
+          .enter()
+          .append("rect")
+          .attr("x", (d) => d.x)
+          .attr("y", (d) => d.y)
+          .attr("width", rectWidth)
+          .attr("height", rectHeight)
+          .style("fill", "#e88149")
+          .attr("rx", 8)
+          .attr("ry", 8)
+          .style("opacity", 0.5);
 
       g.selectAll("text")
         .data(words)
@@ -212,8 +215,8 @@ export default {
         .append("text")
         .attr("cursor", "pointer")
         .on("click", (event, d) => this.wordClicked(d.text))
-        .attr("x", (d) => d.x)
-        .attr("y", (d) => d.y)
+        .attr("x", (d,i) => rectList[i].x + rectWidth/2)
+          .attr("y", (d,i) => rectList[i].y + rectHeight/2)
         .style("font-size", (d) => 30 + "px")
         .style("font-family", "Impact")
         .style("fill", "white")
@@ -221,6 +224,34 @@ export default {
         .attr("alignment-baseline", "middle")
         .text((d) => d.text);
     },
+
+    getPosition(){
+        // const rectWidth = 100; const rectHeight = 40; const rectPadding = 5;
+        const rectWidth = 100; 
+        const rectHeight = 40; const rectPadding = 5;
+
+        return [
+          {x: rectWidth*2+rectPadding*2, y: 0},
+          {x: rectWidth*1.5+rectPadding, y: rectHeight+rectPadding},
+          {x: rectWidth*2.5+rectPadding*2, y: rectHeight+rectPadding},
+          {x: rectWidth*0.5+rectPadding*0, y: rectHeight*2+rectPadding*2},
+          {x: rectWidth*1.5+rectPadding*1, y: rectHeight*2+rectPadding*2},
+          {x: rectWidth*2.5+rectPadding*2, y: rectHeight*2+rectPadding*2},
+          {x: rectWidth*3.5+rectPadding*3, y: rectHeight*2+rectPadding*2},
+          {x: rectWidth*0+rectPadding*0, y: rectHeight*3+rectPadding*3},
+          {x: rectWidth*1+rectPadding*1, y: rectHeight*3+rectPadding*3},
+          {x: rectWidth*2+rectPadding*2, y: rectHeight*3+rectPadding*3},
+          {x: rectWidth*3+rectPadding*3, y: rectHeight*3+rectPadding*3},
+          {x: rectWidth*4+rectPadding*4, y: rectHeight*3+rectPadding*3},
+          {x: rectWidth*0.5+rectPadding*0, y: rectHeight*4+rectPadding*4},
+          {x: rectWidth*1.5+rectPadding*1, y: rectHeight*4+rectPadding*4},
+          {x: rectWidth*2.5+rectPadding*2, y: rectHeight*4+rectPadding*4},
+          {x: rectWidth*3.5+rectPadding*3, y: rectHeight*4+rectPadding*4},
+          {x: rectWidth*1.5+rectPadding, y: rectHeight*5+rectPadding*5},
+          {x: rectWidth*2.5+rectPadding*2, y: rectHeight*5+rectPadding*5},
+          {x: rectWidth*2+rectPadding*2, y: rectHeight*6+rectPadding*6},
+        ]
+      },
 
     async wordClicked(word) {
     // Send the clicked word to the backend using an API call
@@ -241,7 +272,7 @@ export default {
   },
 
   getElements(arr, num) {
-    const chunkSize = 30;
+    const chunkSize = 19;
   const startIndex = (num - 1) * chunkSize;
   const endIndex = startIndex + chunkSize;
   
@@ -395,12 +426,11 @@ font-size: 23px;
 color: black;
 }
 .mainBox {
-  position: fixed;
-  top: 100px;
-  display: flex;
-  flex-direction: row;
 }
 .leftBox {
+  position: absolute;
+  top: 100px;
+  left: 0;
   height: 83vh;
   width: 35vw;
   display: flex;
@@ -425,10 +455,12 @@ color: black;
   font-size: 25px;
 }
 .rightBox {
-  height: 600px;
-  width: 30vw;
-  display: flex;
-  margin-left: 50px;
+  position: absolute;
+  top: 30vh;
+  left: 57vw;
+  height: 50vh;
+  width: 43vw;
+  /* background-color: aqua; */
 }
 .choose {
   display: flex;
@@ -523,7 +555,7 @@ color: black;
 }
 .link {
   position: fixed;
-  bottom: 200px;
+  bottom: 10vh;
   left: 73vw;
   width: 180px;
   height: 40px;

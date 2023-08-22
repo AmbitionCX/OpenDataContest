@@ -205,24 +205,26 @@ export default {
   
         svg.selectAll("g").remove();
   
-        const g = svg.append("g").attr("transform", "translate(430,300)");
+        // const g = svg.append("g").attr("transform", `translate(${5}vw,${5}vh)`);
+        const g = svg.append("g").attr("transform", "translate(0,0)"); 
+
+        const rectList = this.getPosition();
+        // const rectWidth = 100; const rectHeight = 40; const rectPadding = 5;
+        const rectWidth = 0.08 * window.innerWidth; 
+        const rectHeight = 40; const rectPadding = 5;
   
         g.selectAll("rect")
-          .data(words)
+          .data(rectList)
           .enter()
           .append("rect")
-          .on("click", (event, d) => {
-            this.getContent(d.text);
-          })
-          .attr("cursor", "pointer")
-          .attr("x", (d) => d.x - d.txtwidth * 15 - 10)
-          .attr("y", (d) => d.y - 20)
-          .attr("width", (d) => d.txtwidth * 30 + 20)
-          .attr("height", (d) => 40)
-          .style("fill", "red")
+          .attr("x", (d) => d.x)
+          .attr("y", (d) => d.y)
+          .attr("width", rectWidth)
+          .attr("height", rectHeight)
+          .style("fill", "#e88149")
           .attr("rx", 8)
           .attr("ry", 8)
-          .style("opacity", 0.3);
+          .style("opacity", 0.5);
   
         g.selectAll("text")
           .data(words)
@@ -232,14 +234,42 @@ export default {
             this.getContent(d.text);
           })
           .attr("cursor", "pointer")
-          .attr("x", (d) => d.x)
-          .attr("y", (d) => d.y)
+          .attr("x", (d,i) => rectList[i].x + rectWidth/2)
+          .attr("y", (d,i) => rectList[i].y + rectHeight/2)
           .style("font-size", (d) => 30 + "px")
           .style("font-family", "Impact")
           .style("fill", "white")
           .attr("text-anchor", "middle")
           .attr("alignment-baseline", "middle")
           .text((d) => d.text);
+      },
+
+      getPosition(){
+        // const rectWidth = 100; const rectHeight = 40; const rectPadding = 5;
+        const rectWidth = 0.08 * window.innerWidth; 
+        const rectHeight = 40; const rectPadding = 5;
+
+        return [
+          {x: rectWidth*2+rectPadding*2, y: 0},
+          {x: rectWidth*1.5+rectPadding, y: rectHeight+rectPadding},
+          {x: rectWidth*2.5+rectPadding*2, y: rectHeight+rectPadding},
+          {x: rectWidth*0.5+rectPadding*0, y: rectHeight*2+rectPadding*2},
+          {x: rectWidth*1.5+rectPadding*1, y: rectHeight*2+rectPadding*2},
+          {x: rectWidth*2.5+rectPadding*2, y: rectHeight*2+rectPadding*2},
+          {x: rectWidth*3.5+rectPadding*3, y: rectHeight*2+rectPadding*2},
+          {x: rectWidth*0+rectPadding*0, y: rectHeight*3+rectPadding*3},
+          {x: rectWidth*1+rectPadding*1, y: rectHeight*3+rectPadding*3},
+          {x: rectWidth*2+rectPadding*2, y: rectHeight*3+rectPadding*3},
+          {x: rectWidth*3+rectPadding*3, y: rectHeight*3+rectPadding*3},
+          {x: rectWidth*4+rectPadding*4, y: rectHeight*3+rectPadding*3},
+          {x: rectWidth*0.5+rectPadding*0, y: rectHeight*4+rectPadding*4},
+          {x: rectWidth*1.5+rectPadding*1, y: rectHeight*4+rectPadding*4},
+          {x: rectWidth*2.5+rectPadding*2, y: rectHeight*4+rectPadding*4},
+          {x: rectWidth*3.5+rectPadding*3, y: rectHeight*4+rectPadding*4},
+          {x: rectWidth*1.5+rectPadding, y: rectHeight*5+rectPadding*5},
+          {x: rectWidth*2.5+rectPadding*2, y: rectHeight*5+rectPadding*5},
+          {x: rectWidth*2+rectPadding*2, y: rectHeight*6+rectPadding*6},
+        ]
       },
 
       async getContent(title) {
@@ -390,12 +420,11 @@ justify-content: center; /* 水平居中文本 */
   color: black;
 }
 .mainBox {
-  position: fixed;
-  top: 100px;
-  display: flex;
-  flex-direction: row;
 }
 .leftBox {
+  position: absolute;
+  top: 100px;
+  left: 0;
   height: 70vh;
   width: 30vw;
   display: flex;
@@ -450,17 +479,19 @@ justify-content: center; /* 水平居中文本 */
 }
 
 .rightBox {
-  height: 600px;
-  width: 50vw;
-  display: flex;
-  margin-left: 50px;
+  position: absolute;
+  top: 30vh;
+  left: 57vw;
+  height: 50vh;
+  width: 43vw;
+  /* background-color: aqua; */
 }
 .choose {
   display: flex;
   flex-direction: column;
   position: fixed;
   top: 133px;
-  left: 45vw;
+  left: 43vw;
 }
 .choose-title {
   width: 180px;
@@ -559,7 +590,7 @@ justify-content: center; /* 水平居中文本 */
 }
 .link {
   position: fixed;
-  bottom: 200px;
+  bottom: 10vh;
   left: 73vw;
   width: 180px;
   height: 40px;

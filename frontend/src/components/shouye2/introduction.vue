@@ -130,7 +130,8 @@ import axios from 'axios';
   left: 0;
   width: 100vw;
   height: 94vh;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .juanzhou {
   position: absolute;

@@ -41,8 +41,73 @@
       </div>
     </div> -->
 
+    <div class="kuang1">
+      <img
+        src="@/assets/yunbu/kuang1.svg"
+        class="image"
+      />
+    </div>
+
     <div class="xinxi-container">
       <div class="xinxi">信息展示</div>
+    </div>
+
+    <div class="kuang2">
+      <img
+        src="@/assets/yunbu/kuang2.svg"
+        class="image"
+      />
+    </div>
+
+    <div class="arrow1">
+      <img
+        src="@/assets/yunbu/arrow1.svg"
+        class="image" @click="decreIndex()"
+      />
+    </div>
+
+    <div class="arrow2">
+      <img
+        src="@/assets/yunbu/arrow2.svg"
+        class="image" @click="increIndex()"
+      />
+    </div>
+
+    <div class="rect1">
+      <img
+        src="@/assets/yunbu/rect.svg"
+        class="image"
+      />
+    </div>
+
+    <div class="rect2">
+      <img
+        src="@/assets/yunbu/rect.svg"
+        class="image"
+      />
+    </div>
+
+    <div class="rect3">
+      <img
+        src="@/assets/yunbu/rect.svg"
+        class="image"
+      />
+    </div>
+
+    <div class="txt1"> 章节</div>
+    <div class="txt2"> 篇名</div>
+    <div class="txt3"> 原文</div>
+
+    <div class="txt11">
+      {{ content[index].chapter }}
+    </div>
+
+    <div class="txt21">
+      {{ content[index].title }}
+    </div>
+
+    <div class="txt31">
+      {{ content[index].text }}
     </div>
 
     <div class="choose">
@@ -75,6 +140,9 @@ export default {
       innerRadius: 60, // Radius of the central circle
       gap: 10, // Gap between each circle
       anglePerCharacter: 8, // Adjust the angle per character to control the spiral density
+      index: 0,
+      content: [{chapter:'', title:'', text:''}],
+      contentLenth: 1,
     };
   },
   components: {
@@ -83,6 +151,12 @@ export default {
   },
   computed: {},
   methods: {
+    increIndex(){
+      this.index = (Number(this.index) + 1) % this.contentLenth;
+    },
+    decreIndex(){
+      this.index = (Number(this.index) - 1) % this.contentLenth;
+    },
     async getShijing() {
       return new Promise((resolve, reject) => {
         const url = "http://localhost:5000/get_shanggu_shijing";
@@ -131,7 +205,7 @@ export default {
                   yunbu: [this.yb[this.Index]],
                   yunjiaozi: [item.value],
                 };
-      console.log('test', searchItem);
+      //console.log('test', searchItem);
       try {
           const response = await axios.post(
             "http://localhost:5000/shijing_search",
@@ -142,6 +216,9 @@ export default {
             }
           );
           console.log("Backend response:", response.data.data);
+          //console.log(response.data.data[0].chapter);
+          this.content = response.data.data;
+          this.contentLenth = response.data.data.length;
          
         } catch (error) {
           console.error("Error sending clicked word to the backend:", error);
@@ -327,22 +404,36 @@ export default {
   top: 0px;
   left: 0px;
 }
+.kuang1 {
+  position: absolute;
+  top: 15vh;
+  left: 26.5vw;
+  width: 20vw;
+  height: 12vh;
+  /* z-index: 999; */
+}
 .xinxi-container {
   position: absolute;
   top: 15vh;
-  left: 29vw;
+  left: 26.5vw;
   width: 20vw;
-  height: 40px;
-  background-image: linear-gradient(to right, rgba(198, 145, 14, 0.8),
-      rgba(252, 237, 227, 0.1));
+  height: 12vh;
+  /* background-color: aquamarine; */
   display: flex; /* 使用 Flexbox 布局 */
   justify-content: left; /* 水平居中 */
   align-items: center; /* 垂直居中 */
-  padding-left: 5px;
+  padding-left: 3vw;
 }
 .xinxi {
   color: #000;
   font-size: 20px;
+}
+.kuang2 {
+  position: absolute;
+  top: 25vh;
+  left: 29vw;
+  width: 50vw;
+  /* height: 40vh; */
 }
 .choose {
   display: flex;
@@ -382,5 +473,73 @@ export default {
 }
 .hover-item:hover {
   background-color: rgba(193, 165, 48, 0.3); /* 设置悬浮时的背景颜色 */
+}
+.arrow1 {
+  position: absolute;
+  top: 45vh;
+  left: 30vw;
+  width: 2vw;
+  cursor: pointer;
+}
+.arrow2 {
+  position: absolute;
+  top: 45vh;
+  left: 75vw;
+  width: 2vw;
+  cursor: pointer;
+}
+.rect1 {
+  position: absolute;
+  top: 30vh;
+  left: 45vw;
+  width: 1.5vw;
+}
+.rect2 {
+  position: absolute;
+  top: 45vh;
+  left: 45vw;
+  width: 1.5vw;
+}
+.rect3 {
+  position: absolute;
+  top: 60vh;
+  left: 45vw;
+  width: 1.5vw;
+}
+.txt1 {
+  position: absolute;
+  top: 29.5vh;
+  left: 48vw;
+  font-size: 1.3rem;
+}
+.txt2 {
+  position: absolute;
+  top: 44.5vh;
+  left: 48vw;
+  font-size: 1.3rem;
+}
+.txt3 {
+  position: absolute;
+  top: 59.5vh;
+  left: 48vw;
+  font-size: 1.3rem;
+}
+.txt11 {
+  position: absolute;
+  top: 35.5vh;
+  left: 48vw;
+  font-size: 1.3rem;
+}
+.txt21 {
+  position: absolute;
+  top: 50.5vh;
+  left: 48vw;
+  font-size: 1.3rem;
+}
+.txt31 {
+  position: absolute;
+  top: 65.5vh;
+  left: 48vw;
+  font-size: 1.3rem;
 }
 </style>

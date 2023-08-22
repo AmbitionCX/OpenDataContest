@@ -9,8 +9,17 @@
       </div>
   
         <div class="txt">
-            <img src="@/assets/introduction/txt.svg" class="image"/>
+            <!-- <img src="@/assets/introduction/txt.svg" class="image"/> -->
+            <span>文 藻 声 韵</span>
         </div>
+
+      <div class="Title-container">
+        <div class="left-rect"></div>
+        <span v-for="(char,index) in titleTxt" class="Title-txt">
+          <span>{{ char }}</span>
+        </span>
+        <div class="right-rect"></div>
+      </div>
   
         <div class="txt2">
           &nbsp; &nbsp; &nbsp; 古希腊文明、苏美尔文明以及古巴比伦文明在历史的长河中逐渐消逝。然而，中华文明却自古延绵至今，历久弥新。从最早的甲骨卜辞和钟鼎铭文，到后来的简帛书写和线装书卷，这些横跨时光的古籍，无疑是中华文明漫长历程中的珍贵见证。
@@ -82,7 +91,9 @@
   
     export default {
     data() {
-      return {};
+      return {
+        titleTxt : '古汉语典籍韵部流变',
+      };
     },
     components:{
       navbar,
@@ -149,10 +160,65 @@
   }
   .txt {
     position: absolute;
+    z-index: 99;
+    top: 10vh;
+    left: 0;
+    width: 100vw;
+    height: 20vh;
+    display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  }
+  .txt span {
+    font-size: 4rem;
+    background-image: linear-gradient(
+    rgb(198, 145, 14, 1),
+    rgb(249, 245, 242, 0.7)
+  );
+  color: transparent;
+  -webkit-background-clip: text;
+  }
+  .Title-container {
+    position: absolute;
     z-index: 9999;
-    top: 20vh;
-    left: 35.5vw;
-    width: 30%;
+    top: 25vh;
+    left: 0;
+    width: 100vw;
+    height: 10vh;
+    display: flex; /* 使用 Flexbox 布局 */
+    /* flex-direction: column; */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  }
+  .Title-txt {
+    font-size: 2rem;
+  background-image: linear-gradient(
+    to left,
+    rgb(72, 68, 64, 1),
+    rgb(252, 237, 227, 0.3)
+  );
+  color: transparent;
+  -webkit-background-clip: text;
+  }
+  .left-rect {
+    width: 40px;
+    height: 5px;
+    margin-right: 20px;
+    background-image: linear-gradient(
+    to left,
+    rgb(72, 68, 64, 1),
+    rgb(252, 237, 227, 0.3)
+  );
+  }
+  .right-rect {
+    width: 40px;
+    height: 5px;
+    margin-left: 20px;
+    background-image: linear-gradient(
+    to right,
+    rgb(72, 68, 64, 1),
+    rgb(252, 237, 227, 0.3)
+  );
   }
   .txt2 {
     position: absolute;
