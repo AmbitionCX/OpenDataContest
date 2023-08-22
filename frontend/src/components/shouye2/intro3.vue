@@ -243,9 +243,9 @@ position: absolute;
   background-image: linear-gradient(to left, rgba(198, 145, 14, 1),
       rgba(252, 237, 227, 0.1));
 }
-.txt6-container:hover {
+/* .txt6-container:hover {
     width: 60vw;
-}
+} */
 .txt6 {
     position: absolute;
   z-index: 999999;
@@ -346,10 +346,11 @@ display: flex; /* 使用 Flexbox 布局 */
   height: 20vh;
   text-align: center;
   font-size: 1.1rem;
+  color: #000;
 }
 .txt10-container {
 position: absolute;
-  z-index: 999999;
+  z-index: 999;
   top: 510vh;
   left: 25vw;
  width: 5vw;
@@ -368,6 +369,7 @@ position: absolute;
  width: 15vw;
   height: 40vh;
   text-align: left;
+  color: #000;
 }
 .pic6-container {
 position: absolute;

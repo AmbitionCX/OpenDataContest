@@ -21,7 +21,7 @@
         src="@/components/shouye/button.svg"
         class="image"
         @click="this.$router.push('/introduction')"
-        style="width: 130px; height: 80px"
+        style="width: 130px; height: 80px; cursor: pointer;"
       />
     </div>
 

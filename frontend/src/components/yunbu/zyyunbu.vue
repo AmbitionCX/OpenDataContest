@@ -1,11 +1,15 @@
 <template>
     <div class="scrollable-container">
+      <div style="color: transparent;">{{ yb }}</div>
+      <!-- <div style="color: transparent;">{{ yunjiao }}</div> -->
+
+      <span class="yb" @click="goToNewPage(message)">{{ yb[message] }}</span>
+
       <div :style="getYunbuStyle()">
       <img
         src="@/assets/yunbu/yunbu.svg"
         style="width: 18vw; height: 22vw"
       />
-      <span class="yb" @click="goToNewPage(message)">{{ yb[message] }}</span>
       <div
         v-for="(char, Index) in yunjiao[message]"
         :key="Index"
@@ -148,16 +152,15 @@
   
   <style>
   .yb {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-110%, -190%);
-    font-size: 80px;
-  color: black;
-  z-index: 999;
-  writing-mode: vertical-lr;
-  cursor: pointer;
-  }
+  position: absolute;
+  top: 21vh;
+  left: 25vw;
+  font-size: 80px;
+color: black;
+z-index: 999;
+writing-mode: vertical-lr;
+cursor: pointer;
+}
   .yj {
   width: 8vw;
   height: 12vw;

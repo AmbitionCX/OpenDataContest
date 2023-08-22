@@ -66,6 +66,7 @@ export default {
     position: fixed;
     top: calc(7vh + 10px);
     left: 27vw;
+    cursor: pointer;
   }
 </style>
       

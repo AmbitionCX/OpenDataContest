@@ -19,7 +19,10 @@
 
     <div class="mainBox">
       <div class="leftBox">
+        <div class="image-container">
         <img :src="picUrl" />
+      </div>
+      <div class="tu-txt">词云链图</div>
       </div>
 
       <div class="rightBox">
@@ -274,7 +277,7 @@ goToNewPage(yunbu_props) {
 }
 .nav1 {
   position: fixed;
-  z-index: 99;
+  z-index: 9999;
 }
 .bg {
   width: 100vw;
@@ -399,12 +402,28 @@ color: black;
   flex-direction: row;
 }
 .leftBox {
-  height: 80vh;
-  width: 45vw;
+  height: 83vh;
+  width: 35vw;
   display: flex;
-  /* background-color: rosybrown; */
-  margin-right: 50px;
-  margin-left: 150px;
+  background-color: rgb(212, 212, 212);
+  margin-right: 15vw;
+  margin-left: 130px;
+  border-radius: 5%;
+  display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  padding-bottom: 10px;
+}
+.image-container {
+  height: 70vh;
+  width: 30vw;
+  border-radius: 4%;
+}
+.tu-txt {
+  position: absolute;
+  bottom: 10px;
+  text-align: center;
+  font-size: 25px;
 }
 .rightBox {
   height: 600px;

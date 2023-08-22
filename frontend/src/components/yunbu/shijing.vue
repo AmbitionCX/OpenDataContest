@@ -1,5 +1,14 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2">
+
+    <div class="lines">
+      <img
+        src="@/assets/yunbu/background.svg"
+        class="image"
+        style="width: 100vw; height: 100vh"
+      />
+    </div>
+
     <div class="nav1">
         <navbar2></navbar2>
       </div>
@@ -11,7 +20,16 @@
       <div class="left2"></div>
     </div>
 
+    <div class="shijing"><a>诗经</a></div>
+    <div class="bu"><a>{{ yb[Index] }}部</a></div>
+    <div class="intro">文字简介:</div>
+    <div class="rect"></div>
+
     <div class="circle-container">
+      <span class="yunbu">{{ yb[Index] }}</span>
+    </div>
+
+    <!-- <div class="circle-container">
       <span class="yunbu">{{ yb[Index] }}</span>
       <div
         class="circle-text"
@@ -21,6 +39,19 @@
       >
         {{ char }}
       </div>
+    </div> -->
+
+    <div class="xinxi-container">
+      <div class="xinxi">信息展示</div>
+    </div>
+
+    <div class="choose">
+      <div class="choose-title"><a>韵脚字</a></div>
+      <!-- <el-icon><Filter /></el-icon> -->
+      <ul class="choose-content">
+        <li v-for="item in yunjiaoChoose" class="hover-item"
+        @click="getContent(item)">&nbsp; &nbsp; {{ item.value }}</li>
+      </ul>
     </div>
 
   </div>
@@ -39,8 +70,8 @@ export default {
       yun: "韵部",
       yb: [],
       yunjiao: [],
+      yunjiaoChoose: [],
       text: [],
-      //text: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', // Add more characters as needed
       innerRadius: 60, // Radius of the central circle
       gap: 10, // Gap between each circle
       anglePerCharacter: 8, // Adjust the angle per character to control the spiral density
@@ -77,16 +108,44 @@ export default {
               }
             }
 
+            const yjChoose = yunjiao[this.Index];
+
+            for(let i = 0; i < yjChoose.length; i++){
+              this.yunjiaoChoose.push({ value: yjChoose[i], label: yjChoose[i] });
+            }
+
             this.yb = yunbu2;
             this.yunjiao = yunjiao;
             this.text = yunjiao[this.Index];
-            console.log(this.yunjiao);
+
             resolve(yunjiao); // 请求成功后resolve数据
           })
           .catch(function (err) {
             reject(err); // 请求失败后reject错误
           });
       });
+    },
+
+    async getContent(item) {
+      const searchItem = {
+                  yunbu: [this.yb[this.Index]],
+                  yunjiaozi: [item.value],
+                };
+      console.log('test', searchItem);
+      try {
+          const response = await axios.post(
+            "http://localhost:5000/shijing_search",
+            {
+              params: {
+                search_item: searchItem,
+              },
+            }
+          );
+          console.log("Backend response:", response.data.data);
+         
+        } catch (error) {
+          console.error("Error sending clicked word to the backend:", error);
+        }
     },
 
     getTextStyle(index) {
@@ -181,20 +240,147 @@ export default {
 }
   .yunbu {
     position: fixed;
-    top: 360px;
-    left: 380px;
-    font-size: 80px;
-    background-image: linear-gradient(
-      to right,
-      rgba(252, 237, 227, 1),
-      rgba(193, 165, 48, 1)
-    );
-    color: transparent;
-    -webkit-background-clip: text;
+  bottom: 10vh;
+  left: 30vw;
+  font-size: 80px;
+  background-image: linear-gradient(
+    to right,
+    rgb(229, 186, 79, 1),
+    rgb(128, 104, 9, 1)
+  );
+  color: transparent;
+  -webkit-background-clip: text;
   }
 .circle-text {
   position: absolute;
   font-size: 12px;
   white-space: nowrap;
+}
+.shijing a {
+  writing-mode: vertical-lr;
+  letter-spacing: 0.3em;
+  font-size: 23px;
+  color: black;
+}
+.shijing {
+  position: fixed;
+  z-index: 99;
+  top: 175px;
+  left: 60px;
+  background-image: linear-gradient(
+    rgba(193, 165, 48, 1),
+    rgba(252, 237, 227, 0.1)
+  );
+  height: 18vh;
+  width: 50px;
+  border-radius: 5px;
+  border: 3px solid #c1a530;
+  display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
+}
+.bu a {
+  writing-mode: vertical-lr;
+  letter-spacing: 0.3em;
+  font-size: 23px;
+  color: black;
+}
+.bu {
+  position: fixed;
+  z-index: 99;
+  top: calc(18vh + 185px);
+  left: 60px;
+  background-image: linear-gradient(
+    rgba(193, 165, 48, 1),
+    rgba(252, 237, 227, 0.1)
+  );
+  height: 10vh;
+  width: 50px;
+  border-radius: 5px;
+  border: 3px solid #c1a530;
+  display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
+}
+.intro {
+  position: fixed;
+  top: calc(28vh + 225px);
+  left: 50px;
+  font-size: 20px;
+  color: rgb(109, 110, 110);
+}
+.rect {
+  position: fixed;
+  top: calc(28vh + 265px);
+  left: 50px;
+  height: 30vh;
+  width: 22vw;
+  background-color: #dedede;
+  border-radius: 20px;
+  opacity: 0.6;
+}
+.lines{
+  position: fixed;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+}
+.xinxi-container {
+  position: absolute;
+  top: 15vh;
+  left: 29vw;
+  width: 20vw;
+  height: 40px;
+  background-image: linear-gradient(to right, rgba(198, 145, 14, 0.8),
+      rgba(252, 237, 227, 0.1));
+  display: flex; /* 使用 Flexbox 布局 */
+  justify-content: left; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  padding-left: 5px;
+}
+.xinxi {
+  color: #000;
+  font-size: 20px;
+}
+.choose {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 15vh;
+  right: 5vw;
+}
+.choose-title {
+  width: 180px;
+  height: 45px;
+  background-image: linear-gradient(
+    to left,
+    rgba(252, 237, 227, 1),
+    rgba(193, 165, 48, 1)
+  );
+  border-radius: 5px;
+      display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: left; /* 水平居中文本 */
+  padding-left: 20px;
+}
+.choose-title a {
+  color: #000;
+  font-size: 25px;
+}
+.choose-content {
+  border: 2px solid #c1a530;
+  background-color: #f9f5f2;
+  width: inherit;
+  height: 530px;
+  overflow: auto;
+  text-align: left;
+}
+.hover-item {
+  cursor: pointer; /* 将鼠标指针设置为手指形状 */
+}
+.hover-item:hover {
+  background-color: rgba(193, 165, 48, 0.3); /* 设置悬浮时的背景颜色 */
 }
 </style>

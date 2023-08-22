@@ -30,7 +30,7 @@
     <div class="circle22" @click="ToLinkGY"></div>
     <div class="circle32" @click="ToLinkZY"></div>
 
-    <div class="intro2">文字简介:</div>
+    <div class="intro2">字数统计:</div>
     <div class="rect3"></div>
     </div>
 
@@ -157,8 +157,31 @@ export default {
     const xAxis = d3.axisBottom(x);
     const yAxis = d3.axisLeft(y);
 
-    svg.append('g').attr('class', 'x-axis').attr('transform', `translate(0, ${height})`).call(xAxis);
-    svg.append('g').attr('class', 'y-axis').call(yAxis);
+// 创建x轴并设置颜色
+svg.append('g')
+  .attr('class', 'x-axis')
+  .attr('transform', `translate(0, ${height})`)
+  .call(xAxis)
+  .selectAll('text') // 选择x轴上的文本元素
+  .attr('fill', 'black') // 设置文本颜色为黑色
+  .style("font-size", "12px");
+
+// 创建y轴并设置颜色
+svg.append('g')
+  .attr('class', 'y-axis')
+  .call(yAxis)
+  .selectAll('text') // 选择y轴上的文本元素
+  .attr('fill', 'black') // 设置文本颜色为黑色;
+  .style("font-size", "12px");
+
+// 设置坐标轴线的颜色为红色
+svg.selectAll('.x-axis path, .x-axis line')
+  .attr('stroke', 'black')
+  .attr('stroke-width', 1);
+
+svg.selectAll('.y-axis path, .y-axis line')
+  .attr('stroke', 'black')
+  .attr('stroke-width', 1);
 
     // 添加悬浮框
     const tooltip = d3
@@ -182,7 +205,7 @@ export default {
         tooltip.transition().duration(200).style('opacity', 0.9);
         tooltip
           .html(`韵部: ${xLabels[d.x]}<br>字数: ${d.y}`) //悬浮框的内容
-          .style('left', xCoord -30 + 'px')
+          .style('left', xCoord + 'px')
           .style('top', yCoord + 'px');
       })
       .on('mouseout', () => {
@@ -397,13 +420,18 @@ left: 50px;
 z-index: 999;
 height: 200px;
 width: 380px;
-overflow: scroll;
+overflow-x: scroll;
+overflow-y: hidden;
 }
 .tooltip {
 position: absolute;
 padding: 5px;
 pointer-events: none;
-
+width: 100px;
+  height: 70px;
+  display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: center; /* 水平居中文本 */
 /* 添加背景色和边框样式 */
 background-color: #f9f9f9;
 border: 1px solid #ccc;

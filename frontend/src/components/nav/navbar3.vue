@@ -62,6 +62,7 @@
     position: fixed;
     top: calc(7vh + 10px);
     left: 73vw;
+    cursor: pointer;
   }
   </style>
         

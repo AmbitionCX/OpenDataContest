@@ -212,7 +212,7 @@
     position: absolute;
     z-index: 9999;
     top: 180px;
-    left: 550px;
+    left: calc(32vw + 100px);
     width: 550px;
     height: 330px;
     background-color: #f9f5f2;
@@ -294,7 +294,7 @@
     position: absolute;
     z-index: 100;
     top: 150px;
-    left: 470px;
+    right: calc(13vw + 80px);
     width: 550px;
     height: 330px;
     background-color: #f9f5f2;
@@ -377,7 +377,7 @@
     position: absolute;
     z-index: 999;
     top: 250px;
-    left: 450px;
+    left: calc(23vw + 100px);
     width: 550px;
     height: 330px;
     background-color: #f9f5f2;
