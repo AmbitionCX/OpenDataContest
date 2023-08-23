@@ -23,13 +23,18 @@
     <div class="shijing"><a>广韵</a></div>
     <div class="bu"><a>{{ yb[Index] }}部</a></div>
     <div class="intro">文字简介:</div>
-    <div class="rect"></div>
+    <div class="rect">
+      <svg ref="pieChart"></svg>
+    </div>
 
     <div class="circle-container">
       <span class="yunbu">{{ yb[Index] }}</span>
     </div>
 
-    <gyoptions :message="yb[Index]"></gyoptions>
+    <div class="contentlenth">符合条件的韵脚字数：{{ contentLenth }}</div>
+    <div class="totallenth">韵脚总字数：148</div>
+
+    <gyoptions :message="yb[Index]" @messageEmitted="handleMessageFromChild"></gyoptions>
 
   </div>
 </template>
@@ -53,6 +58,7 @@ export default {
       innerRadius: 60, // Radius of the central circle
       gap: 10, // Gap between each circle
       anglePerCharacter: 8, // Adjust the angle per character to control the spiral density
+      contentLenth: 0,
     };
   },
   components: {
@@ -104,6 +110,54 @@ export default {
       });
     },
 
+    drawPieChart() {
+      console.log('try',this.contentLenth);
+      const data = [
+        { label: 'aa', value: this.contentLenth },
+        { label: 'bb', value: 148-this.contentLenth },
+      ];
+
+      const width = 0.15 * window.innerWidth;
+      const height = 0.3 * window.innerHeight;
+      const radius = Math.min(width, height) / 2;
+
+      d3.select(this.$refs.pieChart).selectAll("g").remove();
+
+      const svg = d3.select(this.$refs.pieChart)
+        .attr('width', width)
+        .attr('height', height)
+        .append('g')
+        .attr('transform', `translate(${width / 2},${height / 2})`);
+
+      const color = d3.scaleOrdinal()
+        .domain(data.map(d => d.label))
+        .range(['#F9D4A7', '#c1a530']);
+
+      const pie = d3.pie()
+        .value(d => d.value);
+
+      const arc = d3.arc()
+        .outerRadius(radius - 10)
+        .innerRadius(0);
+
+      const arcs = svg.selectAll('.arc')
+        .data(pie(data))
+        .enter()
+        .append('g')
+        .attr('class', 'arc');
+
+      arcs.append('path')
+        .attr('d', arc)
+        .attr('fill', d => color(d.data.label));
+
+    },
+
+    handleMessageFromChild(message) {
+      console.log('success',message);
+      this.contentLenth = message;
+      this.drawPieChart();
+    },
+
     getTextStyle(index) {
       const totalCharacters = this.text.length;
       const angle = this.degreesToRadians(index * this.anglePerCharacter);
@@ -126,6 +180,9 @@ export default {
   },
   created() {
     this.getShijing();
+  },
+  mounted() {
+    this.drawPieChart();
   },
 };
 </script>
@@ -266,11 +323,25 @@ export default {
   position: fixed;
   top: calc(28vh + 265px);
   left: 50px;
-  height: 35vh;
+  height: 30vh;
   width: 15vw;
   background-color: #dedede;
   border-radius: 20px;
-  opacity: 0.6;
+  opacity: 0.7;
+  display: flex; /* 使用 Flexbox 布局 */
+  justify-content: left; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  padding-top: 5vh;
+}
+.contentlenth {
+  position: fixed;
+  top: calc(28vh + 280px);
+  left: 60px;
+}
+.totallenth {
+  position: fixed;
+  top: calc(50vh + 300px);
+  left: 80px;
 }
 .lines{
   position: fixed;

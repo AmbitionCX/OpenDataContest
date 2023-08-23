@@ -7,18 +7,19 @@
 
     <div class="intro">
       <div class="intro1">文字简介:</div>
-      <div class="rect1"></div>
+      <div class="rect1-yunbu">
+        <p>《诗经》的韵部代表上古的韵部系统，通过系联《诗经》的韵脚字，宋代以来的学者不断归纳、更新上古韵部系统，现代学者王力先生总结为上古29部，是为集大成者。</p>
+      </div>
       <div class="pic">
         <img
           src="@/components/yunbu/shan.svg"
           class="image"
-          style="width: 380px; height: 300px"
         />
       </div>
 
       <div class="shijing"><a>诗经</a></div>
 
-      <div class="rect2"></div>
+      <div class="rect2-yunbu"></div>
       <div class="txt">
           <a class="txt2" href="/yunbu2/14">广韵</a>
           <a class="txt3" href="/yunbu3/14">中原音韵</a>
@@ -31,7 +32,7 @@
     <div class="circle32" @click="ToLinkZY"></div>
 
     <div class="intro2">字数统计:</div>
-    <div class="rect3"></div>
+    <div class="rect3-yunbu"></div>
     </div>
 
 <div  class="yunbu1">
@@ -259,35 +260,44 @@ svg.selectAll('.y-axis path, .y-axis line')
 }
 .intro {
   position: fixed;
-  top: 120px;
+  top: 100px;
   left: 50px;
 }
 .intro1 {
   font-size: 20px;
   color: rgb(109, 110, 110);
 }
-.rect1 {
+.rect1-yunbu {
   position: fixed;
-  top: 160px;
+  top: 140px;
   left: 50px;
-  height: 60px;
+  height: 13vh;
   width: 380px;
   background-color: #dedede;
   border-radius: 10px;
+  display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: left; /* 水平居中文本 */
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.rect1-yunbu p {
+  text-align: left;
 }
 .pic {
   position: fixed;
-  top: 190px;
+  top: calc(13vh + 180px);
   left: 50px;
+  width: 380px; 
   z-index: 899;
 }
 .shijing {
     display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
-  align-items: center; /* 垂直居中文本 */
-  justify-content: center; /* 水平居中文本 */
-  position: fixed;
+    align-items: center; /* 垂直居中文本 */
+    justify-content: center; /* 水平居中文本 */
+    position: fixed;
     z-index: 99;
-    top: 240px;
+    top: calc(13vh + 180px);
     left: 270px;
     background-image: linear-gradient(
       rgba(224, 157, 10, 1),
@@ -304,20 +314,9 @@ svg.selectAll('.y-axis path, .y-axis line')
   font-size: 23px;
   color: black;
 }
-.zyyy {
+.rect2-yunbu {
   position: fixed;
-  z-index: 999;
-  top: 250px;
-  left: 275px;
-  writing-mode: vertical-lr;
-  letter-spacing: 0.3em;
-  font-size: 23px;
-  color: black;
-}
-.rect2 {
-  position: fixed;
-  top: 470px;
-  top: 470px;
+  top: calc(13vh + 380px);
   height: 10px;
   width: 340px;
   background-image: linear-gradient(
@@ -328,7 +327,7 @@ svg.selectAll('.y-axis path, .y-axis line')
 }
 .txt {
   position: fixed;
-  top: 500px;
+  top: calc(13vh + 410px);
   left: 35px;
 }
 .txt a{
@@ -346,7 +345,7 @@ svg.selectAll('.y-axis path, .y-axis line')
 .circle11 {
   position: fixed;
   z-index: 999;
-  top: 462px;
+  top: calc(13vh + 375px);
   left: 36.5px;
   width: 22px;
   height: 22px;
@@ -356,7 +355,7 @@ svg.selectAll('.y-axis path, .y-axis line')
 .circle1 {
   position: fixed;
   z-index: 100;
-  top: 455px;
+  top: calc(13vh + 368px);
   left: 30px;
   width: 35px;
   height: 35px;
@@ -367,7 +366,7 @@ svg.selectAll('.y-axis path, .y-axis line')
 .circle22{
   position: fixed;
   z-index: 100;
-  top: 460px;
+  top: calc(13vh + 370px);
   left: 210px;
   width: 25px;
   height: 25px;
@@ -379,7 +378,7 @@ svg.selectAll('.y-axis path, .y-axis line')
 .circle32 {
   position: fixed;
   z-index: 100;
-  top: 460px;
+  top: calc(13vh + 370px);
   left: 370px;
   width: 25px;
   height: 25px;
@@ -390,16 +389,16 @@ svg.selectAll('.y-axis path, .y-axis line')
 }
 .intro2 {
   position: fixed;
-  top: 560px;
+  top: calc(13vh + 450px);
   left: 50px;
   font-size: 20px;
   color: rgb(109, 110, 110);
 }
-.rect3 {
+.rect3-yunbu {
   position: fixed;
-  top: 600px;
+  top: calc(13vh + 490px);
   left: 50px;
-  height: 200px;
+  height: 25vh;
   width: 380px;
   background-color: #dedede;
   border-radius: 20px;
@@ -417,10 +416,10 @@ svg.selectAll('.y-axis path, .y-axis line')
 }
 .line-chart {
 position: fixed;
-top: 600px;
+top: calc(13vh + 490px);
 left: 50px;
 z-index: 999;
-height: 200px;
+height: 25vh;
 width: 380px;
 overflow-x: scroll;
 overflow-y: hidden;

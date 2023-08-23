@@ -22,8 +22,11 @@
 
     <div class="shijing"><a>诗经</a></div>
     <div class="bu"><a>{{ yb[Index] }}部</a></div>
-    <div class="intro">文字简介:</div>
-    <div class="rect"></div>
+    <div class="intro">统计图表:</div>
+
+    <div class="rect">
+      <svg ref="pieChart"></svg>
+    </div>
 
     <div class="circle-container">
       <span class="yunbu">{{ yb[Index] }}</span>
@@ -98,16 +101,16 @@
     <div class="txt2"> 篇名</div>
     <div class="txt3"> 原文</div>
 
-    <div class="txt11">
-      {{ content[index].chapter }}
+    <div :style="getChapterStyle(index)" v-for="(item, index) in content.slice(a, b)">
+      {{ item.chapter }}
     </div>
 
-    <div class="txt21">
-      {{ content[index].title }}
+    <div :style="getTitleStyle(index)" v-for="(item, index) in content.slice(a, b)">
+      {{ item.title }}
     </div>
 
-    <div class="txt31">
-      {{ content[index].text }}
+    <div :style="getTextStyle(index)" v-for="(item, index) in content.slice(a, b)">
+      {{ item.text }}
     </div>
 
     <div class="choose">
@@ -142,7 +145,10 @@ export default {
       anglePerCharacter: 8, // Adjust the angle per character to control the spiral density
       index: 0,
       content: [{chapter:'', title:'', text:''}],
-      contentLenth: 1,
+      contentLenth: 0,
+      totalLenth: 377,
+      a: 0,
+      b: 8,
     };
   },
   components: {
@@ -152,10 +158,14 @@ export default {
   computed: {},
   methods: {
     increIndex(){
-      this.index = (Number(this.index) + 1) % this.contentLenth;
+      // this.index = (Number(this.index) + 1) % this.contentLenth;
+      this.a = this.a + 8;
+      this.b = this.b + 8;
     },
     decreIndex(){
-      this.index = (Number(this.index) - 1) % this.contentLenth;
+      // this.index = (Number(this.index) - 1) % this.contentLenth;
+      this.a = this.a - 8;
+      this.b = this.b - 8;
     },
     async getShijing() {
       return new Promise((resolve, reject) => {
@@ -219,30 +229,105 @@ export default {
           );
           console.log("Backend response:", response.data.data);
           //console.log(response.data.data[0].chapter);
-          this.content = response.data.data;
-          this.contentLenth = response.data.data.length;
+          this.content = response.data.data.slice(1);
+          this.totalLenth = response.data.data[0].yunbu_length;
+          this.contentLenth = response.data.data.length-1;
+          this.drawPieChart();
          
         } catch (error) {
           console.error("Error sending clicked word to the backend:", error);
         }
     },
 
-    getTextStyle(index) {
-      const totalCharacters = this.text.length;
-      const angle = this.degreesToRadians(index * this.anglePerCharacter);
-      const distanceFromCenter = index / 2 + this.innerRadius;
-      const x = distanceFromCenter * Math.cos(angle);
-      const y = distanceFromCenter * Math.sin(angle);
-      const alpha = 1 - index / totalCharacters; // Calculate the alpha (opacity) value based on the index
+    getChapterStyle(index){
+      const padding = 5;
       return {
-        // transform: `translate(${x}px, ${y}px) rotate(${angle}rad)`,
         position: "absolute",
-        left: `${x + 420}px`,
-        top: `${y + 420}px`,
-        color: `rgba(193, 165, 48, 1)`,
-        //color: `rgba(200, 150, 0, ${alpha})`, 
+        left: `${36}vw`, //注意这个left是相对于每个韵脚字而言
+        top: `${padding*index + 35}vh`,
       };
     },
+
+    getTitleStyle(index){
+      const padding = 5;
+      return {
+        position: "absolute",
+        left: `${50}vw`, //注意这个left是相对于每个韵脚字而言
+        top: `${padding*index + 35}vh`,
+      };
+    },
+
+    getTextStyle(index){
+      const padding = 5;
+      return {
+        position: "absolute",
+        left: `${62}vw`, //注意这个left是相对于每个韵脚字而言
+        top: `${padding*index + 35}vh`,
+      };
+    },
+
+    drawPieChart() {
+      const data = [
+        { label: '该韵脚字原文条数：'+this.contentLenth, value: this.contentLenth },
+        { label: '全部原文条数：'+this.totalLenth, value: this.totalLenth-this.contentLenth },
+      ];
+
+      const width = 0.22 * window.innerWidth;
+      const height = 0.3 * window.innerHeight;
+      const radius = Math.min(width, height) / 2.7;
+
+      d3.select(this.$refs.pieChart).selectAll("g").remove();
+
+      const svg = d3.select(this.$refs.pieChart)
+        .attr('width', width)
+        .attr('height', height)
+        .append('g')
+        .attr('transform', `translate(${width / 2},${height / 2})`);
+
+      const color = d3.scaleOrdinal()
+        .domain(data.map(d => d.label))
+        .range(['#F9D4A7', '#c1a530']);
+
+      const pie = d3.pie()
+        .value(d => d.value);
+
+      const arc = d3.arc()
+        .outerRadius(radius - 10)
+        .innerRadius(0);
+
+      const arcs = svg.selectAll('.arc')
+        .data(pie(data))
+        .enter()
+        .append('g')
+        .attr('class', 'arc');
+
+      arcs.append('path')
+        .attr('d', arc)
+        .attr('fill', d => color(d.data.label));
+
+      arcs.append('text')
+        .attr('transform', d => `translate(${arc.centroid(d)})`)
+        .attr('dy', (d, i) => i === 0 ? '-3em' : '0.35em')
+        .attr('dx', '-2em')
+        .text(d => `${d.data.label}`);
+    },
+
+    // getTextStyle(index) {
+    //   const totalCharacters = this.text.length;
+    //   const angle = this.degreesToRadians(index * this.anglePerCharacter);
+    //   const distanceFromCenter = index / 2 + this.innerRadius;
+    //   const x = distanceFromCenter * Math.cos(angle);
+    //   const y = distanceFromCenter * Math.sin(angle);
+    //   const alpha = 1 - index / totalCharacters; // Calculate the alpha (opacity) value based on the index
+    //   return {
+    //     // transform: `translate(${x}px, ${y}px) rotate(${angle}rad)`,
+    //     position: "absolute",
+    //     left: `${x + 420}px`,
+    //     top: `${y + 420}px`,
+    //     color: `rgba(193, 165, 48, 1)`,
+    //     //color: `rgba(200, 150, 0, ${alpha})`, 
+    //   };
+    // },
     degreesToRadians(degrees) {
       return (degrees * Math.PI) / 180;
     },
@@ -252,6 +337,9 @@ export default {
   },
   created() {
     this.getShijing();
+  },
+  mounted() {
+    this.drawPieChart();
   },
 };
 </script>
@@ -493,37 +581,37 @@ export default {
 .rect1 {
   position: absolute;
   top: 30vh;
-  left: 45vw;
+  left: 34vw;
   width: 1.5vw;
 }
 .rect2 {
   position: absolute;
-  top: 45vh;
-  left: 45vw;
+  top: 30vh;
+  left: 48vw;
   width: 1.5vw;
 }
 .rect3 {
   position: absolute;
-  top: 60vh;
-  left: 45vw;
+  top: 30vh;
+  left: 60vw;
   width: 1.5vw;
 }
 .txt1 {
   position: absolute;
   top: 29.5vh;
-  left: 48vw;
+  left: 36vw;
   font-size: 1.3rem;
 }
 .txt2 {
   position: absolute;
-  top: 44.5vh;
-  left: 48vw;
+  top: 29.5vh;
+  left: 50vw;
   font-size: 1.3rem;
 }
 .txt3 {
   position: absolute;
-  top: 59.5vh;
-  left: 48vw;
+  top: 29.5vh;
+  left: 62vw;
   font-size: 1.3rem;
 }
 .txt11 {

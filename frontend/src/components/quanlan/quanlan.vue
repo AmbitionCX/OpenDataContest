@@ -29,7 +29,12 @@
     <div class="intro1" v-show="sj">
       <div class="introText1">简介</div>
       <div class="introText2">
-        《诗经》，是中国古代诗歌的开端，最早的一部诗歌总集，收集了西周初年至春秋中叶（前11世纪至前6世纪）的诗歌，共311篇，其中6篇为笙诗，即只有标题，没有内容，称为笙诗六篇（《南陔》《白华》《华黍》《由庚》《崇丘》《由仪》），反映了周初至周晚期约五百年间的社会面貌。
+        《诗经》是中国最早的一部诗歌总集，收集了西周初年至春秋中叶（前11世纪至前6世纪）的诗歌，共311篇。《诗经》的韵文是研究上古音系的重要材料，可以通过系联韵脚字从而研究上古汉语的韵部和声调。
+      </div>
+      <div class="intropic1-container">
+        <div class="intropic1">
+        <img src="@/assets/quanlan/pic1.png" class="image"/>
+      </div>
       </div>
     </div>
     <div class="pic12" v-if="sj">
@@ -53,7 +58,12 @@
     <div class="intro2" v-show="gy">
       <div class="intro2Text1">简介</div>
       <div class="intro2Text2">
-        《诗经》，是中国古代诗歌的开端，最早的一部诗歌总集，收集了西周初年至春秋中叶（前11世纪至前6世纪）的诗歌，共311篇，其中6篇为笙诗，即只有标题，没有内容，称为笙诗六篇（《南陔》《白华》《华黍》《由庚》《崇丘》《由仪》），反映了周初至周晚期约五百年间的社会面貌。
+        《广韵》是北宋陈彭年、丘雍为增广《切韵》而作的韵书，成书于公元1008年（北宋真宗大中祥符元年）。现存最古的韵书是《广韵》，《广韵》的前身是《唐韵》，《唐韵》的前身是《切韵》。《广韵》基本上保存了《切韵》的语音系统，是研究中古汉语音系的重要材料。《切韵》是隋代陆法言所著，书成于隋仁寿元年（公元601年）。
+      </div>
+      <div class="intropic2-container">
+        <div class="intropic2">
+        <img src="@/assets/quanlan/pic2.png" class="image"/>
+      </div>
       </div>
     </div>
     <div class="pic22" v-if="gy">
@@ -77,7 +87,12 @@
     <div class="intro3" v-show="zy">
       <div class="intro3Text1">简介</div>
       <div class="intro3Text2">
-        《诗经》，是中国古代诗歌的开端，最早的一部诗歌总集，收集了西周初年至春秋中叶（前11世纪至前6世纪）的诗歌，共311篇，其中6篇为笙诗，即只有标题，没有内容，称为笙诗六篇（《南陔》《白华》《华黍》《由庚》《崇丘》《由仪》），反映了周初至周晚期约五百年间的社会面貌。
+        《中原音韵》由元代中期江西人周德清（1277-1365）所编，是为作元曲而编的韵书。《中原音韵》在韵书制作上直接影响到后來的曲韵，开曲韵、词韵之先河。该书被目为北音之祖，所描写的是元代的北方方言语音。在编排体例上打破“以调统韵”的传统韵书体例，不按《广韵》206韵框架，而是以韵统调，根据实际语音将全书所收字编为19韵部，韵下分排四声，声调之下分别同音字组，韵字之下不加注释。《中原音韵》是研究近代汉语音系的重要材料。
+      </div>
+      <div class="intropic3-container">
+        <div class="intropic3">
+        <img src="@/assets/quanlan/pic3.png" class="image"/>
+      </div>
       </div>
     </div>
     <div class="pic32" v-if="zy">
@@ -243,7 +258,7 @@ export default {
   position: fixed;
   z-index: 100;
   top: 180px;
-  left: 550px;
+  left: calc(33.8vw + 100px);
   width: 550px;
   height: 330px;
   background-color: #f9f5f2;
@@ -255,7 +270,7 @@ export default {
   position: fixed;
   z-index: 100;
   top: 200px;
-  left: 820px;
+  left: calc(33.8vw + 350px);
   font-size: 20px;
 }
 
@@ -263,11 +278,28 @@ export default {
   position: fixed;
   z-index: 100;
   top: 280px;
-  left: 800px;
+  left: calc(33.8vw + 350px);
   width: 270px;
   height: 330px;
+  text-align: left;
 }
-
+.intropic1-container {
+  position: fixed;
+z-index: 9;
+top: 200px;
+left: calc(33.8vw + 120px);
+width: 200px;
+height: 300px;
+display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  /* background-color: aqua; */
+}
+.intropic1 {
+  position: absolute;
+z-index: 9;
+transform: scaleX(0.5) scaleY(0.5);
+}
 .guangyun1 {
   position: fixed;
   z-index: 99;
@@ -325,7 +357,7 @@ export default {
   position: fixed;
   z-index: 100;
   top: 150px;
-  left: 650px;
+  right: calc(13vw + 80px);
   width: 550px;
   height: 330px;
   background-color: #f9f5f2;
@@ -337,19 +369,36 @@ export default {
   position: fixed;
   z-index: 100;
   top: 170px;
-  left: 900px;
+  right: calc(13vw + 320px);
   font-size: 20px;
 }
 
 .intro2Text2 {
   position: fixed;
   z-index: 100;
-  top: 260px;
-  left: 900px;
+  top: 230px;
+  right: calc(13vw + 100px);
   width: 270px;
   height: 330px;
+  text-align: left;
 }
-
+.intropic2-container {
+  position: fixed;
+z-index: 9;
+top: 160px;
+right: calc(13vw + 380px);
+width: 230px;
+height: 310px;
+display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  /* background-color: aqua; */
+}
+.intropic2 {
+  position: absolute;
+z-index: 9;
+transform: scaleX(0.6) scaleY(0.6);
+}
 /* 中原音韵 */
 .zhongyuan1 {
   position: fixed;
@@ -406,10 +455,10 @@ export default {
 
 .intro3 {
   position: fixed;
-  z-index: 990;
+  z-index: 9999;
   top: 250px;
-  left: 500px;
-  width: 550px;
+  left: calc(27vw + 100px);
+  width: 630px;
   height: 330px;
   background-color: #f9f5f2;
   border-radius: 5px;
@@ -420,19 +469,36 @@ export default {
   position: fixed;
   z-index: 999;
   top: 270px;
-  left: 750px;
+  left: calc(27vw + 370px);
   font-size: 20px;
 }
 
 .intro3Text2 {
   position: fixed;
-  z-index: 999;
-  top: 360px;
-  left: 750px;
-  width: 270px;
-  height: 330px;
+  z-index: 9999;
+  top: 330px;
+  left: calc(27vw + 370px);
+  width: 350px;
+  height: 250px;
+  text-align: left;
 }
-
+.intropic3-container {
+  position: fixed;
+z-index: 9;
+top: 260px;
+left: calc(27vw + 110px);
+width: 240px;
+height: 310px;
+display: flex; /* 使用 Flexbox 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  /* background-color: aqua; */
+}
+.intropic3 {
+  position: absolute;
+z-index: 9;
+transform: scaleX(0.6) scaleY(0.6);
+}
 #bg-wave {
   height: 40vh;
   width: 100%;

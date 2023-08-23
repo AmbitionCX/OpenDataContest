@@ -7,16 +7,17 @@
   
       <div class="intro">
         <div class="intro1">文字简介:</div>
-        <div class="rect1"></div>
+        <div class="rect1">
+          <p>《广韵》“文字简介”：《广韵》的韵部代表中古的韵部系统，《广韵》共分206韵，如果举平以该上去入，那么可以分为61韵部（或有学者称韵系）。</p>
+        </div>
         <div class="pic">
           <img
             src="@/components/yunbu/shan.svg"
             class="image"
-            style="width: 380px; height: 300px"
           />
         </div>
 
-        <div class="shijing"><a>广韵</a></div>
+        <div class="guangyun"><a>广韵</a></div>
   
         <div class="rect2"></div>
         <div class="txt">
@@ -272,37 +273,46 @@ svg.selectAll('.y-axis path, .y-axis line')
   color: #f6f5f5;
   text-align: center;
 }
-  .intro {
-    position: fixed;
-    top: 120px;
-    left: 50px;
-  }
+.intro {
+  position: fixed;
+  top: 100px;
+  left: 50px;
+}
   .intro1 {
     font-size: 20px;
     color: rgb(109, 110, 110);
   }
   .rect1 {
     position: fixed;
-    top: 160px;
-    left: 50px;
-    height: 60px;
-    width: 380px;
-    background-color: #dedede;
-    border-radius: 10px;
+  top: 140px;
+  left: 50px;
+  height: 13vh;
+  width: 380px;
+  background-color: #dedede;
+  border-radius: 10px;
+  display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: left; /* 水平居中文本 */
+  padding-left: 10px;
+  padding-right: 10px;
   }
+  .rect1 p {
+  text-align: left;
+}
   .pic {
     position: fixed;
-    top: 190px;
-    left: 50px;
-    z-index: 899;
+  top: calc(13vh + 180px);
+  left: 50px;
+  width: 380px; 
+  z-index: 899;
   }
-  .shijing {
+  .guangyun {
     display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
   align-items: center; /* 垂直居中文本 */
   justify-content: center; /* 水平居中文本 */
   position: fixed;
     z-index: 99;
-    top: 240px;
+    top: calc(13vh + 180px);
     left: 270px;
     background-image: linear-gradient(
       rgba(224, 157, 10, 1),
@@ -313,26 +323,15 @@ svg.selectAll('.y-axis path, .y-axis line')
     border-radius: 5px;
     border: 3px solid #e09d0a;
   }
-.shijing a {
+.guangyun a {
   writing-mode: vertical-lr;
     letter-spacing: 0.3em;
     font-size: 23px;
     color: black;
 }
-  .zyyy {
-    position: fixed;
-    z-index: 999;
-    top: 250px;
-    left: 275px;
-    writing-mode: vertical-lr;
-    letter-spacing: 0.3em;
-    font-size: 23px;
-    color: black;
-  }
   .rect2 {
     position: fixed;
-    top: 470px;
-    top: 470px;
+    top: calc(13vh + 380px);
     height: 10px;
     width: 340px;
     background-image: linear-gradient(
@@ -343,7 +342,7 @@ svg.selectAll('.y-axis path, .y-axis line')
   }
   .txt {
     position: fixed;
-    top: 500px;
+    top: calc(13vh + 410px);
     left: 35px;
   }
   .txt a{
@@ -361,7 +360,7 @@ svg.selectAll('.y-axis path, .y-axis line')
   .circle12{
     position: fixed;
     z-index: 100;
-    top: 460px;
+    top: calc(13vh + 370px);
     left: 40px;
     width: 25px;
     height: 25px;
@@ -373,7 +372,7 @@ svg.selectAll('.y-axis path, .y-axis line')
   .circle21 {
     position: fixed;
     z-index: 999;
-    top: 462px;
+    top: calc(13vh + 375px);
     left: 206.5px;
     width: 22px;
     height: 22px;
@@ -383,7 +382,7 @@ svg.selectAll('.y-axis path, .y-axis line')
   .circle2 {
     position: fixed;
     z-index: 100;
-    top: 455px;
+    top: calc(13vh + 368px);
     left: 200px;
     width: 35px;
     height: 35px;
@@ -394,7 +393,7 @@ svg.selectAll('.y-axis path, .y-axis line')
   .circle32{
     position: fixed;
     z-index: 100;
-    top: 460px;
+    top: calc(13vh + 370px);
     left: 370px;
     width: 25px;
     height: 25px;
@@ -405,16 +404,16 @@ svg.selectAll('.y-axis path, .y-axis line')
   }
   .intro2 {
     position: fixed;
-    top: 560px;
+    top: calc(13vh + 450px);
     left: 50px;
     font-size: 20px;
     color: rgb(109, 110, 110);
   }
   .rect3 {
     position: fixed;
-    top: 600px;
-    left: 50px;
-    height: 200px;
+    top: calc(13vh + 490px);
+  left: 50px;
+  height: 25vh;
     width: 380px;
     background-color: #dedede;
     border-radius: 20px;
@@ -434,10 +433,10 @@ svg.selectAll('.y-axis path, .y-axis line')
 }
   .line-chart {
   position: fixed;
-  top: 600px;
-  left: 50px;
-  z-index: 999;
-  height: 200px;
+  top: calc(13vh + 490px);
+left: 50px;
+z-index: 999;
+height: 25vh;
   width: 380px;
   overflow-x: scroll;
   overflow-y: hidden;
