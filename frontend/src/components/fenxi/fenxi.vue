@@ -78,7 +78,9 @@ export default {
     },
     async getYunbu() {
       return new Promise((resolve, reject) => {
-        const url = "http://localhost:5000/get_shanggu_shijing";
+      const path = "/get_shanggu_shijing";
+      const url = this.$globalUrl + path;
+      //const url = "http://localhost:5000/get_shanggu_shijing";
         axios
           .get(url)
           .then((res) => {
@@ -109,7 +111,7 @@ export default {
       console.log(yunbu);
       try {
         const response = await axios.post(
-          "http://localhost:5000/yunbu_sankey_data",
+      this.$globalUrl + "/yunbu_sankey_data",
           {
             params: {
               yunbu: yunbu,
@@ -257,7 +259,7 @@ export default {
       async function getTxt(target, source) {
         try {
           const response = await axios.post(
-            "http://localhost:5000/get_yunjiaozi",
+this.$globalUrl + "/get_yunjiaozi",
             {
               params: {
                 yunbu: { source: source, target: target },

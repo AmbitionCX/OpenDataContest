@@ -34,13 +34,13 @@
     </div>
 
     <div class="image2">
-      <img src="@/assets/quanlan/arrow.svg" class="image" style="width: 40px; height: 40px; cursor: pointer;"
-        @click="incrementNum()" />
+      <img src="@/assets/yunbu/arrow4.svg" class="image" 
+      style="width: 40px; height: 40px; cursor: pointer;" @click="incrementNum()"/>
     </div>
 
     <div class="image4">
-      <img src="@/assets/quanlan/arrow2.svg" class="image" style="width: 40px; height: 40px; cursor: pointer;"
-        @click="decrementNum()" />
+      <img src="@/assets/yunbu/arrow3.svg" class="image" 
+      style="width: 40px; height: 40px; cursor: pointer;" @click="decrementNum()"/>
     </div>
 
     <div class="line-chart"></div>
@@ -85,7 +85,9 @@ export default {
 
     async getShijing() {
       return new Promise((resolve, reject) => {
-        const url = "http://localhost:5000/get_jindai_zhongyuan";
+        const path = "/get_jindai_zhongyuan";
+         const url = this.$globalUrl + path;
+
         axios
           .get(url)
           .then((res) => {

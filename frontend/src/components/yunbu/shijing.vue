@@ -159,7 +159,9 @@ export default {
     },
     async getShijing() {
       return new Promise((resolve, reject) => {
-        const url = "http://localhost:5000/get_shanggu_shijing";
+        const path = "/get_shanggu_shijing";
+         const url = this.$globalUrl + path;
+
         axios
           .get(url)
           .then((res) => {
@@ -208,7 +210,7 @@ export default {
       //console.log('test', searchItem);
       try {
           const response = await axios.post(
-            "http://localhost:5000/shijing_search",
+          this.$globalUrl + "/shijing_search",
             {
               params: {
                 search_item: searchItem,

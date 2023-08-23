@@ -55,9 +55,8 @@ export default {
     },
 
     getShijing() {
-      const root_url = "http://localhost:5000";
       const path = "/get_zhonggu_guangyun";
-      const url = root_url + path;
+      const url = this.$globalUrl + path;
       axios
         .get(url)
         .then((res) => {

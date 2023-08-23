@@ -63,7 +63,9 @@
   
       async getShijing() {
         return new Promise((resolve, reject) => {
-          const url = "http://localhost:5000/get_jindai_zhongyuan";
+          const path = "/get_jindai_zhongyuan";
+         const url = this.$globalUrl + path;
+
           axios
             .get(url)
             .then((res) => {

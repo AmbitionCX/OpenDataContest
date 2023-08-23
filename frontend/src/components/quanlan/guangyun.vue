@@ -7,7 +7,7 @@
 
     <div class="shijing-quanlan"><a>广韵</a></div>
 
-  <div>
+    <div>
     <a href="/quanlan/shijing"><div class="cir1"></div></a>
     <div class="line1"></div>
     <div class="cir11"></div>
@@ -116,8 +116,9 @@ export default {
       this.drawPre(this.words);
     },
     async getYunbu() {
-        return new Promise((resolve, reject) => {
-          const url = "http://localhost:5000/get_zhonggu_guangyun";
+      return new Promise((resolve, reject) => {
+        const path = "/get_zhonggu_guangyun";
+         const url = this.$globalUrl + path;
           axios
             .get(url)
             .then((res) => {
@@ -176,7 +177,7 @@ export default {
               .size([500, 300])
               .words(words)
               .padding(5)
-              .rotate(() => 0) // 设置旋转角度为0，即不旋转
+              .rotate(() => 0) // 设置旋转角为0，即不旋转
               .font("Impact")
               .fontSize(25)
               .on("end", this.draw);
@@ -258,7 +259,7 @@ export default {
     try {
       console.log(word);
       const response = await axios.post(
-        "http://localhost:5000/get_guangyun_url",
+      this.$globalUrl + "/get_guangyun_url",
         { params: {
           Word: word
         } }
@@ -287,7 +288,7 @@ export default {
 },
 
 goToNewPage(yunbu_props) {
-      const index = this.yunbu.indexOf(yunbu_props)
+      const index = this.yunbu.indexOf(yunbu_props);
       this.$router.push(`/yunbu2/${index}`);
     },
 
@@ -295,7 +296,7 @@ goToNewPage(yunbu_props) {
 };
 </script>
         
-    <style scoped>
+    <style>
 * {
   /* 内外边距为0 */
   margin: 0;
@@ -308,7 +309,7 @@ goToNewPage(yunbu_props) {
 }
 .nav1 {
   position: fixed;
-  z-index: 999;
+  z-index: 9999;
 }
 .bg {
   width: 100vw;
@@ -509,7 +510,7 @@ color: black;
 .txt2 {
   position: fixed;
   top: 133px;
-  left: calc(63vw + 100px);
+  left: 70vw;
   font-size: 20px;
   color: #838080;
 }
@@ -555,7 +556,7 @@ color: black;
 }
 .link {
   position: fixed;
-  bottom: 10vh;
+  bottom: 200px;
   left: 73vw;
   width: 180px;
   height: 40px;

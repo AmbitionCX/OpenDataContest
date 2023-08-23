@@ -109,7 +109,7 @@ export default {
     async getJuanzhou() {
       try {
         const response = await axios.post(
-          "http://localhost:5000/get_yunjiaozi",
+            this.$globalUrl + "/get_yunjiaozi",
           {
             params: {
               yunbu: this.yunbu,

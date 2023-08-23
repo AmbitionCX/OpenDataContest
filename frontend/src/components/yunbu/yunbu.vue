@@ -72,7 +72,9 @@ export default {
 
     async getShijing() {
       return new Promise((resolve, reject) => {
-        const url = "http://localhost:5000/get_shanggu_shijing";
+        const path = "/get_shanggu_shijing";
+         const url = this.$globalUrl + path;
+
         axios
           .get(url)
           .then((res) => {

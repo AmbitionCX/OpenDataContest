@@ -83,7 +83,9 @@ export default {
   //获取选项列表
   async getOption() {
       return new Promise((resolve, reject) => {
-        const url = "http://localhost:5000/get_zhongyuan_search_item";
+        const path = "/get_zhongyuan_search_item";
+         const url = this.$globalUrl + path;
+
         axios
           .get(url)
           .then((res) => {
@@ -122,7 +124,7 @@ export default {
           };
           console.log('test: ',zhongyuan_search);
           const response = await axios.post(
-            "http://localhost:5000/zhongyuan_search",
+            this.$globalUrl + "/zhongyuan_search",
             {
               params: {
                 yunbu: this.message,

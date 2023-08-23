@@ -141,7 +141,9 @@ export default {
     //获取所有章节名称，做成下拉菜单
     async getChapter() {
       return new Promise((resolve, reject) => {
-        const url = "http://localhost:5000/get_shijing_chapter";
+        const path = "/get_shijing_chapter";
+         const url = this.$globalUrl + path;
+
         axios
           .get(url)
           .then((res) => {
@@ -165,7 +167,7 @@ export default {
     async getTitle(chapter) {
         try {
           const response = await axios.post(
-            "http://localhost:5000/shijing_word_cloud",
+         this.$globalUrl + "/shijing_word_cloud",
             {
               params: {
                 chapter: chapter,
@@ -236,7 +238,7 @@ export default {
           .attr("cursor", "pointer")
           .attr("x", (d,i) => rectList[i].x + rectWidth/2)
           .attr("y", (d,i) => rectList[i].y + rectHeight/2)
-          .style("font-size", (d) => 30 + "px")
+          .style("font-size", (d) => 25 + "px")
           .style("font-family", "Impact")
           .style("fill", "white")
           .attr("text-anchor", "middle")
@@ -275,7 +277,7 @@ export default {
       async getContent(title) {
         try {
           const response = await axios.post(
-            "http://localhost:5000/shijing_full_text",
+         this.$globalUrl + "/shijing_full_text",
             {
               params: {
                 title: title,
