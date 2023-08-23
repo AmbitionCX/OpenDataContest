@@ -11,18 +11,8 @@
       <div class="rect1"></div>
     </div>
 
-    <el-select
-      v-model="selectedOption"
-      class="choose"
-      placeholder="请选择上古韵部"
-      @change="handleOptionChange"
-    >
-      <el-option
-        v-for="item in yunbu"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      />
+    <el-select v-model="selectedOption" class="choose" placeholder="请选择上古韵部" @change="handleOptionChange">
+      <el-option v-for="item in yunbu" :key="item.value" :label="item.label" :value="item.value" />
     </el-select>
 
     <div class="sankey-chart">
@@ -65,8 +55,6 @@ export default {
   },
   mounted() {
     this.getYunbu();
-    //this.getData('上古：歌');
-    //this.sendData();
   },
   methods: {
     handleOptionChange() {
@@ -76,11 +64,12 @@ export default {
         this.getData("上古：" + this.selectedOption);
       }
     },
+
     async getYunbu() {
       return new Promise((resolve, reject) => {
-      const path = "/get_shanggu_shijing";
-      const url = this.$globalUrl + path;
-      //const url = "http://localhost:5000/get_shanggu_shijing";
+        const path = "/get_shanggu_shijing";
+        const url = this.$globalUrl + path;
+        //const url = "http://localhost:5000/get_shanggu_shijing";
         axios
           .get(url)
           .then((res) => {
@@ -111,7 +100,7 @@ export default {
       console.log(yunbu);
       try {
         const response = await axios.post(
-      this.$globalUrl + "/yunbu_sankey_data",
+          this.$globalUrl + "/yunbu_sankey_data",
           {
             params: {
               yunbu: yunbu,
@@ -125,7 +114,83 @@ export default {
       }
     },
 
+    drawTxt(pathData, source, target, svg) {
+      var textData = "";
+
+      this.getTxt(target, source).then(function (txtlist) {
+        console.log(txtlist);
+        if (Array.isArray(txtlist)) {
+          textData = txtlist.join("");
+
+          svg.selectAll("textPath").remove();
+          d3.select("#my-path-id").remove();
+
+          const path = svg
+            .append("path")
+            .attr("d", pathData)
+            .attr("stroke", "none")
+            .attr("stroke-width", 1)
+            .attr("fill", "none")
+            .attr("id", "my-path-id"); // Add a unique ID to the path element
+
+          const text = svg
+            .append("text")
+            .attr("text-anchor", "middle") // Center-align text
+            .attr("alignment-baseline", "middle") // Vertically center-align text
+            .style("white-space", "pre-line"); // Enable line breaks
+
+          const pathElement = path.node();
+          const pathLength = pathElement.getTotalLength();
+
+          // Split text into lines
+          function splitTextIntoChunks(text, chunkSize) {
+            const chunks = [];
+            for (let i = 0; i < text.length; i += chunkSize) {
+              chunks.push(text.substr(i, chunkSize));
+            }
+            return chunks;
+          }
+
+          const chunkSize = Math.floor(pathLength / 15);
+          const lines = splitTextIntoChunks(textData, chunkSize);
+
+          // Append each line as a tspan element
+          lines.forEach((line, index) => {
+            text
+              .append("textPath")
+              .attr("href", "#my-path-id") // Reference the path by its ID
+              .attr("startOffset", "50%") // Start text at the middle of the path
+              .append("tspan")
+              .attr("dy", `${index * 20 - 5}px`) // Adjust vertical positioning
+              .text(line)
+              .style("fill", "#5b574f");
+          });
+        } else {
+          console.log("txtlist 不是一个数组");
+        }
+      });
+    },
+
+    async getTxt(target, source) {
+      const url = this.$globalUrl + "/get_yunjiaozi";
+      try {
+        const response = await axios.post(
+          url,
+          {
+            params: {
+              yunbu: { source: source, target: target },
+            },
+          }
+        );
+        //console.log("Backend response list:", response.data.data);
+        return response.data.data;
+      } catch (error) {
+        console.error("Error sending clicked word to the backend:", error);
+      }
+    },
+
     drawChart(sankeyData) {
+      let vm = this;
       d3.select(this.$refs.svgContainer).html(""); //清空画布
       //console.log('success:', this.sankeyData);
       const { nodes, links } = sankeyData;
@@ -183,8 +248,7 @@ export default {
         })
         .on("mouseover", function (d, i) {
           const PathData = this.getAttribute("d");
-          //console.log(i.source.name, i.target.name);
-          drawTxt(PathData, i.source.name, i.target.name);
+          vm.drawTxt(PathData, i.source.name, i.target.name, svg);
 
           d3.select(this).style("stroke", "url(#gradient)");
         })
@@ -192,89 +256,13 @@ export default {
           d3.select(this).style("stroke", "#dedede"); // 鼠标离开时恢复链接颜色为黑色
           svg.selectAll("textPath").remove();
         });
-
-      const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-
-      /////////////////////////////////////////////////////////
-      // const textData = "这是我用来测试的一段话，如果你看到他正确显示在应有的位置上那就说明我的代码非常正确，否则我就要继续修改";
-
-      function drawTxt(pathData, source, target) {
-        //test();
-        var textData = "";
-
-        const txtlistpromise = getTxt(target, source).then(function (txtlist) {
-          if (Array.isArray(txtlist)) {
-            textData = txtlist.join("");
-            //console.log("txtdata:", textData);
-
-            svg.selectAll("textPath").remove();
-            d3.select("#my-path-id").remove();
-
-            const path = svg
-              .append("path")
-              .attr("d", pathData)
-              .attr("stroke", "none")
-              .attr("stroke-width", 1)
-              .attr("fill", "none")
-              .attr("id", "my-path-id"); // Add a unique ID to the path element
-
-            const text = svg
-              .append("text")
-              .attr("text-anchor", "middle") // Center-align text
-              .attr("alignment-baseline", "middle") // Vertically center-align text
-              .style("white-space", "pre-line"); // Enable line breaks
-
-            const pathElement = path.node();
-            const pathLength = pathElement.getTotalLength();
-
-            // Split text into lines
-            function splitTextIntoChunks(text, chunkSize) {
-              const chunks = [];
-              for (let i = 0; i < text.length; i += chunkSize) {
-                chunks.push(text.substr(i, chunkSize));
-              }
-              return chunks;
-            }
-
-            const chunkSize = Math.floor(pathLength / 15);
-            const lines = splitTextIntoChunks(textData, chunkSize);
-
-            // Append each line as a tspan element
-            lines.forEach((line, index) => {
-              text
-                .append("textPath")
-                .attr("href", "#my-path-id") // Reference the path by its ID
-                .attr("startOffset", "50%") // Start text at the middle of the path
-                .append("tspan")
-                .attr("dy", `${index * 20 - 5}px`) // Adjust vertical positioning
-                .text(line)
-                .style("fill", "#5b574f");
-            });
-          } else {
-            console.log("txtlist 不是一个数组");
-          }
-        });
-      }
-
-      async function getTxt(target, source) {
-        try {
-          const response = await axios.post(
-this.$globalUrl + "/get_yunjiaozi",
-            {
-              params: {
-                yunbu: { source: source, target: target },
-              },
-            }
-          );
-          //console.log("Backend response list:", response.data.data);
-          return response.data.data;
-        } catch (error) {
-          console.error("Error sending clicked word to the backend:", error);
-        }
-      }
+      
+      const yunbu_data = ["上古：東", "上古：歌", "上古：陽", "上古：文", "上古：侯", "上古：緝", "上古：覺", "上古：侵", "上古：談", "上古：微", "上古：耕", "上古：屋", "上古：物", "上古：錫", "上古：宵", "上古：藥", "上古：葉", "上古：幽", "上古：魚", "上古：元", "上古：月", "上古：真", "上古：蒸", "上古：之", "上古：支", "上古：脂", "上古：職", "上古：質", "上古：鐸", "中古：登", "中古：冬", "中古：東", "中古：廢", "中古：凡", "中古：歌", "中古：庚", "中古：耕", "中古：夬", "中古：咍", "中古：寒", "中古：豪", "中古：痕", "中古：侯", "中古：灰", "中古：魂", "中古：祭A", "中古：祭B", "中古：佳", "中古：江", "中古：皆", "中古：麻", "中古：模", "中古：齊", "中古：侵A", "中古：侵B", "中古：青", "中古：清A", "中古：清B", "中古：山", "中古：刪", "中古：泰", "中古：覃", "中古：談", "中古：唐", "中古：添", "中古：微", "中古：文", "中古：仙A", "中古：仙B", "中古：先", "中古：咸", "中古：銜", "中古：宵A", "中古：宵B", "中古：蕭", "中古：欣", "中古：嚴", "中古：鹽A", "中古：鹽B", "中古：陽", "中古：肴", "中古：幽", "中古：尤", "中古：魚", "中古：虞", "中古：元", "中古：真A", "中古：真B", "中古：臻", "中古：蒸", "中古：之", "中古：支A", "中古：支B", "中古：脂A", "中古：脂B", "中古：鍾", "近代：東鍾", "近代：歌戈", "近代：江陽", "近代：真文", "近代：尤侯", "近代：家麻", "近代：侵尋", "近代：監咸", "近代：齊微", "近代：庚青", "近代：皆來", "近代：蕭豪", "近代：廉纖", "近代：車遮", "近代：魚模", "近代：先天", "近代：寒山", "近代：桓歡", "近代：支思"];
+      const color_data = ["B23434", "D14E34", "E5901F", "D8BA27", "D6DB0E", "A6CE51", "81AF45", "4B9B35", "3DA568", "2E9387", "1FA0AA", "13B6E2", "1E96E0", "1F76DD", "345AC6", "6767DB", "8B71D3", "9E6AC6", "9A46AF", "C679B8", "AA3992", "CC1772", "93526D", "7B517C", "583E8C", "4E6B93", "508182", "3E6D4C", "9B7A26", "CE7C7C", "E97E6B", "B23434", "F9D4A7", "F0DA76", "D14E34", "EFEF7D", "1FA0AA", "DEFF8F", "C1E38C", "66BF49", "345AC6", "4FA038", "D6DB0E", "4FBEAF", "57BEC4", "BFD7DD", "5DC4E0", "A0CDF9", "92B1F4", "ACACFC", "B6A5EB", "BBA1D1", "D18EE1", "F9BBF0", "DB93CF", "1F76DD", "B35AA1", "AE4798", "C193A7", "D090D3", "B4A2DD", "7EB8F2", "3DA568", "AED6D6", "77A483", "2E9387", "D8BA27", "C7AC6C", "AE8F44", "A1CACA", "74A9DF", "587AA6", "9A85C6", "725AA3", "B48096", "DB4E96", "B0509C", "8B71D3", "9780DA", "E5901F", "C17AD3", "9E6AC6", "B493CE", "9A46AF", "A38EE1", "C679B8", "CC1772", "D8438F", "78A5A6", "93526D", "7B517C", "583E8C", "75B0F0", "4E6B93", "618AB9", "C35F5F", "B23434", "D14E34", "E5901F", "D8BA27", "D6DB0E", "81AF45", "4B9B35", "3DA568", "2E9387", "1FA0AA", "1F76DD", "345AC6", "6767DB", "8B71D3", "9A46AF", "C679B8", "AA3992", "CC1772", "7B517C"]
+      const colorScale = d3.scaleOrdinal().domain(yunbu_data).range(color_data);
 
       const node = svg.append('g')
-      .selectAll('.node')
+        .selectAll('.node')
         .data(sankeyNodes)
         .enter()
         .append("rect")
@@ -283,13 +271,13 @@ this.$globalUrl + "/get_yunjiaozi",
         .attr("y", (d) => d.y0)
         .attr("width", (d) => d.x1 - d.x0)
         .attr("height", (d) => d.y1 - d.y0)
-        .style("fill", (d) => colorScale(d.name)) // 设置节点颜色
+        .style("fill", (d) => "#" + colorScale(d.name)) // 设置节点颜色
         //.style("fill", "#bccc5c")
         //.style("stroke", "gray") // 设置节点边框颜色为灰色
         .style("stroke-width", 1); // 设置节点边框宽度
-        
-        // 添加节点标签
-        svg.append('g')
+
+      // 添加节点标签
+      svg.append('g')
         .selectAll('.text')
         .data(sankeyNodes)
         .enter().append('text')
@@ -299,7 +287,7 @@ this.$globalUrl + "/get_yunjiaozi",
         .attr('dy', '0.35em')
         .attr('dx', '50px')
         .attr('text-anchor', 'middle')
-        .text(function(d){
+        .text(function (d) {
           //console.log(d);
           return d.name;
         });
@@ -335,6 +323,7 @@ this.$globalUrl + "/get_yunjiaozi",
   text-decoration: none;
   list-style: none;
 }
+
 .bg {
   width: 100vw;
   height: 100vh;
@@ -342,6 +331,7 @@ this.$globalUrl + "/get_yunjiaozi",
   top: 0;
   left: 0;
 }
+
 .header {
   position: fixed;
   z-index: 999;
@@ -351,19 +341,23 @@ this.$globalUrl + "/get_yunjiaozi",
   color: #f6f5f5;
   text-align: center;
 }
+
 .nav1 {
   position: fixed;
   z-index: 99;
 }
+
 .intro {
   position: fixed;
   top: 120px;
   left: 50px;
 }
+
 .intro1 {
   font-size: 20px;
   color: rgb(109, 110, 110);
 }
+
 .rect1 {
   position: fixed;
   top: 160px;
@@ -373,6 +367,7 @@ this.$globalUrl + "/get_yunjiaozi",
   background-color: #dedede;
   border-radius: 10px;
 }
+
 .sankey-chart {
   display: flex;
   position: fixed;
@@ -385,6 +380,7 @@ this.$globalUrl + "/get_yunjiaozi",
   overflow: auto;
   /* background-color: antiquewhite; */
 }
+
 .scrollable-content {
   display: flex;
   position: fixed;
@@ -396,6 +392,7 @@ this.$globalUrl + "/get_yunjiaozi",
   width: 70vw;
   overflow: auto;
 }
+
 .choose {
   display: flex;
   position: fixed;
