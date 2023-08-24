@@ -103,23 +103,24 @@ export default {
   left: 0;
 }
 .menu {
-  background-color: #9b928c;
+  background-image: 
+  linear-gradient(rgba(198, 145, 14, 1),
+      rgba(249, 245, 242, 1));
   display: flex;
   width: 92vw;
-  height: 30px;
+  height: 50px;
   position: fixed;
   top: calc(5vh + 10px);
   left: 4vw;
-  /* 上|右|下|左 */
-  padding: 10px 0 10px 0;
   justify-content: center;
+  opacity: 0.2;
 }
 .menu-text{
   display: flex;
   gap: 18vw;
   width: 100vw;
   position: fixed;
-  top: calc(5vh + 10px);
+  top: calc(5vh + 20px);
   font-size: 20px;
   /* left: 100px; */
   /* 上|右|下|左 */
@@ -134,7 +135,7 @@ export default {
 }
 /* 导航栏文字 */
 .el-dropdown-link a {
-  color: rgb(248, 248, 247);
+  color: black;
   font-size: 20px;
   z-index: 999;
 }

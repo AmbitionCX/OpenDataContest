@@ -1,7 +1,7 @@
 <template>
     <div class="menu1">
       <div class="ll">
-        <img src="@/assets/navbar/pic01.svg" class="image" />
+        <img src="@/assets/navbar/pic01.svg" class="image"  style="width: 1.5vw;"/>
       </div>
     </div>
 
@@ -33,7 +33,7 @@
     position: fixed;
     top: calc(5vh + 10px);
     left: 4vw;
-    height: 100px;
+    height: 50px;
     width: 23vw;
     background-color: #C6910E;
     display: flex;
@@ -42,14 +42,14 @@
 .ll {
   position: fixed;
     top: 0;
-    left: 4vw;
+    left: 14vw;
 }
   .image{
     width: 8%;
   }
   .sui{
     position: fixed;
-    top: calc(7vh + 110px);
+    top: calc(5vh + 80px);
     left: 4vw;
   }
   .xing{

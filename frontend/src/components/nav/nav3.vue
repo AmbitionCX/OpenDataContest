@@ -33,7 +33,7 @@
   position: fixed;
   top: calc(5vh + 10px);
   left: 73vw;
-  height: 30px;
+  height: 50px;
   width: 23vw;
   background-color: #9CAF31;
   display: flex;
@@ -49,7 +49,7 @@ position: fixed;
 }
 .sui{
   position: fixed;
-  top: calc(5vh + 60px);
+  top: calc(5vh + 80px);
   left: 73vw;
 }
 .xing{

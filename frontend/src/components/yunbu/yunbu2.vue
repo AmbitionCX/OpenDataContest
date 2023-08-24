@@ -1,14 +1,22 @@
 <template>
     <div class="bg" style="background-color: #f9f5f2">
+
+      <div class="yunbuBG">
+        <img
+          src="@/assets/yunbu/yunbuBG.svg"
+          class="image" style="width: 100vw; height: 100vh"
+        />
+      </div>
+
       <div class="nav1">
-        <navbar2></navbar2>
+        <navbar></navbar>
       </div>
       <div class="header">韵部系联</div>
   
       <div class="intro">
         <div class="intro1">文字简介:</div>
         <div class="rect1">
-          <p>《广韵》“文字简介”：《广韵》的韵部代表中古的韵部系统，《广韵》共分206韵，如果举平以该上去入，那么可以分为61韵部（或有学者称韵系）。</p>
+          <p>《广韵》的韵部代表中古的韵部系统，《广韵》共分206韵，如果举平以该上去入，那么可以分为61韵部（或有学者称韵系）。</p>
         </div>
         <div class="pic">
           <img
@@ -24,7 +32,7 @@
           <a class="txt1" href="/yunbu">诗经</a>
           <a class="txt3" href="/yunbu3/14">中原音韵</a>
         </div>
-        <div class="circle12" @click="ToLinkSY"></div>
+        <div class="circle12" @click="ToLinkSJ"></div>
         <div class="circle2"><div class="circle21"></div></div>
         <div class="circle32" @click="ToLinkZY"></div>
   
@@ -80,7 +88,7 @@
       this.Index = Number(this.Index)-1;
     },
       ToLinkZY(){
-      window.location.href = "/yunbu3"; 
+      window.location.href = "/yunbu3/14"; 
     },
     ToLinkSJ(){
       window.location.href = "/yunbu"; 
@@ -469,5 +477,13 @@ height: 25vh;
   width: 50px;
   left: 33vw;
   top: 50vh;
+}
+.yunbuBG {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  top: 0px;
+  left: 0px;
 }
   </style>

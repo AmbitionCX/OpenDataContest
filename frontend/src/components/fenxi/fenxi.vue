@@ -1,7 +1,7 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2">
     <div class="nav1">
-      <navbar3></navbar3>
+      <navbar></navbar>
     </div>
 
     <div class="header">综合分析</div>
@@ -444,9 +444,8 @@ export default {
   width: 320px;
   height: 45px;
   background-image: linear-gradient(
-    to left,
-    rgba(252, 237, 227, 1),
-    rgba(193, 165, 48, 1)
+    rgba(156, 175, 49, 1),
+    rgba(249, 245, 242, 1)
   );
   border-radius: 5px;
       display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
@@ -459,7 +458,7 @@ export default {
   font-size: 20px;
 }
 .choose-content {
-  border: 2px solid #c1a530;
+  border: 2px solid #9CAF31;
   background-color: #f9f5f2;
   width: inherit;
   height: 40vh;
@@ -470,6 +469,6 @@ export default {
   cursor: pointer; /* 将鼠标指针设置为手指形状 */
 }
 .hover-item:hover {
-  background-color: rgba(193, 165, 48, 0.3); /* 设置悬浮时的背景颜色 */
+  background-color: rgba(156, 175, 49, 0.3); /* 设置悬浮时的背景颜色 */
 }
 </style>

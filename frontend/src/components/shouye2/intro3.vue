@@ -1,6 +1,6 @@
 <template>
   <div class="title3">
-    <img src="@/assets/introduction/title2.svg" class="image" />
+    <img src="@/assets/introduction/circle.svg" class="image" />
   </div>
   <div class="Shijing2" ><a>上古音 · 诗经</a></div>
   
@@ -36,7 +36,7 @@
   </div>
 
   <div class="title4">
-    <img src="@/assets/introduction/title2.svg" class="image" />
+    <img src="@/assets/introduction/circle.svg" class="image" />
   </div>
   <div class="shijing3" ><a>中古音 · 广韵</a></div>
 
@@ -73,7 +73,7 @@
   </div>
 
   <div class="title5">
-    <img src="@/assets/introduction/title2.svg" class="image" />
+    <img src="@/assets/introduction/circle.svg" class="image" />
   </div>
   <div class="shijing4" ><a>近代音 · 中原音韵</a></div>
 
@@ -137,13 +137,24 @@
   left: 10vw;
   width: 15vw;
   height: 50vh;
-  transform: scaleX(1) scaleY(1.2); /* 水平缩放50%，垂直缩放70% */
+  transform: scaleX(1) scaleY(1); /* 水平缩放50%，垂直缩放70% */
 }
 .Shijing2 {
     position: absolute;
       z-index: 999;
       top: 257.5vh;
       left: 16vw;
+      display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+    align-items: center; /* 垂直居中文本 */
+    justify-content: center; /* 水平居中文本 */
+    background-image: linear-gradient(
+      rgba(198, 145, 14, 1),
+      rgba(252, 237, 227, 0.1)
+    );
+    height: 220px;
+    width: 40px;
+    border-radius: 5px;
+    border: 2px solid #c6910e;
 }
 .Shijing2 a {
   writing-mode: vertical-lr;
@@ -219,13 +230,24 @@ align-items: center; /* 垂直居中 */
   left: 10vw;
   width: 15vw;
   height: 50vh;
-  transform: scaleX(1) scaleY(1.2); /* 水平缩放50%，垂直缩放70% */
+  transform: scaleX(1) scaleY(1); /* 水平缩放50%，垂直缩放70% */
 }
 .shijing3 {
     position: absolute;
       z-index: 999;
       top: 357.5vh;
       left: 16vw;
+      display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+    align-items: center; /* 垂直居中文本 */
+    justify-content: center; /* 水平居中文本 */
+    background-image: linear-gradient(
+      rgba(198, 145, 14, 1),
+      rgba(252, 237, 227, 0.1)
+    );
+    height: 220px;
+    width: 40px;
+    border-radius: 5px;
+    border: 2px solid #c6910e;
 }
 .shijing3 a {
   writing-mode: vertical-lr;
@@ -316,18 +338,29 @@ display: flex; /* 使用 Flexbox 布局 */
   left: 10vw;
   width: 15vw;
   height: 50vh;
-  transform: scaleX(1) scaleY(1.2); /* 水平缩放50%，垂直缩放70% */
+  transform: scaleX(1) scaleY(1); /* 水平缩放50%，垂直缩放70% */
 }
 .shijing4 {
     position: absolute;
       z-index: 999;
       top: 486vh;
       left: 16vw;
+      display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+    align-items: center; /* 垂直居中文本 */
+    justify-content: center; /* 水平居中文本 */
+    background-image: linear-gradient(
+      rgba(198, 145, 14, 1),
+      rgba(252, 237, 227, 0.1)
+    );
+    height: 270px;
+    width: 40px;
+    border-radius: 5px;
+    border: 2px solid #c6910e;
 }
 .shijing4 a {
   writing-mode: vertical-lr;
   letter-spacing: 0.3em;
-  font-size: 19px;
+  font-size: 23px;
   color: black;
 }
 .zhongyuan-kuang {

@@ -58,7 +58,7 @@
     z-index: 99;
   }
   .sublist a {
-    color: #fbf6f6;
+    color:black;
   }
   .sublist li {
     padding: 10px;

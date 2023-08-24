@@ -1,7 +1,7 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2">
     <div class="nav1">
-      <navbar1></navbar1>
+      <navbar></navbar>
     </div>
     <div class="header">语音全览</div>
 
@@ -503,7 +503,8 @@ justify-content: center; /* 水平居中文本 */
   border-radius: 5px;
       display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
   align-items: center; /* 垂直居中文本 */
-  justify-content: center; /* 水平居中文本 */
+  justify-content: left; /* 水平居中文本 */
+  padding-left: 5px;
 }
 .choose-title a {
   color: #000;

@@ -3,7 +3,7 @@
     <div id="bg-wave"></div>
     
     <div class="nav1">
-      <navbar1></navbar1>
+      <navbar></navbar>
     </div>
     <div class="header">语音全览</div>
 

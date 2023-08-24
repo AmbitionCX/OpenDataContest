@@ -1,7 +1,7 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2">
   <div class="nav1">
-    <navbar3></navbar3>
+    <navbar></navbar>
   </div>
 
   <div style="position: fixed; top: 23vh; left: 11vw">

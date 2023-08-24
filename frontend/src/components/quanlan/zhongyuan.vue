@@ -1,7 +1,7 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2">
     <div class="nav1">
-      <navbar1></navbar1>
+      <navbar></navbar>
     </div>
     <div class="header">语音全览</div>
 
@@ -81,7 +81,15 @@ import cloud from "d3-cloud";
 
 export default {
   mounted() {
-    this.getYunbu();
+    this.getYunbu()
+      .then(() => {
+        this.wordClicked('東');
+        return this.getWords('東鍾');
+        
+      })
+      .catch(error => {
+        console.error('An error occurred:', error);
+      });
   },
   data() {
     return {
@@ -321,7 +329,7 @@ goToNewPage(yunbu_props) {
 }
 .header {
   position: fixed;
-  z-index: 999;
+  z-index: 999999;
   top: 4px;
   left: 47vw;
   font-size: 25px;
@@ -470,7 +478,7 @@ color: black;
   flex-direction: column;
   position: fixed;
   top: 133px;
-  left: 48vw;
+  left: 46.5vw;
 }
 .choose-title {
   width: 180px;
@@ -553,7 +561,7 @@ color: black;
   position: fixed;
   z-index: 90;
   width: 50px;
-  left: 63vw;
+  left: 61vw;
   top: 350px;
 }
 .link {

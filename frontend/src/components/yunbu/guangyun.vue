@@ -10,7 +10,7 @@
     </div>
 
     <div class="nav1">
-      <navbar2></navbar2>
+      <navbar></navbar>
     </div>
 
     <div class="header">韵部系联</div>

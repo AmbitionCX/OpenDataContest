@@ -20,7 +20,10 @@
   <div class="txt11">
     <p>&nbsp; &nbsp; &nbsp; 党的二十大报告强调：“增强中华文明传播力、影响力。坚守中华文化立场，提炼展示中华文明的精神标识和文化精髓，加快构建中国话语和中国叙事体系，讲好中国故事、传播好中国声音，展现可信、可爱、可敬的中国形象。”</p>
     <p>&nbsp; &nbsp; &nbsp; 本项目“文藻声韵—古汉语典籍韵部流变系统”，打破音韵学为“口耳之学”的局限性，调动视觉感受，让汉语语音的发展与传承过程鲜活灵动起来，探索汉语历史发展的魅力。本项目旨在通过语音流变系统链汇古今，探索古籍的内在文化价值。以中国古籍为依托，致力于“讲好中国故事”。</p>
-    <br><p>数据来源：</p>
+  </div>
+
+  <div class="txt12">
+    <p>数据来源：</p>
     <p>上海图书馆古籍库</p>
     <p>搜韵网-诗词数据、古籍图片</p>
     <p>古音小镜-《诗经》韵部数据</p>
@@ -42,7 +45,6 @@
     <div><a href="introduction">首页</a>
       <ul class="sublist">
         <li><a>古汉语的语音发展</a></li>
-        <li><a>汉语韵律之美</a></li>
       </ul>
     </div>
 
@@ -62,7 +64,11 @@
       </ul>
     </div>
 
-    <div><a href="/fenxi">综合分析</a></div>
+    <div><a href="/fenxi">综合分析</a>
+      <ul class="sublist">
+        <li><a>韵部流变可视化</a></li>
+      </ul>
+    </div>
   </div>
 
     </div>
@@ -165,6 +171,16 @@ import axios from 'axios';
  width: 70vw;
   height: 50vh;
   text-align: left;
+}
+.txt12 {
+  position: absolute;
+  z-index: 999999;
+  top: 670vh;
+  left: 15vw;
+ width: 70vw;
+  height: 50vh;
+  text-align: left;
+  opacity: 0.6;
 }
 .bottom1 {
   position: absolute;

@@ -1,7 +1,15 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2">
+
+    <div class="yunbuBG">
+        <img
+          src="@/assets/yunbu/yunbuBG.svg"
+          class="image" style="width: 100vw; height: 100vh"
+        />
+      </div>
+
     <div class="nav1">
-      <navbar2></navbar2>
+      <navbar></navbar>
     </div>
     <div class="header">韵部系联</div>
 
@@ -65,10 +73,10 @@ export default {
   },
   methods: {
     ToLinkZY(){
-      window.location.href = "/yunbu3"; 
+      window.location.href = "/yunbu3/14"; 
     },
     ToLinkGY(){
-      window.location.href = "/yunbu2"; 
+      window.location.href = "/yunbu2/14"; 
     },
 
     async getShijing() {
@@ -438,5 +446,13 @@ background-color: #f9f9f9;
 border: 1px solid #ccc;
 border-radius: 4px;
 box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+.yunbuBG {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  top: 0px;
+  left: 0px;
 }
 </style>

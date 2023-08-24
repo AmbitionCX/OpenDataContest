@@ -28,7 +28,7 @@
       <img
         src="@/components/shouye/juanzhou.svg"
         class="image"
-        style="width: 350px; height: 300px"
+        style="width: 350px; "
       />
     </div>
   </div>
@@ -110,13 +110,13 @@ export default {
 }
 .juanzhou-container1 {
   position: absolute;
-  top: 40vh;
+  top: 36vh;
   left: 0;
   width: 100vw;
   height: 20vh;
   display: flex; /* 使用 Flexbox 布局 */
   justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
+  align-items:flex-start; /* 垂直居中 */
   z-index: 9;
 }
 .juanzhou-container2 {
@@ -171,22 +171,22 @@ export default {
 }
 .txt1 {
   position: absolute;
-  top: 42vh;
+  top: calc(36vh + 55px);
   left: 42vw;
 }
 .txt2 {
   position: absolute;
-  top: 41vh;
+  top: calc(36vh + 40px);
   left: 47vw;
 }
 .txt3 {
   position: absolute;
-  top: 43vh;
+  top: calc(36vh + 55px);
   left: 52vw;
 }
 .txt4 {
   position: absolute;
-  top: 46vh;
+  top: calc(36vh + 80px);
   left: 55vw;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="title2">
-    <img src="@/assets/introduction/title2.svg" class="image" />
+    <img src="@/assets/introduction/circle.svg" class="image" />
   </div>
   <div class="Shijing1" ><a>汉语韵律之美</a></div>
 
@@ -100,13 +100,24 @@ export default {
   left: 10vw;
   width: 15vw;
   height: 50vh;
-  transform: scaleX(1) scaleY(1.2); /* 水平缩放50%，垂直缩放70% */
+  transform: scaleX(1) scaleY(1); /* 水平缩放50%，垂直缩放70% */
 }
 .Shijing1 {
     position: absolute;
       z-index: 999;
       top: 158.5vh;
       left: 16vw;
+      display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+    align-items: center; /* 垂直居中文本 */
+    justify-content: center; /* 水平居中文本 */
+    background-image: linear-gradient(
+      rgba(198, 145, 14, 1),
+      rgba(252, 237, 227, 0.1)
+    );
+    height: 200px;
+    width: 40px;
+    border-radius: 5px;
+    border: 2px solid #c6910e;
 }
 .Shijing1 a {
   writing-mode: vertical-lr;
