@@ -215,14 +215,33 @@ export default {
         .style("fill", "#e88149")
         .attr("rx", 8)
         .attr("ry", 8)
-        .style("opacity", 0.5);
+        .style("opacity", 0.1);
+
+        g.selectAll("rect2")
+          .data(words)
+          .enter()
+          .append("rect")
+          .attr("x", (d,i) => rectList[i%19].x)
+          .attr("y", (d,i) => rectList[i%19].y)
+          .attr("width", rectWidth)
+          .attr("height", rectHeight)
+          .style("fill", "#e88149")
+          .attr("rx", 8)
+          .attr("ry", 8)
+          .style("opacity", 0.5);
+
+          // 创建一个点击图层
+        const LayerClick = g.append("g");
 
       g.selectAll("text")
         .data(words)
         .enter()
         .append("text")
         .attr("cursor", "pointer")
-        .on("click", (event, d) => this.wordClicked(d.text))
+        .on("click", (event, d) => {
+          this.wordClicked(d.text);
+          drawRect(d);
+        })
         .attr("x", (d, i) => rectList[i].x + rectWidth / 2)
         .attr("y", (d, i) => rectList[i].y + rectHeight / 2)
         .style("font-size", (d) => 30 + "px")
@@ -231,6 +250,26 @@ export default {
         .attr("text-anchor", "middle")
         .attr("alignment-baseline", "middle")
         .text((d) => d.text);
+
+        function drawRect(dd){
+            const index = words.indexOf(dd)%19;
+            //console.log(dd);
+            LayerClick.selectAll("rect3").remove();
+            // LayerClick.selectAll("text2").remove();
+
+            LayerClick.selectAll("rect3")
+          .data([1])
+          .enter()
+          .append("rect")
+          .attr("x", (d,i) => rectList[index].x)
+          .attr("y", (d,i) => rectList[index].y)
+          .attr("width", rectWidth)
+          .attr("height", rectHeight)
+          .style("fill", "#e88149")
+          .attr("rx", 8)
+          .attr("ry", 8)
+          .style("opacity", 1);
+          }
     },
 
     getPosition() {

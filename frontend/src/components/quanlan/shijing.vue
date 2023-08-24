@@ -226,14 +226,31 @@ export default {
           .style("fill", "#e88149")
           .attr("rx", 8)
           .attr("ry", 8)
+          .style("opacity", 0.1);
+
+          g.selectAll("rect2")
+          .data(words)
+          .enter()
+          .append("rect")
+          .attr("x", (d,i) => rectList[i].x)
+          .attr("y", (d,i) => rectList[i].y)
+          .attr("width", rectWidth)
+          .attr("height", rectHeight)
+          .style("fill", "#e88149")
+          .attr("rx", 8)
+          .attr("ry", 8)
           .style("opacity", 0.5);
+
+          // 创建一个点击图层
+        const LayerClick = g.append("g");
   
         g.selectAll("text")
           .data(words)
           .enter()
           .append("text")
-          .on("click", (event, d) => {
+          .on("click", (event, d, i) => {
             this.getContent(d.text);
+            drawRect(d);
           })
           .attr("cursor", "pointer")
           .attr("x", (d,i) => rectList[i].x + rectWidth/2)
@@ -244,6 +261,39 @@ export default {
           .attr("text-anchor", "middle")
           .attr("alignment-baseline", "middle")
           .text((d) => d.text);
+
+          function drawRect(dd){
+            const index = words.indexOf(dd);
+            //console.log(dd);
+            LayerClick.selectAll("rect3").remove();
+
+            LayerClick.selectAll("rect3")
+          .data([1])
+          .enter()
+          .append("rect")
+          .attr("x", (d,i) => rectList[index].x)
+          .attr("y", (d,i) => rectList[index].y)
+          .attr("width", rectWidth)
+          .attr("height", rectHeight)
+          .style("fill", "#e88149")
+          .attr("rx", 8)
+          .attr("ry", 8)
+          .style("opacity", 1);
+
+          // LayerClick.selectAll("text2")
+          // .data([1])
+          // .enter()
+          // .append("text")
+          // .attr("cursor", "pointer")
+          // .attr("x", (d,i) => rectList[index].x + rectWidth/2)
+          // .attr("y", (d,i) => rectList[index].y + rectHeight/2)
+          // .style("font-size", (d) => 25 + "px")
+          // .style("font-family", "Impact")
+          // .style("fill", "white")
+          // .attr("text-anchor", "middle")
+          // .attr("alignment-baseline", "middle")
+          // .text(dd.text);
+          }
       },
 
       getPosition(){
