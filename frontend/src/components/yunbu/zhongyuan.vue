@@ -196,7 +196,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 * {
   /* 内外边距为0 */
   margin: 0;

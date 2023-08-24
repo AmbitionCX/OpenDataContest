@@ -158,14 +158,14 @@ export default {
   computed: {},
   methods: {
     increIndex(){
-      // this.index = (Number(this.index) + 1) % this.contentLenth;
-      this.a = this.a + 8;
-      this.b = this.b + 8;
+      this.a = ((this.a / 8) + 1) % Math.ceil(this.contentLenth / 8) * 8;
+      this.b = this.a + 8;
     },
     decreIndex(){
-      // this.index = (Number(this.index) - 1) % this.contentLenth;
-      this.a = this.a - 8;
-      this.b = this.b - 8;
+      this.a = (this.a / 8) - 1
+      if (this.a < 0) { this.a = this.a + Math.ceil(this.contentLenth / 8); }
+      this.a = this.a % Math.ceil(this.contentLenth / 8) * 8;
+      this.b = this.a + 8;
     },
     async getShijing() {
       return new Promise((resolve, reject) => {
@@ -344,7 +344,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 * {
     /* 内外边距为0 */
     margin: 0;

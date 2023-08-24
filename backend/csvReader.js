@@ -1,8 +1,7 @@
 const { parse } = require("csv-parse");
 const path = require('path');
 const fs = require("fs");
-var chineseConv = require('chinese-conv');
-const { log } = require("console");
+const chineseConv = require('chinese-conv');
 
 const shanggu_shijing_path = path.join(__dirname, '/rawData/shanggu-shijing.csv').toString();
 const zhonggu_guangyun_path = path.join(__dirname, '/rawData/zhonggu-guangyun.csv').toString();
@@ -49,6 +48,14 @@ const yunbu_deduplication = (arr, position) => {
     return uniques;
 }
 
+const is_empty_json = (jsonObj) => {
+    for (let key in jsonObj) {
+        if (jsonObj[key].length != 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
 // ------------ shijing ------------
 const get_shanggu_shijing = () => {
@@ -151,7 +158,6 @@ const shijing_search = (search_item) => {
                         } else {
                             one_poem.text = target[4].slice(0, -1);
                         }
-
                         search_results.push(one_poem);
                     }
                     resolve(search_results);
@@ -294,14 +300,21 @@ const guangyun_search = (params) => {
                     let selected_data = new Set();
                     let selected_shengniu = new Set();
 
-                    for (let key in search_item) {
-                        if (search_item[key].length != 0) {
-                            let index = Object.keys(search_item).indexOf(key);
-                            for (let value of search_item[key]) {
-                                let find_data = target_data.filter((element) => element[index + 1] == value);
-                                for (let item of find_data) {
-                                    selected_data.add(item);
-                                    selected_shengniu.add(item[2]);
+                    if (is_empty_json(search_item)) {
+                        for (let item of target_data) {
+                            selected_data.add(item);
+                            selected_shengniu.add(item[2]);
+                        }
+                    } else {
+                        for (let key in search_item) {
+                            if (search_item[key].length != 0) {
+                                let index = Object.keys(search_item).indexOf(key);
+                                for (let value of search_item[key]) {
+                                    let find_data = target_data.filter((element) => element[index + 1] == value);
+                                    for (let item of find_data) {
+                                        selected_data.add(item);
+                                        selected_shengniu.add(item[2]);
+                                    }
                                 }
                             }
                         }
@@ -425,14 +438,21 @@ const zhongyuan_search = (params) => {
                     let selected_data = new Set();
                     let selected_shengniu = new Set();
 
-                    for (let key in search_item) {
-                        if (search_item[key].length != 0) {
-                            let index = Object.keys(search_item).indexOf(key);
-                            for (let value of search_item[key]) {
-                                let find_data = target_data.filter((element) => element[index + 1] == value);
-                                for (let item of find_data) {
-                                    selected_data.add(item);
-                                    selected_shengniu.add(item[1]);
+                    if (is_empty_json(search_item)) {
+                        for (let item of target_data) {
+                            selected_data.add(item);
+                            selected_shengniu.add(item[1]);
+                        }
+                    } else {
+                        for (let key in search_item) {
+                            if (search_item[key].length != 0) {
+                                let index = Object.keys(search_item).indexOf(key);
+                                for (let value of search_item[key]) {
+                                    let find_data = target_data.filter((element) => element[index + 1] == value);
+                                    for (let item of find_data) {
+                                        selected_data.add(item);
+                                        selected_shengniu.add(item[1]);
+                                    }
                                 }
                             }
                         }
@@ -626,6 +646,31 @@ const get_yunjiaozi = (link) => {
                         }
                     }
                     resolve(Array.from(yunjiaozi));
+                }
+            })
+        })
+    })
+}
+
+const yunjiaozi_counter = () => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(zhonggu_guangyun_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let yunjiaozi = getColumns(rows, [1]);
+                    // let yunjiaozi_dedupicate = new Set();
+                    let yunjiaozi_array = [];
+
+                    for (let item of yunjiaozi) {
+                        if (item[0].length == 1) {
+                            // yunjiaozi_dedupicate.add(item[0]);
+                            yunjiaozi_array.push(item[0])
+                        }
+                    }
+                    console.log(yunjiaozi_array.length);
+                    // console.log(Array.from(yunjiaozi_dedupicate).length);
                 }
             })
         })
