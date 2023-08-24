@@ -53,11 +53,7 @@ export default {
   data() {
     return {
       width: 850,
-<<<<<<< Updated upstream
       height: 700,
-=======
-      height: 750,
->>>>>>> Stashed changes
       sankeyData: {},
       selectedOption: null,
       yunbu: [],
@@ -69,11 +65,7 @@ export default {
   },
   mounted() {
     this.getYunbu();
-<<<<<<< Updated upstream
     this.getData("上古：東");
-=======
-    this.getData("上古：幽")
->>>>>>> Stashed changes
   },
   methods: {
     // handleOptionChange() {
@@ -318,7 +310,7 @@ export default {
           return d.name.substring(3);
         });
 
-        // 添加节点标签
+      // 添加节点标签
       svg.append('g')
         .selectAll('.text')
         .data(sankeyNodes)
@@ -326,16 +318,22 @@ export default {
         .attr('class', 'text')
         .attr('x', d => (d.x0 + d.x1) / 2)
         .attr('y', 0)
-        .attr('dy', '0.35em')
-        // .attr('dx', '10px')
-        .style('fill', 'black')
+        .attr('dy', -15)
+        .attr('fill', (d, i) => {
+          let pre_text = "empty";
+          if (i != 0) {
+            pre_text = sankeyNodes[i - 1].name
+          }
+          if (d.name.substring(0, 3) != pre_text.substring(0, 3)) {
+            return 'black';
+          } else { return 'transparent'; }
+        })
         .attr('text-anchor', 'middle')
         .text(function (d) {
-          //console.log(d);
           return d.name.substring(0, 3);
         });
     },
-    
+
     //跳转到新的页面，展开卷轴
     getJuanzhou(node) {
       const queryObject = {
@@ -459,16 +457,8 @@ export default {
 .choose-title {
   width: 320px;
   height: 45px;
-<<<<<<< Updated upstream
-  background-image: linear-gradient(
-    rgba(156, 175, 49, 1),
-    rgba(249, 245, 242, 1)
-  );
-=======
-  background-image: linear-gradient(to left,
-      rgba(252, 237, 227, 1),
-      rgba(193, 165, 48, 1));
->>>>>>> Stashed changes
+  background-image: linear-gradient(rgba(156, 175, 49, 1),
+      rgba(249, 245, 242, 1));
   border-radius: 5px;
   display: flex;
   /* 使用 Flex 布局，可以根据需要进行调整 */
@@ -499,12 +489,7 @@ export default {
 }
 
 .hover-item:hover {
-<<<<<<< Updated upstream
-  background-color: rgba(156, 175, 49, 0.3); /* 设置悬浮时的背景颜色 */
+  background-color: rgba(156, 175, 49, 0.3);
+  /* 设置悬浮时的背景颜色 */
 }
 </style>
-=======
-  background-color: rgba(193, 165, 48, 0.3);
-  /* 设置悬浮时的背景颜色 */
-}</style>
->>>>>>> Stashed changes
