@@ -33,11 +33,11 @@
             <img src="@/assets/introduction/btn1.svg" class="image"/>
         </div>
 
-        <div class="btn1">
+        <div class="btn1" @click="pic11=!pic11, pic12=!pic12, pic21=!pic21, pic22=!pic22">
             <img src="@/assets/introduction/btn2.svg" class="image"/>
         </div>
 
-        <div class="btn3">
+        <div class="btn3" @click="pic33=!pic33, pic32=!pic32, pic23=!pic23, pic22=!pic22">
             <img src="@/assets/introduction/btn2.svg" class="image"/>
         </div>
   
@@ -55,19 +55,25 @@
   
         <div class="pic1-container">
   <div class="pic1">
-      <img src="@/assets/introduction/pic1.png" class="image"/>
+      <img src="@/assets/introduction/pic1.png" class="image" v-show="pic11"/>
+      <img src="@/assets/introduction/pic2.png" class="image" v-show="pic21"/>
+      <img src="@/assets/introduction/pic3.png" class="image" v-show="pic31"/>
   </div>
 </div>
 
 <div class="pic2-container">
   <div class="pic2">
-      <img src="@/assets/introduction/pic2.png" class="image"/>
+    <img src="@/assets/introduction/pic1.png" class="image" v-show="pic12"/>
+      <img src="@/assets/introduction/pic2.png" class="image" v-show="pic22"/>
+      <img src="@/assets/introduction/pic3.png" class="image" v-show="pic32"/>
   </div>
 </div>
 
 <div class="pic3-container">
   <div class="pic3">
-      <img src="@/assets/introduction/pic3.png" class="image"/>
+    <img src="@/assets/introduction/pic1.png" class="image" v-show="pic13"/>
+      <img src="@/assets/introduction/pic2.png" class="image" v-show="pic23"/>
+      <img src="@/assets/introduction/pic3.png" class="image" v-show="pic33"/>
   </div>
 </div>
   
@@ -93,6 +99,15 @@
     data() {
       return {
         titleTxt : '古汉语典籍韵部流变',
+        pic11:true,
+        pic21:false,
+        pic31:false,
+        pic12:false,
+        pic22:true,
+        pic32:false,
+        pic13:false,
+        pic23:false,
+        pic33:true,
       };
     },
     components:{
@@ -243,6 +258,7 @@
     left: 49vw;
     width: 2vw;
     height: 2vw;
+    cursor: pointer;
   }
   .btn1 {
     position: absolute;
@@ -251,6 +267,7 @@
     left: 25vw;
     width: 2vw;
     height: 2vw;
+    cursor: pointer;
   }
   .btn3 {
     position: absolute;
@@ -259,6 +276,7 @@
     left: 73vw;
     width: 2vw;
     height: 2vw;
+    cursor: pointer;
   }
   .rect1 {
     position: absolute;
@@ -298,7 +316,7 @@ display: flex; /* 使用 Flexbox 布局 */
 .pic1 {
 position: absolute;
 z-index: 9;
-transform: scaleX(0.4) scaleY(0.6); /* 水平缩放50%，垂直缩放70% */
+transform: scaleX(0.8) scaleY(0.9); /* 水平缩放50%，垂直缩放70% */
 }
 .pic2-container {
 position: absolute;
@@ -314,7 +332,7 @@ display: flex; /* 使用 Flexbox 布局 */
 .pic2 {
 position: absolute;
 z-index: 9;
-transform: scaleX(1) scaleY(0.98); /* 水平缩放50%，垂直缩放70% */
+transform: scaleX(0.8) scaleY(0.98); /* 水平缩放50%，垂直缩放70% */
 }
 .pic3-container {
 position: absolute;
@@ -330,7 +348,7 @@ display: flex; /* 使用 Flexbox 布局 */
 .pic3 {
 position: absolute;
 z-index: 9;
-transform: scaleX(0.6) scaleY(0.95); /* 水平缩放50%，垂直缩放70% */
+transform: scaleX(1) scaleY(0.85); /* 水平缩放50%，垂直缩放70% */
 }
   .title-container {
     display: flex;

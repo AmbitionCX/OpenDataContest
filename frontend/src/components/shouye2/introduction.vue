@@ -19,7 +19,15 @@
       <div class="txt10-container"></div>
   <div class="txt11">
     <p>&nbsp; &nbsp; &nbsp; 党的二十大报告强调：“增强中华文明传播力、影响力。坚守中华文化立场，提炼展示中华文明的精神标识和文化精髓，加快构建中国话语和中国叙事体系，讲好中国故事、传播好中国声音，展现可信、可爱、可敬的中国形象。”</p>
-    <p>&nbsp; &nbsp; &nbsp; 本项目“文藻声韵—古汉语典籍韵部流变系统”——让书写在古籍里的文字活起来，架起与古代圣贤跨时空对话的桥梁。这座桥梁汇聚了先贤的智慧，即使汉语的发音历经巨变，我们仍能通过挖掘古籍的文本，寻找中华文明精神的源流。</p>
+    <p>&nbsp; &nbsp; &nbsp; 本项目“文藻声韵—古汉语典籍韵部流变系统”，打破音韵学为“口耳之学”的局限性，调动视觉感受，让汉语语音的发展与传承过程鲜活灵动起来，探索汉语历史发展的魅力。本项目旨在通过语音流变系统链汇古今，探索古籍的内在文化价值。以中国古籍为依托，致力于“讲好中国故事”。</p>
+    <br><p>数据来源：</p>
+    <p>上海图书馆古籍库</p>
+    <p>搜韵网-诗词数据、古籍图片</p>
+    <p>古音小镜-《诗经》韵部数据</p>
+    <p>韵典网-汉语音韵地位</p>
+    <p>Artlib世界艺术鉴赏库-部分图片</p>
+    <br><p>参考资料：</p>
+    <p>王力《汉语史稿》《诗经韵读》《汉语语音史》</p>
   </div>
 
   <div class="bottom1">
@@ -138,7 +146,7 @@ import axios from 'axios';
   top: 80vh;
   left: 5vw;
   width: 90vw;
-  height: 600vh;
+  height: 630vh;
   background-color: white;
 }
 .quanlan {
@@ -155,27 +163,27 @@ import axios from 'axios';
   top: 650vh;
   left: 15vw;
  width: 70vw;
-  height: 40vh;
+  height: 50vh;
   text-align: left;
 }
 .bottom1 {
   position: absolute;
   z-index: 99;
-  top: 650vh;
+  top: 680vh;
   left: 5vw;
   width: 90vw;
 }
 .bottom2 {
   position: absolute;
   z-index: 99;
-  top: 675vh;
+  top: 705vh;
   left: 0vw;
   width: 100vw;
 }
 .bottom-txt {
   position: absolute;
   z-index: 99999;
-  top: 695vh;
+  top: 725vh;
   left: 0vw;
   width: 100vw;
   display: flex;

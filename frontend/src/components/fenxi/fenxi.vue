@@ -8,12 +8,22 @@
 
     <div class="intro">
       <div class="intro1">文字简介:</div>
-      <div class="rect1"></div>
+      <div class="rect1">
+        <p>本韵部流变系统通过探究上古、中古、近代三个历史时期的汉语语音信息，可视化再现汉语语音传承与发展的历史图景。点击韵部，可以探寻古汉语在三个时代的流变关系。</p>
+      </div>
     </div>
 
-    <el-select v-model="selectedOption" class="choose" placeholder="请选择上古韵部" @change="handleOptionChange">
+    <!-- <el-select v-model="selectedOption" class="choose" placeholder="请选择上古韵部" @change="handleOptionChange">
       <el-option v-for="item in yunbu" :key="item.value" :label="item.label" :value="item.value" />
-    </el-select>
+    </el-select> -->
+
+    <div class="choose">
+      <div class="choose-title"><a>请选择上古韵部</a></div>
+      <ul class="choose-content">
+        <li v-for="item in yunbu" class="hover-item"
+        @click="handleOptionChange(item.value)">&nbsp; &nbsp; {{ item.label }}</li>
+      </ul>
+    </div>
 
     <div class="sankey-chart">
       <div class="scrollable-content" ref="scrollable">
@@ -57,12 +67,16 @@ export default {
     this.getYunbu();
   },
   methods: {
-    handleOptionChange() {
-      // 调用您的函数，并将选中的选项作为参数传递
-      if (this.selectedOption) {
-        console.log(this.selectedOption);
-        this.getData("上古：" + this.selectedOption);
-      }
+    // handleOptionChange() {
+    //   // 调用您的函数，并将选中的选项作为参数传递
+    //   if (this.selectedOption) {
+    //     console.log(this.selectedOption);
+    //     this.getData("上古：" + this.selectedOption);
+    //   }
+    // },
+
+    handleOptionChange(item) {
+        this.getData("上古：" + item);
     },
 
     async getYunbu() {
@@ -366,8 +380,15 @@ export default {
   width: 320px;
   background-color: #dedede;
   border-radius: 10px;
+  display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: left; /* 水平居中文本 */
+  padding-left: 10px;
+  padding-right: 10px;
 }
-
+.rect1 p {
+  text-align: left;
+}
 .sankey-chart {
   display: flex;
   position: fixed;
@@ -392,11 +413,43 @@ export default {
   width: 70vw;
   overflow: auto;
 }
-
 .choose {
   display: flex;
+  flex-direction: column;
   position: fixed;
   top: 50vh;
   left: 50px;
+}
+.choose-title {
+  width: 320px;
+  height: 45px;
+  background-image: linear-gradient(
+    to left,
+    rgba(252, 237, 227, 1),
+    rgba(193, 165, 48, 1)
+  );
+  border-radius: 5px;
+      display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center; /* 垂直居中文本 */
+  justify-content: left; /* 水平居中文本 */
+  padding-left: 20px;
+}
+.choose-title a {
+  color: #000;
+  font-size: 20px;
+}
+.choose-content {
+  border: 2px solid #c1a530;
+  background-color: #f9f5f2;
+  width: inherit;
+  height: 40vh;
+  overflow: auto;
+  text-align: left;
+}
+.hover-item {
+  cursor: pointer; /* 将鼠标指针设置为手指形状 */
+}
+.hover-item:hover {
+  background-color: rgba(193, 165, 48, 0.3); /* 设置悬浮时的背景颜色 */
 }
 </style>

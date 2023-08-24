@@ -4,14 +4,24 @@
     <navbar3></navbar3>
   </div>
 
-  <div style="position: fixed; top: 80px; right: 100px">
+  <div style="position: fixed; top: 23vh; left: 11vw">
     <img
       src="@/assets/fenxi/rect.svg"
       class="image"
-      style="width: 50px; height: 100px"
+      style="width: 13vw"
     />
-    <p style="writing-mode: vertical-lr; transform: translate(13px, -80px);">
-      {{ yunbu.source[yunbu.source.length-1] }} 部</p>
+  </div>
+
+  <div class="yunbu-txt">
+    <p>{{ yunbu.source[yunbu.source.length-1] }} 部</p>
+  </div>
+
+  <div style="position: fixed; z-index: 999; top: 23vh; left: 6vw; cursor: pointer;"   @click="BackToLastWeb">
+    <img
+      src="@/assets/fenxi/back.svg"
+      class="image"
+      style="width: 3.2vw; "
+    />
   </div>
 
   <div style="position: fixed; top: 0; left: 0; z-index: -1;">
@@ -43,23 +53,6 @@ export default {
     return {
       yunbu: this.$route.params,
       yunjiao: [],
-      // yunjiao: [
-      //   "思",
-      //   "佩",
-      //   "鯉",
-      //   "子",
-      //   "已",
-      //   "矣",
-      //   "梅",
-      //   "絲",
-      //   "絲",
-      //   "騏",
-      //   "耜",
-      //   "趾",
-      //   "子",
-      //   "畝",
-      //   "喜",
-      // ],
     };
   },
   mounted() {
@@ -71,10 +64,11 @@ export default {
       const svg = d3
         .select(this.$refs.svg)
         .attr("width", 1200)
-        .attr("height", 700);
+        .attr("height", 300)
+        .attr("transform", "translate(0,200)");
 
         const layout = cloud() // You might need to adjust this based on the actual library you're using
-      .size([1000, 600])
+      .size([1000, 300])
       .words(yunjiao.map(function(d) {
         return {text: d, size: Math.random() * 60 + 10};
       }))
@@ -90,7 +84,7 @@ export default {
     draw(yunjiao) {
       const svg = d3.select(this.$refs.svg);
       svg.selectAll("g").remove();
-      const g = svg.append("g").attr("transform", "translate(600,380)");
+      const g = svg.append("g").attr("transform", "translate(600,150)");
 
       g.selectAll("text")
         .data(yunjiao)
@@ -125,6 +119,10 @@ export default {
         console.error("Error sending clicked word to the backend:", error);
       }
     },
+
+    BackToLastWeb(){
+      window.location.href = `/fenxi`; 
+    },
   },
 };
 </script>
@@ -139,10 +137,32 @@ export default {
 }
 .txt1 {
   position: fixed;
-  top: 220px;
-  left: 1vw;
+  top: 40vh;
+  left: 1.5vw;
   font-size: 25px;
   writing-mode: vertical-lr;
+  /* background-color: antiquewhite; */
+}
+.ciyun {
+  position: fixed;
+  top: 10vh;
+  left: 5vw;
+  height: 20vh;
+  width: 90vw;
+}
+.yunbu-txt {
+  position: fixed; 
+  top: 23.5vh; 
+  left: 12vw;
+  width: 13vw;
+  height: 4.5vh;
+  /* background-color: bisque; */
+  text-align: left;
+  font-size: 20px;
+  padding-left: 20px;
+}
+.yunbu-txt p{
+
 }
 </style>
   
