@@ -20,8 +20,8 @@
     <div class="choose">
       <div class="choose-title"><a>请选择上古韵部</a></div>
       <ul class="choose-content">
-        <li v-for="item in yunbu" class="hover-item"
-        @click="handleOptionChange(item.value)">&nbsp; &nbsp; {{ item.label }}</li>
+        <li v-for="item in yunbu" class="hover-item" @click="handleOptionChange(item.value)">&nbsp; &nbsp; {{ item.label
+        }}</li>
       </ul>
     </div>
 
@@ -53,7 +53,11 @@ export default {
   data() {
     return {
       width: 850,
+<<<<<<< Updated upstream
       height: 700,
+=======
+      height: 750,
+>>>>>>> Stashed changes
       sankeyData: {},
       selectedOption: null,
       yunbu: [],
@@ -65,7 +69,11 @@ export default {
   },
   mounted() {
     this.getYunbu();
+<<<<<<< Updated upstream
     this.getData("上古：東");
+=======
+    this.getData("上古：幽")
+>>>>>>> Stashed changes
   },
   methods: {
     // handleOptionChange() {
@@ -77,7 +85,7 @@ export default {
     // },
 
     handleOptionChange(item) {
-        this.getData("上古：" + item);
+      this.getData("上古：" + item);
     },
 
     async getYunbu() {
@@ -213,6 +221,7 @@ export default {
       const convertedLinks = mapNodes(links, nodes);
 
       const svg = d3.select(this.$refs.svgContainer);
+      svg.style("overflow", "visible");
 
       svg.style("transform", "translateY(50px)");
 
@@ -220,7 +229,7 @@ export default {
         .sankey()
         .nodeWidth(20)
         .nodePadding(10)
-        .size([this.width - 100, this.height - 50]);
+        .size([this.width - 100, this.height - 100]);
 
       const { nodes: sankeyNodes, links: sankeyLinks } = sankey({
         nodes,
@@ -272,7 +281,7 @@ export default {
           d3.select(this).style("stroke", "#dedede"); // 鼠标离开时恢复链接颜色为黑色
           svg.selectAll("textPath").remove();
         });
-        
+
       const yunbu_data = ["上古：東", "上古：歌", "上古：陽", "上古：文", "上古：侯", "上古：緝", "上古：覺", "上古：侵", "上古：談", "上古：微", "上古：耕", "上古：屋", "上古：物", "上古：錫", "上古：宵", "上古：藥", "上古：葉", "上古：幽", "上古：魚", "上古：元", "上古：月", "上古：真", "上古：蒸", "上古：之", "上古：支", "上古：脂", "上古：職", "上古：質", "上古：鐸", "中古：登", "中古：冬", "中古：東", "中古：廢", "中古：凡", "中古：歌", "中古：庚", "中古：耕", "中古：夬", "中古：咍", "中古：寒", "中古：豪", "中古：痕", "中古：侯", "中古：灰", "中古：魂", "中古：祭A", "中古：祭B", "中古：佳", "中古：江", "中古：皆", "中古：麻", "中古：模", "中古：齊", "中古：侵A", "中古：侵B", "中古：青", "中古：清A", "中古：清B", "中古：山", "中古：刪", "中古：泰", "中古：覃", "中古：談", "中古：唐", "中古：添", "中古：微", "中古：文", "中古：仙A", "中古：仙B", "中古：先", "中古：咸", "中古：銜", "中古：宵A", "中古：宵B", "中古：蕭", "中古：欣", "中古：嚴", "中古：鹽A", "中古：鹽B", "中古：陽", "中古：肴", "中古：幽", "中古：尤", "中古：魚", "中古：虞", "中古：元", "中古：真A", "中古：真B", "中古：臻", "中古：蒸", "中古：之", "中古：支A", "中古：支B", "中古：脂A", "中古：脂B", "中古：鍾", "近代：東鍾", "近代：歌戈", "近代：江陽", "近代：真文", "近代：尤侯", "近代：家麻", "近代：侵尋", "近代：監咸", "近代：齊微", "近代：庚青", "近代：皆來", "近代：蕭豪", "近代：廉纖", "近代：車遮", "近代：魚模", "近代：先天", "近代：寒山", "近代：桓歡", "近代：支思"];
       const color_data = ["B23434", "D14E34", "E5901F", "D8BA27", "D6DB0E", "A6CE51", "81AF45", "4B9B35", "3DA568", "2E9387", "1FA0AA", "13B6E2", "1E96E0", "1F76DD", "345AC6", "6767DB", "8B71D3", "9E6AC6", "9A46AF", "C679B8", "AA3992", "CC1772", "93526D", "7B517C", "583E8C", "4E6B93", "508182", "3E6D4C", "9B7A26", "CE7C7C", "E97E6B", "B23434", "F9D4A7", "F0DA76", "D14E34", "EFEF7D", "1FA0AA", "DEFF8F", "C1E38C", "66BF49", "345AC6", "4FA038", "D6DB0E", "4FBEAF", "57BEC4", "BFD7DD", "5DC4E0", "A0CDF9", "92B1F4", "ACACFC", "B6A5EB", "BBA1D1", "D18EE1", "F9BBF0", "DB93CF", "1F76DD", "B35AA1", "AE4798", "C193A7", "D090D3", "B4A2DD", "7EB8F2", "3DA568", "AED6D6", "77A483", "2E9387", "D8BA27", "C7AC6C", "AE8F44", "A1CACA", "74A9DF", "587AA6", "9A85C6", "725AA3", "B48096", "DB4E96", "B0509C", "8B71D3", "9780DA", "E5901F", "C17AD3", "9E6AC6", "B493CE", "9A46AF", "A38EE1", "C679B8", "CC1772", "D8438F", "78A5A6", "93526D", "7B517C", "583E8C", "75B0F0", "4E6B93", "618AB9", "C35F5F", "B23434", "D14E34", "E5901F", "D8BA27", "D6DB0E", "81AF45", "4B9B35", "3DA568", "2E9387", "1FA0AA", "1F76DD", "345AC6", "6767DB", "8B71D3", "9A46AF", "C679B8", "AA3992", "CC1772", "7B517C"]
       const colorScale = d3.scaleOrdinal().domain(yunbu_data).range(color_data);
@@ -400,15 +409,20 @@ export default {
   width: 320px;
   background-color: #dedede;
   border-radius: 10px;
-  display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
-  align-items: center; /* 垂直居中文本 */
-  justify-content: left; /* 水平居中文本 */
+  display: flex;
+  /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center;
+  /* 垂直居中文本 */
+  justify-content: left;
+  /* 水平居中文本 */
   padding-left: 10px;
   padding-right: 10px;
 }
+
 .rect1 p {
   text-align: left;
 }
+
 .sankey-chart {
   display: flex;
   position: fixed;
@@ -433,6 +447,7 @@ export default {
   width: 70vw;
   overflow: auto;
 }
+
 .choose {
   display: flex;
   flex-direction: column;
@@ -440,23 +455,35 @@ export default {
   top: 50vh;
   left: 50px;
 }
+
 .choose-title {
   width: 320px;
   height: 45px;
+<<<<<<< Updated upstream
   background-image: linear-gradient(
     rgba(156, 175, 49, 1),
     rgba(249, 245, 242, 1)
   );
+=======
+  background-image: linear-gradient(to left,
+      rgba(252, 237, 227, 1),
+      rgba(193, 165, 48, 1));
+>>>>>>> Stashed changes
   border-radius: 5px;
-      display: flex; /* 使用 Flex 布局，可以根据需要进行调整 */
-  align-items: center; /* 垂直居中文本 */
-  justify-content: left; /* 水平居中文本 */
+  display: flex;
+  /* 使用 Flex 布局，可以根据需要进行调整 */
+  align-items: center;
+  /* 垂直居中文本 */
+  justify-content: left;
+  /* 水平居中文本 */
   padding-left: 20px;
 }
+
 .choose-title a {
   color: #000;
   font-size: 20px;
 }
+
 .choose-content {
   border: 2px solid #9CAF31;
   background-color: #f9f5f2;
@@ -465,10 +492,19 @@ export default {
   overflow: auto;
   text-align: left;
 }
+
 .hover-item {
-  cursor: pointer; /* 将鼠标指针设置为手指形状 */
+  cursor: pointer;
+  /* 将鼠标指针设置为手指形状 */
 }
+
 .hover-item:hover {
+<<<<<<< Updated upstream
   background-color: rgba(156, 175, 49, 0.3); /* 设置悬浮时的背景颜色 */
 }
 </style>
+=======
+  background-color: rgba(193, 165, 48, 0.3);
+  /* 设置悬浮时的背景颜色 */
+}</style>
+>>>>>>> Stashed changes
