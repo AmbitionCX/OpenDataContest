@@ -1,7 +1,7 @@
 <template>
   <div class="menu1">
     <div class="ll">
-      <img src="@/assets/navbar/pic31.svg" class="image" />
+      <img src="@/assets/navbar/pic31.svg" class="image"  style="width: 1.5vw;"/>
     </div>
   </div>
 
@@ -31,9 +31,9 @@
 /* 方框 */
 .menu1 {
   position: fixed;
-  top: 7vh;
+  top: calc(5vh + 10px);
   left: 73vw;
-  height: 100px;
+  height: 30px;
   width: 23vw;
   background-color: #9CAF31;
   display: flex;
@@ -42,20 +42,20 @@
 .ll {
 position: fixed;
   top: 0;
-  left: 73vw;
+  left: 83vw;
 }
 .image{
   width: 8%;
 }
 .sui{
   position: fixed;
-  top: calc(7vh + 110px);
+  top: calc(5vh + 60px);
   left: 73vw;
 }
 .xing{
   position: fixed;
   top: 5vh;
-  left: 41.5vw;
+  left: 40.5vw;
 }
 </style>
     

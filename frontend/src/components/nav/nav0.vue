@@ -31,7 +31,7 @@
   /* 方框 */
   .menu1 {
     position: fixed;
-    top: 7vh;
+    top: calc(5vh + 10px);
     left: 4vw;
     height: 100px;
     width: 23vw;

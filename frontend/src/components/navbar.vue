@@ -106,9 +106,9 @@ export default {
   background-color: #9b928c;
   display: flex;
   width: 92vw;
-  height: 100px;
+  height: 30px;
   position: fixed;
-  top: 7vh;
+  top: calc(5vh + 10px);
   left: 4vw;
   /* 上|右|下|左 */
   padding: 10px 0 10px 0;
@@ -119,10 +119,11 @@ export default {
   gap: 18vw;
   width: 100vw;
   position: fixed;
-  top: 85px;
+  top: calc(5vh + 10px);
+  font-size: 20px;
   /* left: 100px; */
   /* 上|右|下|左 */
-  padding: 10px 0 10px 0;
+  padding: 5px 0 5px 0;
   justify-content: center;
   z-index: 99;
 }

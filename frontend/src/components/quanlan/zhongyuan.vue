@@ -20,7 +20,7 @@
     <div class="mainBox">
       <div class="leftBox">
         <div class="image-container">
-        <img :src="picUrl" />
+        <img :src="picUrl" style="width: 30vw;"/>
       </div>
       <div class="tu-txt">词云链图</div>
       </div>

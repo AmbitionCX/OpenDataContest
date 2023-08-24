@@ -31,7 +31,7 @@
   /* 方框 */
   .menu1 {
     position: fixed;
-    top: 7vh;
+    top: calc(5vh + 10px);
     left: 73vw;
     height: 100px;
     width: 23vw;
@@ -55,7 +55,7 @@
   .xing{
     position: fixed;
     top: 5vh;
-    left: 41.5vw;
+    left: 40.5vw;
   }
   </style>
       

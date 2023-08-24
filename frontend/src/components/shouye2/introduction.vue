@@ -1,7 +1,7 @@
 <template>
   <div class="bg" style="background-color: #f9f5f2;">
     <div class="nav1">
-      <navbar0></navbar0>
+      <navbar></navbar>
     </div>
 
     <div class="header">首 页</div>

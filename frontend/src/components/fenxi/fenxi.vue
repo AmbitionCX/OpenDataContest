@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       width: 850,
-      height: 650,
+      height: 700,
       sankeyData: {},
       selectedOption: null,
       yunbu: [],
@@ -65,6 +65,7 @@ export default {
   },
   mounted() {
     this.getYunbu();
+    this.getData("上古：東");
   },
   methods: {
     // handleOptionChange() {
@@ -213,6 +214,8 @@ export default {
 
       const svg = d3.select(this.$refs.svgContainer);
 
+      svg.style("transform", "translateY(50px)");
+
       const sankey = d3Sankey
         .sankey()
         .nodeWidth(20)
@@ -298,14 +301,32 @@ export default {
         .attr('x', d => (d.x0 + d.x1) / 2)
         .attr('y', d => (d.y0 + d.y1) / 2)
         .attr('dy', '0.35em')
-        .attr('dx', '50px')
+        // .attr('dx', '10px')
+        .style('fill', 'black')
         .attr('text-anchor', 'middle')
         .text(function (d) {
           //console.log(d);
-          return d.name;
+          return d.name.substring(3);
+        });
+
+        // 添加节点标签
+      svg.append('g')
+        .selectAll('.text')
+        .data(sankeyNodes)
+        .enter().append('text')
+        .attr('class', 'text')
+        .attr('x', d => (d.x0 + d.x1) / 2)
+        .attr('y', 0)
+        .attr('dy', '0.35em')
+        // .attr('dx', '10px')
+        .style('fill', 'black')
+        .attr('text-anchor', 'middle')
+        .text(function (d) {
+          //console.log(d);
+          return d.name.substring(0, 3);
         });
     },
-
+    
     //跳转到新的页面，展开卷轴
     getJuanzhou(node) {
       const queryObject = {

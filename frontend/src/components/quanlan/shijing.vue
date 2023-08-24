@@ -515,7 +515,7 @@ justify-content: center; /* 水平居中文本 */
   width: inherit;
   height: 530px;
   overflow: auto;
-  /* text-align: left; */
+  text-align: left;
 }
 .choose-content::-webkit-scrollbar-thumb {
   background-color: red; /* 设置滚动条滑块颜色 */
