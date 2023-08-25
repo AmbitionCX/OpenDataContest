@@ -41,8 +41,12 @@
         {{ char }}
       </div>
     </div> -->
-    <div class="contentlenth">符合条件的韵脚字数：{{ contentLenth }}</div>
-    <div class="totallenth">韵脚总字数：{{ yunjiao[Index].length }}</div>
+    <div class="contentlenth">
+      <div class="pie-rect"></div>
+      <p>符合条件的</p>
+      <p>韵脚字数：{{ contentLenth }}</p>
+    </div>
+    <div class="totallenth">韵脚总字数：{{ totalLenth }}</div>
 
     <zyoptions :message="yb[Index]" @messageEmitted="handleMessageFromChild"></zyoptions>
 
@@ -68,6 +72,7 @@ export default {
       gap: 10, // Gap between each circle
       anglePerCharacter: 8, // Adjust the angle per character to control the spiral density
       contentLenth: 0,
+      totalLenth: 0,
     };
   },
   components: {
@@ -119,23 +124,11 @@ export default {
       });
     },
 
-    async getYunjiaoLength(){
-      const response = await axios.post(
-            this.$globalUrl + "/zhongyuan_yunbu_counter",
-            {
-              params: {
-                yunbu: this.yb[this.Index],
-              },
-            }
-          );
-          console.log("Backend response:", response.data.data);
-    },
-
     drawPieChart() {
       console.log('try',this.contentLenth);
       const data = [
         { label: 'aa', value: this.contentLenth },
-        { label: 'bb', value: this.yunjiao[this.Index].length-this.contentLenth },
+        { label: 'bb', value: this.totalLenth-this.contentLenth },
       ];
 
       const width = 0.15 * window.innerWidth;
@@ -174,7 +167,8 @@ export default {
 
     handleMessageFromChild(message) {
       console.log('success',message);
-      this.contentLenth = message;
+      this.contentLenth = message[0];
+      this.totalLenth = message[1];
       this.drawPieChart();
     },
 
@@ -199,7 +193,6 @@ export default {
     },
   },
   created() {
-    this.getYunjiaoLength();
     this.getShijing();
   },
   mounted() {
@@ -358,6 +351,14 @@ export default {
   position: fixed;
   top: calc(28vh + 280px);
   left: 60px;
+}
+.pie-rect {
+  position: fixed;
+  top: calc(28vh + 285px);
+  left: 50px;
+  height: 15px;
+  width: 15px;
+  background-color: #F9D4A7;
 }
 .totallenth {
   position: fixed;

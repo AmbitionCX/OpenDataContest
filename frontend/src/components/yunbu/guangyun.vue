@@ -31,8 +31,12 @@
       <span class="yunbu">{{ yb[Index] }}</span>
     </div>
 
-    <div class="contentlenth">符合条件的韵脚字数：{{ contentLenth }}</div>
-    <div class="totallenth">韵脚总字数：148</div>
+    <div class="contentlenth">
+      <div class="pie-rect"></div>
+      <p>符合条件的</p>
+      <p>韵脚字数：{{ contentLenth }}</p>
+    </div>
+    <div class="totallenth">韵脚总字数：{{ totalLenth }}</div>
 
     <gyoptions :message="yb[Index]" @messageEmitted="handleMessageFromChild"></gyoptions>
 
@@ -59,6 +63,7 @@ export default {
       gap: 10, // Gap between each circle
       anglePerCharacter: 8, // Adjust the angle per character to control the spiral density
       contentLenth: 0,
+      totalLenth: 0,
     };
   },
   components: {
@@ -114,7 +119,7 @@ export default {
       console.log('try',this.contentLenth);
       const data = [
         { label: 'aa', value: this.contentLenth },
-        { label: 'bb', value: 148-this.contentLenth },
+        { label: 'bb', value: this.totalLenth-this.contentLenth },
       ];
 
       const width = 0.15 * window.innerWidth;
@@ -154,7 +159,8 @@ export default {
 
     handleMessageFromChild(message) {
       console.log('success',message);
-      this.contentLenth = message;
+      this.contentLenth = message[0];
+      this.totalLenth = message[1];
       this.drawPieChart();
     },
 
@@ -337,6 +343,14 @@ export default {
   position: fixed;
   top: calc(28vh + 280px);
   left: 60px;
+}
+.pie-rect {
+  position: fixed;
+  top: calc(28vh + 285px);
+  left: 50px;
+  height: 15px;
+  width: 15px;
+  background-color: #F9D4A7;
 }
 .totallenth {
   position: fixed;

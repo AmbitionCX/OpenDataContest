@@ -136,13 +136,14 @@ export default {
             }
           );
           console.log("Backend response:", response.data.data);
-            this.yunjiao = response.data.data;
+          const message2 = response.data.data[0].yunbu_length;
+            this.yunjiao = response.data.data.slice(1);
             var message = 0;
             for(let i = 0; i < this.yunjiao.length; i++){
               message = message + this.yunjiao[i].zitou.length;
             }
             
-            this.$emit('messageEmitted', message);
+            this.$emit('messageEmitted', [message,message2]);
          
         } catch (error) {
           console.error("Error sending clicked word to the backend:", error);
