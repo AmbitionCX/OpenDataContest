@@ -42,7 +42,7 @@
       </div>
     </div> -->
     <div class="contentlenth">符合条件的韵脚字数：{{ contentLenth }}</div>
-    <div class="totallenth">韵脚总字数：375</div>
+    <div class="totallenth">韵脚总字数：{{ yunjiao[Index].length }}</div>
 
     <zyoptions :message="yb[Index]" @messageEmitted="handleMessageFromChild"></zyoptions>
 
@@ -120,11 +120,23 @@ export default {
       });
     },
 
+    async getYunjiaoLength(){
+      const response = await axios.post(
+            this.$globalUrl + "/zhongyuan_yunbu_counter",
+            {
+              params: {
+                yunbu: this.yb[this.Index],
+              },
+            }
+          );
+          console.log("Backend response:", response.data.data);
+    },
+
     drawPieChart() {
       console.log('try',this.contentLenth);
       const data = [
         { label: 'aa', value: this.contentLenth },
-        { label: 'bb', value: 375-this.contentLenth },
+        { label: 'bb', value: this.yunjiao[this.Index].length-this.contentLenth },
       ];
 
       const width = 0.15 * window.innerWidth;

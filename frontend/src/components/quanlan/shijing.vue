@@ -12,8 +12,14 @@
     <div class="line1"></div>
     <div class="line2"></div>
     <a href="/quanlan/guangyun"><div class="cir2"></div></a>
+    <div class="cir2-arrow">
+    <img v-if="showImage" src="@/assets/quanlan/arrow3.svg" class="image" />
+  </div>
     <div class="line3"></div>
     <a href="/quanlan/zhongyuan"><div class="cir3"></div></a>
+  </div>
+  <div class="cir3-arrow">
+    <img v-if="showImage" src="@/assets/quanlan/arrow3.svg" class="image" />
   </div>
 
     <div class="mainBox">
@@ -113,6 +119,9 @@ export default {
     this.getTitle("国风·周南");
     this.getContent('關雎');
     //this.getContent();
+    setTimeout(() => {
+      this.showImage = false;
+    }, 5000); // 5000毫秒 = 5秒
   },
   data() {
     return {
@@ -123,6 +132,7 @@ export default {
       chapter: [],
       input: '',
       selectedOption: null,
+      showImage: true,
     };
   },
   components: {
@@ -429,6 +439,13 @@ background-color: #e88149;
   border-radius: 50%;
   border: 5px solid #e88149;
 }
+.cir2-arrow {
+  position: fixed;
+  z-index: 100;
+  top: 355px;
+  left: 10px;
+  width: 40px;
+}
 .line3 {
   position: fixed;
   top: 380px;
@@ -447,6 +464,13 @@ background-color: #e88149;
   background-color: #f9f5f2;
   border-radius: 50%;
   border: 5px solid #e88149;
+}
+.cir3-arrow {
+  position: fixed;
+  z-index: 100;
+  top: 550px;
+  left: 10px;
+  width: 40px;
 }
 .shijing {
 position: fixed;

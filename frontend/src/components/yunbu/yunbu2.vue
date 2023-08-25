@@ -35,6 +35,14 @@
         <div class="circle12" @click="ToLinkSJ"></div>
         <div class="circle2"><div class="circle21"></div></div>
         <div class="circle32" @click="ToLinkZY"></div>
+
+        <div class="cir1-arrow-yunbu">
+          <img v-if="showImage" src="@/assets/yunbu/arrow5.svg" class="image" />
+        </div>
+
+        <div class="cir3-arrow-yunbu">
+          <img v-if="showImage" src="@/assets/yunbu/arrow5.svg" class="image" />
+        </div>
   
       <div class="intro2">字数统计:</div>
       <div class="rect3"></div>
@@ -72,6 +80,8 @@
         yb: [],
       yunjiao: [],
       Index: Number(this.$route.params.index),
+      yb_length: 1,
+      showImage: true,
       };
     },
     components: {
@@ -81,11 +91,10 @@
     },
     methods: {
       incrementNum(){
-      this.Index = Number(this.Index)+1;
-      console.log(this.Index);
+        this.Index = (Number(this.Index) + 1) % this.yb_length;
     },
     decrementNum(){
-      this.Index = Number(this.Index)-1;
+      this.Index = (Number(this.Index) - 1) % this.yb_length;
     },
       ToLinkZY(){
       window.location.href = "/yunbu3/14"; 
@@ -248,6 +257,11 @@ svg.selectAll('.y-axis path, .y-axis line')
     this.getShijing();
     this.drawPlot();
   },
+  mounted() {
+    setTimeout(() => {
+      this.showImage = false;
+    }, 5000); // 5000毫秒 = 5秒
+  }
   };
   </script>
           
@@ -410,6 +424,20 @@ svg.selectAll('.y-axis path, .y-axis line')
     border: 4px solid #c1a530;
     cursor: pointer;
   }
+  .cir1-arrow-yunbu {
+  position: fixed;
+  z-index: 100;
+  top: calc(13vh + 300px);
+  left: 30px;
+  width: 40px;
+}
+  .cir3-arrow-yunbu {
+  position: fixed;
+  z-index: 100;
+  top: calc(13vh + 300px);
+  left: 360px;
+  width: 40px;
+}
   .intro2 {
     position: fixed;
     top: calc(13vh + 450px);

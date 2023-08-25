@@ -9,12 +9,18 @@
 
   <div>
     <a href="/quanlan/shijing"><div class="cir1"></div></a>
+    <div class="cir1-arrow">
+    <img v-if="showImage" src="@/assets/quanlan/arrow3.svg" class="image" />
+  </div>
     <div class="line1"></div>
     <div class="cir11"></div>
     <div class="cir12"></div>
     <div class="line2"></div>
     <div class="line3"></div>
     <a href="/quanlan/guangyun"><div class="cir3"></div></a>
+  </div>
+  <div class="cir2-arrow">
+    <img v-if="showImage" src="@/assets/quanlan/arrow3.svg" class="image" />
   </div>
 
     <div class="mainBox">
@@ -90,6 +96,10 @@ export default {
       .catch(error => {
         console.error('An error occurred:', error);
       });
+
+      setTimeout(() => {
+      this.showImage = false;
+    }, 5000); // 5000毫秒 = 5秒
   },
   data() {
     return {
@@ -101,6 +111,7 @@ export default {
       ciyun: true,
       input: '',
       yunbu_props: '',
+      showImage: true,
     };
   },
   components: {
@@ -386,6 +397,13 @@ goToNewPage(yunbu_props) {
   border-radius: 50%;
   border: 5px solid #e88149;
 }
+.cir1-arrow {
+  position: fixed;
+  z-index: 100;
+  top: 125px;
+  left: 10px;
+  width: 40px;
+}
 .cir11 {
   position: fixed;
   top: 540px;
@@ -431,6 +449,13 @@ background-color: #e88149;
   background-color: #f9f5f2;
   border-radius: 50%;
   border: 5px solid #e88149;
+}
+.cir2-arrow {
+  position: fixed;
+  z-index: 100;
+  top: 355px;
+  left: 10px;
+  width: 40px;
 }
 .line2 {
   position: fixed;

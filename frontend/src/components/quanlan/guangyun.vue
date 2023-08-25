@@ -11,6 +11,9 @@
       <a href="/quanlan/shijing">
         <div class="cir1"></div>
       </a>
+      <div class="cir1-arrow">
+    <img v-if="showImage" src="@/assets/quanlan/arrow3.svg" class="image" />
+  </div>
       <div class="line1"></div>
       <div class="cir11"></div>
       <div class="cir12"></div>
@@ -20,6 +23,9 @@
         <div class="cir3"></div>
       </a>
     </div>
+    <div class="cir3-arrow">
+    <img v-if="showImage" src="@/assets/quanlan/arrow3.svg" class="image" />
+  </div>
 
     <div class="mainBox">
       <div class="leftBox">
@@ -89,6 +95,10 @@ export default {
       .catch(error => {
         console.error('An error occurred:', error);
       });
+
+      setTimeout(() => {
+      this.showImage = false;
+    }, 5000); // 5000毫秒 = 5秒
   },
   data() {
     return {
@@ -100,6 +110,7 @@ export default {
       ciyun: true,
       input: '',
       yunbu_props: '',
+      showImage: true,
     };
   },
   components: {
@@ -390,7 +401,13 @@ export default {
   border-radius: 50%;
   border: 5px solid #e88149;
 }
-
+.cir1-arrow {
+  position: fixed;
+  z-index: 100;
+  top: 125px;
+  left: 10px;
+  width: 40px;
+}
 .cir11 {
   position: fixed;
   top: 330px;
@@ -430,17 +447,6 @@ export default {
   background-color: #e88149;
 }
 
-.cir2 {
-  position: fixed;
-  top: 353px;
-  left: 63px;
-  width: 30px;
-  height: 30px;
-  background-color: #f9f5f2;
-  border-radius: 50%;
-  border: 5px solid #e88149;
-}
-
 .line3 {
   position: fixed;
   z-index: 1;
@@ -462,7 +468,13 @@ export default {
   border-radius: 50%;
   border: 5px solid #e88149;
 }
-
+.cir3-arrow {
+  position: fixed;
+  z-index: 100;
+  top: 550px;
+  left: 10px;
+  width: 40px;
+}
 .shijing-quanlan {
   position: fixed;
   z-index: 9999;

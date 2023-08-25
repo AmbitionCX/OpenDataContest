@@ -39,6 +39,13 @@
     <div class="circle22" @click="ToLinkGY"></div>
     <div class="circle32" @click="ToLinkZY"></div>
 
+    <div class="cir2-arrow-yunbu">
+    <img v-if="showImage" src="@/assets/yunbu/arrow5.svg" class="image" />
+  </div>
+  <div class="cir3-arrow-yunbu">
+    <img v-if="showImage" src="@/assets/yunbu/arrow5.svg" class="image" />
+  </div>
+
     <div class="intro2">字数统计:</div>
     <div class="rect3-yunbu"></div>
     </div>
@@ -64,6 +71,7 @@ export default {
     return {
       yb: [],
     yunjiao: [],
+    showImage: true,
     };
   },
   components: {
@@ -233,6 +241,11 @@ svg.selectAll('.y-axis path, .y-axis line')
   this.getShijing();
   this.drawPlot();
 },
+mounted() {
+    setTimeout(() => {
+      this.showImage = false;
+    }, 5000); // 5000毫秒 = 5秒
+  }
 };
 </script>
         
@@ -394,6 +407,20 @@ svg.selectAll('.y-axis path, .y-axis line')
   border-radius: 50%;
   border: 4px solid #c1a530;
   cursor: pointer;
+}
+.cir3-arrow-yunbu {
+  position: fixed;
+  z-index: 100;
+  top: calc(13vh + 300px);
+  left: 360px;
+  width: 40px;
+}
+.cir2-arrow-yunbu {
+  position: fixed;
+  z-index: 100;
+  top: calc(13vh + 300px);
+  left: 200px;
+  width: 40px;
 }
 .intro2 {
   position: fixed;

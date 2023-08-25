@@ -35,6 +35,14 @@
         <div class="circle31"></div>
       </div>
 
+      <div class="cir1-arrow-yunbu">
+          <img v-if="showImage" src="@/assets/yunbu/arrow5.svg" class="image" />
+        </div>
+
+        <div class="cir2-arrow-yunbu">
+          <img v-if="showImage" src="@/assets/yunbu/arrow5.svg" class="image" />
+        </div>
+
       <div class="intro2">字数统计:</div>
       <div class="rect3"></div>
     </div>
@@ -72,6 +80,7 @@ export default {
       yunjiao: [],
       Index: this.$route.params.index || 0,
       yb_length: 1,
+      showImage: true,
     };
   },
   components: {
@@ -248,6 +257,11 @@ export default {
     this.getShijing();
     this.drawPlot();
   },
+  mounted() {
+    setTimeout(() => {
+      this.showImage = false;
+    }, 5000); // 5000毫秒 = 5秒
+  }
 };
 </script>
           
@@ -425,7 +439,20 @@ export default {
   border-radius: 50%;
   border: 2px solid #c1a530;
 }
-
+.cir1-arrow-yunbu {
+  position: fixed;
+  z-index: 100;
+  top: calc(13vh + 300px);
+  left: 30px;
+  width: 40px;
+}
+.cir2-arrow-yunbu {
+  position: fixed;
+  z-index: 100;
+  top: calc(13vh + 300px);
+  left: 200px;
+  width: 40px;
+}
 .intro2 {
   position: fixed;
   top: calc(13vh + 450px);
