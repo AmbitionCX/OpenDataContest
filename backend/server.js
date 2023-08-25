@@ -150,6 +150,7 @@ app.post("/zhongyuan_search", (req, res) => {
 
 app.post("/zhongyuan_yunbu_counter", (req, res) => {
     let yunbu = req.body.params.yunbu;
+    console.log(yunbu);
     csvReader.zhongyuan_yunbu_counter(yunbu).then((data) => {
         res.setHeader('Content-Type', 'application/json');
         res.json({

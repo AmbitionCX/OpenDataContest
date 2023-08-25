@@ -111,7 +111,6 @@ export default {
             this.yb = yunbu2;
             this.yunjiao = yunjiao;
             this.text = yunjiao[this.Index];
-            console.log(this.yunjiao);
             resolve(yunjiao); // 请求成功后resolve数据
           })
           .catch(function (err) {
@@ -200,6 +199,7 @@ export default {
     },
   },
   created() {
+    this.getYunjiaoLength();
     this.getShijing();
   },
   mounted() {

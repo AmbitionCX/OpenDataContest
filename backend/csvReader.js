@@ -321,6 +321,10 @@ const guangyun_search = (params) => {
                     }
 
                     let guangyun_search_results = [];
+                    let yunbu_length = {};
+                    yunbu_length.yunbu_length = target_data.length;
+                    guangyun_search_results.push(yunbu_length);
+
                     selected_data = Array.from(selected_data);
                     shengniu_list = Array.from(selected_shengniu);
 
@@ -371,8 +375,6 @@ const guangyun_yunbu_counter = (yunbu) => {
         })
     })
 }
-
-guangyun_yunbu_counter("東");
 
 const guangyun_word_cloud = (data) => {
     let random_data = get_random_elements(data, 40);
@@ -486,6 +488,10 @@ const zhongyuan_search = (params) => {
                     }
 
                     let zhongyuan_search_results = [];
+                    let yunbu_length = {};
+                    yunbu_length.yunbu_length = target_data.length;
+                    zhongyuan_search_results.push(yunbu_length);
+
                     selected_data = Array.from(selected_data);
                     shengniu_list = Array.from(selected_shengniu);
 
@@ -522,7 +528,7 @@ const zhongyuan_yunbu_counter = (yunbu) => {
                     let target_data = getColumns(rows, [0, 1]);
                     let yunjiaozi = new Set();
 
-                    if (yunbu.length != 0) {
+                    if (yunbu != null) {
                         target_data = target_data.filter((element) => element[0] == yunbu);
                     }
 
@@ -530,7 +536,6 @@ const zhongyuan_yunbu_counter = (yunbu) => {
                         yunjiaozi.add(item[1]);
                     }
                     counter = Array.from(yunjiaozi).length;
-                    console.log(counter);
                     resolve(counter);
                 }
             });
