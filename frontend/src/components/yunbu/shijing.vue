@@ -22,7 +22,7 @@
 
     <div class="shijing"><a>诗经</a></div>
     <div class="bu"><a>{{ yb[Index] }}部</a></div>
-    <div class="intro">统计图表:</div>
+    <div class="intro">数据占比:</div>
 
     <div class="rect">
       <svg ref="pieChart"></svg>
