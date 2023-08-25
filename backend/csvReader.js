@@ -347,6 +347,33 @@ const guangyun_search = (params) => {
     })
 }
 
+const guangyun_yunbu_counter = (yunbu) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(zhonggu_guangyun_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let target_data = getColumns(rows, [0, 1]);
+                    let yunjiaozi = new Set();
+
+                    if (yunbu.length != 0) {
+                        target_data = target_data.filter((element) => element[0] == yunbu);
+                    }
+
+                    for (item of target_data) {
+                        yunjiaozi.add(item[1]);
+                    }
+                    counter = Array.from(yunjiaozi).length;
+                    resolve(counter);
+                }
+            });
+        })
+    })
+}
+
+guangyun_yunbu_counter("東");
+
 const guangyun_word_cloud = (data) => {
     let random_data = get_random_elements(data, 40);
     let cloud = [];
@@ -481,6 +508,32 @@ const zhongyuan_search = (params) => {
                     resolve(zhongyuan_search_results)
                 }
             })
+        })
+    })
+}
+
+const zhongyuan_yunbu_counter = (yunbu) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(jindai_zhongyuan_path, function (err, fileData) {
+            parse(fileData, { delimiter: ",", from_line: 2 }, function (err, rows) {
+                if (err) {
+                    reject(err);
+                } else {
+                    let target_data = getColumns(rows, [0, 1]);
+                    let yunjiaozi = new Set();
+
+                    if (yunbu.length != 0) {
+                        target_data = target_data.filter((element) => element[0] == yunbu);
+                    }
+
+                    for (item of target_data) {
+                        yunjiaozi.add(item[1]);
+                    }
+                    counter = Array.from(yunjiaozi).length;
+                    console.log(counter);
+                    resolve(counter);
+                }
+            });
         })
     })
 }
@@ -694,5 +747,7 @@ module.exports = {
     get_guangyun_search_item,
     guangyun_search,
     get_zhongyuan_search_item,
-    zhongyuan_search
+    zhongyuan_search,
+    guangyun_yunbu_counter,
+    zhongyuan_yunbu_counter
 }

@@ -96,6 +96,17 @@ app.post("/guangyun_search", (req, res) => {
     })
 })
 
+app.post("/guangyun_yunbu_counter", (req, res) => {
+    let yunbu = req.body.params.yunbu;
+    csvReader.guangyun_yunbu_counter(yunbu).then((data) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.json({
+            code: 200,
+            data: data
+        })
+    })
+})
+
 app.post("/get_guangyun_url", (req, res) => {
     let target = req.body.params.Word;
     csvReader.get_zhonggu_guangyun().then((data) => {
@@ -136,6 +147,18 @@ app.post("/zhongyuan_search", (req, res) => {
         })
     })
 })
+
+app.post("/zhongyuan_yunbu_counter", (req, res) => {
+    let yunbu = req.body.params.yunbu;
+    csvReader.zhongyuan_yunbu_counter(yunbu).then((data) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.json({
+            code: 200,
+            data: data
+        })
+    })
+})
+
 
 app.post("/get_zhongyuan_url", (req, res) => {
     let target = req.body.params.Word;
